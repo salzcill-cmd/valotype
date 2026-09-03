@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ValoType — game mengetik Indonesia. Latihan mengetik yang seru, dengan ranking, XP, dan mini-game. Game yang kebetulan membuatmu jago mengetik."
+    />
+    <meta name="theme-color" content="#e63946" />
+    <title>ValoType — Game Mengetik Indonesia</title>
+    <script>
+      ;(() => {
+        // Set theme before first paint — avoid flash of wrong theme (prd.md §72)
+        try {
+          const stored = localStorage.getItem("valotype-theme")
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+          const theme = stored === "dark" || (!stored && prefersDark) ? "dark" : "light"
+          document.documentElement.classList.toggle("dark", theme === "dark")
+        } catch {
+          // storage tidak tersedia
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

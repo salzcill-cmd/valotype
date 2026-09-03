@@ -1,0 +1,309 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* ============================================================
+   ValoType Design Tokens — DESAIN.md §31
+   Neo-Brutalism 2026 — Merah + Putih Indonesia
+   ============================================================ */
+
+/* Fonts (fontsource variable — self-hosted, font-display: swap) */
+@import "@fontsource-variable/space-grotesk";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
+/* Class-based dark mode (toggled on <html>) */
+@custom-variant dark (&:is(.dark *));
+
+/* --- Raw palette (DESAIN.md §2 & §31) --- */
+:root {
+  --color-primary: #e63946;
+  --color-primary-dark: #b71c1c;
+  --color-primary-light: #ff5252;
+  --color-secondary: #1a73e8;
+  --color-accent: #ffd600;
+  --color-success: #00c853;
+  --color-danger: #ff1744;
+  --color-warning: #ff9800;
+
+  --color-bg: #f5f5f5;
+  --color-bg-dark: #121212;
+  --color-surface: #ffffff;
+  --color-surface-dark: #1e1e1e;
+  --color-foreground: #1a1a1a;
+  --color-foreground-dark: #f5f5f5;
+  --color-muted: #9e9e9e;
+  --color-muted-dark: #757575;
+  --color-border: #1a1a1a;
+  --color-border-dark: #333333;
+  --color-shadow: #1a1a1a;
+  --color-shadow-dark: #000000;
+}
+
+/* --- Semantic tokens (light mode default, DESAIN.md §21) --- */
+:root {
+  --background: var(--color-bg);
+  --foreground: var(--color-foreground);
+  --surface: var(--color-surface);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-foreground);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-foreground);
+  --primary: var(--color-primary);
+  --primary-dark: var(--color-primary-dark);
+  --primary-light: var(--color-primary-light);
+  --primary-foreground: #ffffff;
+  --secondary: var(--color-secondary);
+  --secondary-foreground: #ffffff;
+  --muted: var(--color-muted);
+  --muted-foreground: var(--color-muted);
+  --accent: var(--color-accent);
+  --accent-foreground: var(--color-foreground);
+  --destructive: var(--color-danger);
+  --destructive-foreground: #ffffff;
+  --border: var(--color-border);
+  --border-color: var(--color-border);
+  --input: var(--color-surface);
+  --ring: var(--color-primary);
+  --shadow-color: var(--color-shadow);
+  --success: var(--color-success);
+  --danger: var(--color-danger);
+  --warning: var(--color-warning);
+
+  /* shadcn chart palette — mapped to ValoType palette */
+  --chart-1: var(--color-primary);
+  --chart-2: var(--color-secondary);
+  --chart-3: var(--color-accent);
+  --chart-4: var(--color-success);
+  --chart-5: var(--color-warning);
+
+  /* shadcn sidebar — surface-based */
+  --sidebar: var(--color-surface);
+  --sidebar-foreground: var(--color-foreground);
+  --sidebar-primary: var(--color-primary);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--color-bg);
+  --sidebar-accent-foreground: var(--color-foreground);
+  --sidebar-border: var(--color-border);
+  --sidebar-ring: var(--color-primary);
+
+  /* --- Spacing scale (DESAIN.md §4, 4px base) --- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* --- Border (DESAIN.md §5) --- */
+  --border-width: 2px;
+  --border-width-lg: 3px;
+  --border-radius: 0px;
+  --border-radius-sm: 2px;
+
+  /* --- Transitions (DESAIN.md §19/§31) --- */
+  --transition-fast: 100ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+  --transition-spring: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- Z-index (DESAIN.md §31) --- */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+
+  /* --- Layout (DESAIN.md §31) --- */
+  --container-max: 1280px;
+  --sidebar-width: 240px;
+  --navbar-height: 64px;
+  --tabbar-height: 56px;
+}
+
+/* --- Dark mode (DESAIN.md §21) --- */
+.dark {
+  --background: var(--color-bg-dark);
+  --foreground: var(--color-foreground-dark);
+  --surface: var(--color-surface-dark);
+  --card: var(--color-surface-dark);
+  --card-foreground: var(--color-foreground-dark);
+  --popover: var(--color-surface-dark);
+  --popover-foreground: var(--color-foreground-dark);
+  --primary: var(--color-primary-light);
+  --primary-foreground: #1a1a1a;
+  --secondary: var(--color-secondary);
+  --secondary-foreground: #ffffff;
+  --muted: var(--color-muted-dark);
+  --muted-foreground: var(--color-muted-dark);
+  --accent: var(--color-accent);
+  --accent-foreground: var(--color-foreground-dark);
+  --destructive: var(--color-danger);
+  --destructive-foreground: #ffffff;
+  --border: var(--color-border-dark);
+  --border-color: var(--color-border-dark);
+  --input: var(--color-surface-dark);
+  --ring: var(--color-primary-light);
+  --shadow-color: var(--color-shadow-dark);
+
+  --sidebar: var(--color-surface-dark);
+  --sidebar-foreground: var(--color-foreground-dark);
+  --sidebar-primary: var(--color-primary-light);
+  --sidebar-primary-foreground: #1a1a1a;
+  --sidebar-accent: var(--color-bg-dark);
+  --sidebar-accent-foreground: var(--color-foreground-dark);
+  --sidebar-border: var(--color-border-dark);
+  --sidebar-ring: var(--color-primary-light);
+}
+
+/* --- Tailwind theme mapping (DESAIN.md §31) --- */
+@theme inline {
+  /* Semantic colors → utilities: bg-background, text-foreground, ... */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-light: var(--primary-light);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-shadow: var(--shadow-color);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Typography (DESAIN.md §3) */
+  --font-display: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", monospace;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+
+  /* Font sizes (DESAIN.md §3/§31) */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 4rem;
+  --text-score: 4.5rem;
+  --text-score--line-height: 1;
+
+  /* Shadows (DESAIN.md §5 — hard, offset, no blur) */
+  --shadow-sm: 2px 2px 0 var(--shadow-color);
+  --shadow: 4px 4px 0 var(--shadow-color);
+  --shadow-lg: 6px 6px 0 var(--shadow-color);
+  --shadow-primary: 4px 4px 0 var(--color-primary-dark);
+  --shadow-hover: 2px 2px 0 var(--shadow-color);
+  --shadow-active: 0 0 0 var(--shadow-color);
+
+  /* Radius (DESAIN.md §5 — sharp corners; shadcn chain resolves to 0) */
+  --radius: 0px;
+  --radius-sm: 2px;
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Z-index (DESAIN.md §31) */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+}
+
+/* --- Base styles --- */
+@layer base {
+  * {
+    border-color: var(--border-color);
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    @apply font-sans;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-size: 1rem;
+    line-height: 1.5;
+    min-height: 100dvh;
+    transition:
+      background-color var(--transition-base),
+      color var(--transition-base);
+    @apply bg-background text-foreground;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  /* Bold, visible focus ring (DESAIN.md §29 / prd.md §28) */
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  /* Reduced motion (DESAIN.md §19 / prd.md §27) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk reduced motion */
+      animation-duration: 0.01ms !important;
+      /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk reduced motion */
+      animation-iteration-count: 1 !important;
+      /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk reduced motion */
+      transition-duration: 0.01ms !important;
+      /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk reduced motion */
+      scroll-behavior: auto !important;
+    }
+  }
+}

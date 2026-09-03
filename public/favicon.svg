@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>ValoType</title>
+  <rect width="64" height="64" fill="#e63946" />
+  <path d="M10 16 L32 52 L54 16" fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter" />
+</svg>
