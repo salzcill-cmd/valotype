@@ -30,6 +30,8 @@ export interface GameScreenProps {
   title: string
   /** Ikon mode (mis. "⚡"). */
   icon: string
+  /** Konten tetap (mis. tantangan teman); default acak dari pustaka. */
+  content?: TypingContent
   /** Mode Speed Blitz: berhenti otomatis setelah N ms. */
   timeLimitMs?: number
   /** Mode Accuracy Fortress: benteng runtuh setelah N error. */
@@ -48,6 +50,7 @@ export function GameScreen({
   mode,
   title,
   icon,
+  content,
   timeLimitMs,
   maxErrors,
   scoreFn,
@@ -56,7 +59,7 @@ export function GameScreen({
   const recordSession = useProgressStore((s) => s.recordSession)
   const setLastSession = useLastSessionStore((s) => s.setLastSession)
   const submitScore = useSubmitScore()
-  const [initialContent] = useState<TypingContent>(() => getRandomContent())
+  const [initialContent] = useState<TypingContent>(() => content ?? getRandomContent())
   const typingRef = useRef<HTMLDivElement>(null)
   const submittedRef = useRef(false)
 

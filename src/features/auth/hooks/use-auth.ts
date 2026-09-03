@@ -51,6 +51,7 @@ export function useAuth() {
   const signupMutation = useMutation(trpc.auth.signup.mutationOptions())
   const loginMutation = useMutation(trpc.auth.login.mutationOptions())
   const logoutMutation = useMutation(trpc.auth.logout.mutationOptions())
+  const deleteAccountMutation = useMutation(trpc.auth.deleteAccount.mutationOptions())
 
   /** Setelah login/signup: ambil ulang `me` lalu selaraskan mirror guest. */
   const refreshMe = useCallback(async () => {
@@ -93,6 +94,12 @@ export function useAuth() {
     await queryClient.invalidateQueries()
   }, [logoutMutation, meQuery, queryClient])
 
+  const deleteAccount = useCallback(async () => {
+    await deleteAccountMutation.mutateAsync()
+    await meQuery.refetch()
+    await queryClient.invalidateQueries()
+  }, [deleteAccountMutation, meQuery, queryClient])
+
   const user: AuthUser | null = meQuery.data?.user ?? null
   const profile: AuthProfile | null = meQuery.data?.profile ?? null
 
@@ -105,9 +112,11 @@ export function useAuth() {
     signup,
     login,
     logout,
+    deleteAccount,
     signupPending: signupMutation.isPending,
     loginPending: loginMutation.isPending,
     logoutPending: logoutMutation.isPending,
+    deleteAccountPending: deleteAccountMutation.isPending,
     signupError: signupMutation.error,
     loginError: loginMutation.error,
   }

@@ -36,6 +36,11 @@ function applyTheme(theme: Theme): void {
   }
 }
 
+function applyReducedMotion(enabled: boolean): void {
+  if (typeof document === "undefined") return
+  document.documentElement.classList.toggle("reduce-motion", enabled)
+}
+
 export const usePreferencesStore = create<PreferencesState>()(
   persist(
     (set) => ({
@@ -50,14 +55,20 @@ export const usePreferencesStore = create<PreferencesState>()(
       },
 
       toggleSound: () => set((state) => ({ soundEnabled: !state.soundEnabled })),
-      toggleReducedMotion: () => set((state) => ({ reducedMotion: !state.reducedMotion })),
+      toggleReducedMotion: () =>
+        set((state) => {
+          applyReducedMotion(!state.reducedMotion)
+          return { reducedMotion: !state.reducedMotion }
+        }),
       setLanguage: (language) => set({ language }),
     }),
     {
       name: "valotype-preferences",
       onRehydrateStorage: () => (state) => {
-        // Terapkan tema setelah state dimuat dari localStorage
-        if (state) applyTheme(state.theme)
+        // Terapkan preferensi setelah state dimuat dari localStorage
+        if (!state) return
+        applyTheme(state.theme)
+        applyReducedMotion(state.reducedMotion)
       },
     },
   ),

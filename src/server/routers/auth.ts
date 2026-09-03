@@ -8,7 +8,7 @@ import { assertNotRateLimited } from "../auth/rate-limit.ts"
 import { createSessionToken } from "../auth/session.ts"
 import { db } from "../db/index.ts"
 import { type NewProfile, profiles, users } from "../db/schema.ts"
-import { publicProcedure, router } from "../trpc/init.ts"
+import { protectedProcedure, publicProcedure, router } from "../trpc/init.ts"
 
 /** Guest progress dari localStorage yang ikut disinkronkan saat signup (FR-AUTH-004). */
 const guestProgressSchema = z
@@ -202,6 +202,18 @@ export const authRouter = router({
   logout: publicProcedure.mutation(async ({ ctx }) => {
     ctx.clearSessionCookie()
     return { success: true }
+  }),
+
+  /** Hapus akun permanen (FR-AUTH-005) — cascades profil, sesi, achievement. */
+  deleteAccount: protectedProcedure.mutation(async ({ ctx }) => {
+    try {
+      await db.delete(users).where(eq(users.id, ctx.user.id))
+      ctx.clearSessionCookie()
+      return { success: true }
+    } catch (error) {
+      console.error("[auth.deleteAccount] Gagal:", error)
+      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database belum tersedia." })
+    }
   }),
 
   /** User saat ini (dari cookie), null jika tamu / sesi tidak valid. */

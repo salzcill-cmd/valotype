@@ -64,10 +64,11 @@ function todayKey(date = new Date()): string {
   return date.toISOString().slice(0, 10)
 }
 
-function dayBefore(key: string): string {
-  const date = new Date(`${key}T00:00:00Z`)
-  date.setUTCDate(date.getUTCDate() - 1)
-  return date.toISOString().slice(0, 10)
+/** Selisih hari UTC antara dua tanggal YYYY-MM-DD. */
+function diffDays(from: string, to: string): number {
+  const fromMs = Date.parse(`${from}T00:00:00Z`)
+  const toMs = Date.parse(`${to}T00:00:00Z`)
+  return Math.round((toMs - fromMs) / 86_400_000)
 }
 
 const initialState: GuestProgress = {
@@ -106,6 +107,13 @@ function updateStreak(
   state: GuestProgress,
 ): Pick<GuestProgress, "currentStreak" | "longestStreak" | "lastActiveDate"> {
   const today = todayKey()
+  if (!state.lastActiveDate) {
+    return {
+      currentStreak: 1,
+      longestStreak: Math.max(state.longestStreak, 1),
+      lastActiveDate: today,
+    }
+  }
   if (state.lastActiveDate === today) {
     return {
       currentStreak: state.currentStreak,
@@ -113,7 +121,11 @@ function updateStreak(
       lastActiveDate: today,
     }
   }
-  const streak = state.lastActiveDate === dayBefore(today) ? state.currentStreak + 1 : 1
+
+  // Streak (prd.md §16): +1 hari beruntun, 1 hari bolong tetap aman (grace),
+  // 2+ hari bolong → reset. Berlaku paritas dengan server (Phase 4.3).
+  const diff = diffDays(state.lastActiveDate, today)
+  const streak = diff === 1 ? state.currentStreak + 1 : diff === 2 ? state.currentStreak : 1
   return {
     currentStreak: streak,
     longestStreak: Math.max(state.longestStreak, streak),

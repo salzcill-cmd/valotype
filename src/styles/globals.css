@@ -310,6 +310,18 @@
       scroll-behavior: auto !important;
     }
   }
+
+  /* Preferensi manual "kurangi gerakan" dari Settings (TODO 4.5) */
+  html.reduce-motion *,
+  html.reduce-motion *::before,
+  html.reduce-motion *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk preferensi reduce motion */
+    animation-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk preferensi reduce motion */
+    animation-iteration-count: 1 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk preferensi reduce motion */
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* --- Typing effects & feedback (DESAIN.md §19/§20) --- */

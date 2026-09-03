@@ -2,6 +2,7 @@ import { Link } from "react-router"
 
 import { Sidebar } from "@/components/layout/sidebar"
 import { RankBadge } from "@/components/shared/rank-badge"
+import { streakMilestoneMessage } from "@/components/shared/streak-display"
 import { GuestPrompt } from "@/features/auth/components/guest-prompt"
 import { useAuth } from "@/features/auth/hooks/use-auth"
 import { useProfileView } from "@/features/profile/use-profile-view"
@@ -66,6 +67,15 @@ export default function PlayRoute() {
         <div className="flex min-w-0 flex-col gap-6">
           {/* Ajakan simpan progres (3+ sesi, tamu) — prd.md §36 */}
           <GuestPrompt />
+
+          {/* Perayaan streak di milestone (7/30/60/100/365 hari) */}
+          {streakMilestoneMessage(view.currentStreak) && (
+            <section className="border-2 border-foreground bg-accent p-3 text-center shadow-lg">
+              <p className="font-display text-sm font-bold tracking-widest uppercase">
+                🔥 {streakMilestoneMessage(view.currentStreak)}
+              </p>
+            </section>
+          )}
           {/* Hero CTA (DESAIN.md §14: satu tombol PLAY selalu terlihat) */}
           <section className="flex flex-col gap-4 border-2 border-foreground bg-surface p-5 shadow-lg sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div>

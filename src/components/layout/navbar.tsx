@@ -13,7 +13,7 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
 const chipClass =
   "inline-flex items-center gap-2 border-2 border-foreground bg-surface px-3 py-1.5 font-display text-sm font-bold uppercase shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
 
-/** Navigasi atas desktop (DESAIN.md §18): logo + link + theme toggle + user. */
+/** Navigasi atas desktop (DESAIN.md §18): logo + link + user + settings + theme. */
 export function Navbar() {
   const theme = usePreferencesStore((s) => s.theme)
   const setTheme = usePreferencesStore((s) => s.setTheme)
@@ -42,11 +42,8 @@ export function Navbar() {
           <NavLink to="/play" className={navLinkClass} end>
             Main
           </NavLink>
-          <NavLink to="/play/blitz" className={navLinkClass}>
-            Blitz
-          </NavLink>
-          <NavLink to="/play/fortress" className={navLinkClass}>
-            Fortress
+          <NavLink to="/leaderboard" className={navLinkClass}>
+            Rank
           </NavLink>
         </nav>
 
@@ -80,6 +77,14 @@ export function Navbar() {
               </div>
             )
           )}
+
+          <Link
+            to="/settings"
+            aria-label="Pengaturan"
+            className="border-2 border-foreground bg-background px-2.5 py-1.5 font-mono text-sm shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+          >
+            ⚙️
+          </Link>
 
           <button
             type="button"

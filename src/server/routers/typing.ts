@@ -15,10 +15,11 @@ function todayKey(date: Date = new Date()): string {
   return date.toISOString().slice(0, 10)
 }
 
-function dayBefore(key: string): string {
-  const date = new Date(`${key}T00:00:00Z`)
-  date.setUTCDate(date.getUTCDate() - 1)
-  return date.toISOString().slice(0, 10)
+/** Selisih hari UTC antara dua tanggal YYYY-MM-DD. */
+function diffDays(from: string, to: string): number {
+  const fromMs = Date.parse(`${from}T00:00:00Z`)
+  const toMs = Date.parse(`${to}T00:00:00Z`)
+  return Math.round((toMs - fromMs) / 86_400_000)
 }
 
 /**
@@ -39,10 +40,16 @@ async function updateProfileAfterSession(
   const today = todayKey(now)
   const lastKey = profile.lastActiveAt ? todayKey(profile.lastActiveAt) : ""
 
-  // Streak: +1 jika kemarin, sama jika hari ini, reset jika bolong (prd.md §16)
+  // Streak (prd.md §16, paritas klien): +1 hari beruntun, 1 hari bolong
+  // tetap aman (grace), 2+ hari bolong → reset.
   let { currentStreak, longestStreak } = profile
   if (lastKey !== today) {
-    currentStreak = lastKey === dayBefore(today) ? currentStreak + 1 : 1
+    if (!lastKey) {
+      currentStreak = 1
+    } else {
+      const diff = diffDays(lastKey, today)
+      currentStreak = diff === 1 ? currentStreak + 1 : diff === 2 ? currentStreak : 1
+    }
     longestStreak = Math.max(longestStreak, currentStreak)
   }
 
