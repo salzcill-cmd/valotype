@@ -4,9 +4,12 @@ import { AppLayout, FocusLayout } from "@/app/layout"
 import { AccuracyFortressGame } from "@/features/games/accuracy-fortress/component"
 import { SpeedBlitzGame } from "@/features/games/speed-blitz/component"
 import IndexRoute from "@/routes/index"
+import LoginRoute from "@/routes/login"
 import PlayRoute from "@/routes/play"
 import PlayGameRoute from "@/routes/play.game"
 import PlayResultRoute from "@/routes/play.result"
+import ProfileRoute from "@/routes/profile"
+import SignupRoute from "@/routes/signup"
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +18,9 @@ export const router = createBrowserRouter([
       { index: true, element: <IndexRoute /> },
       { path: "/play", element: <PlayRoute /> },
       { path: "/play/result", element: <PlayResultRoute /> },
+      { path: "/login", element: <LoginRoute /> },
+      { path: "/signup", element: <SignupRoute /> },
+      { path: "/profile", element: <ProfileRoute /> },
     ],
   },
   {

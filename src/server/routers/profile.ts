@@ -1,0 +1,138 @@
+import { TRPCError } from "@trpc/server"
+import { and, desc, eq, ne } from "drizzle-orm"
+import { z } from "zod"
+
+import { db } from "../db/index.ts"
+import { profiles, typingSessions, users } from "../db/schema.ts"
+import { protectedProcedure, router } from "../trpc/init.ts"
+import { safeUser } from "./auth.ts"
+
+const updateSchema = z.object({
+  username: z
+    .string()
+    .min(3, "Username minimal 3 karakter")
+    .max(20, "Username maksimal 20 karakter")
+    .regex(/^[a-zA-Z0-9_]+$/, "Username hanya boleh huruf, angka, dan garis bawah")
+    .transform((value) => value.trim().toLowerCase())
+    .optional(),
+  title: z.string().min(1).max(40).optional(),
+  avatarUrl: z.string().max(500).optional(),
+})
+
+export const profileRouter = router({
+  /** Data profil user saat ini (proteksi: wajib login). */
+  get: protectedProcedure.query(async ({ ctx }) => {
+    if (!ctx.profile) {
+      const [profile] = await db
+        .select()
+        .from(profiles)
+        .where(eq(profiles.userId, ctx.user.id))
+        .limit(1)
+      return { user: safeUser(ctx.user), profile: profile ?? null }
+    }
+    return { user: safeUser(ctx.user), profile: ctx.profile }
+  }),
+
+  /** Ubah username / title / avatar. */
+  update: protectedProcedure.input(updateSchema).mutation(async ({ input, ctx }) => {
+    const userId = ctx.user.id
+
+    try {
+      if (input.username && input.username !== ctx.user.username) {
+        const [taken] = await db
+          .select({ id: users.id })
+          .from(users)
+          .where(and(eq(users.username, input.username), ne(users.id, userId)))
+          .limit(1)
+        if (taken) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "Username sudah dipakai. Coba yang lain.",
+          })
+        }
+        await db
+          .update(users)
+          .set({ username: input.username, updatedAt: new Date() })
+          .where(eq(users.id, userId))
+      }
+
+      if (input.avatarUrl !== undefined) {
+        await db
+          .update(users)
+          .set({ avatarUrl: input.avatarUrl || null, updatedAt: new Date() })
+          .where(eq(users.id, userId))
+      }
+
+      const profileUpdate: Partial<typeof profiles.$inferInsert> = {}
+      if (input.title !== undefined) profileUpdate.title = input.title
+      if (Object.keys(profileUpdate).length > 0) {
+        await db
+          .update(profiles)
+          .set({ ...profileUpdate, updatedAt: new Date() })
+          .where(eq(profiles.userId, userId))
+      }
+
+      const [updatedUser] = await db.select().from(users).where(eq(users.id, userId)).limit(1)
+      const [updatedProfile] = await db
+        .select()
+        .from(profiles)
+        .where(eq(profiles.userId, userId))
+        .limit(1)
+      return {
+        user: updatedUser ? safeUser(updatedUser) : null,
+        profile: updatedProfile ?? null,
+      }
+    } catch (error) {
+      if (error instanceof TRPCError) throw error
+      console.error("[profile.update] Gagal:", error)
+      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database belum tersedia." })
+    }
+  }),
+
+  /** Statistik mengetik dari sesi tersimpan. */
+  getStats: protectedProcedure.query(async ({ ctx }) => {
+    try {
+      const profile = ctx.profile ?? null
+      const recent = await db
+        .select({
+          id: typingSessions.id,
+          gameMode: typingSessions.gameMode,
+          wpm: typingSessions.wpm,
+          accuracy: typingSessions.accuracy,
+          score: typingSessions.score,
+          maxCombo: typingSessions.maxCombo,
+          durationMs: typingSessions.durationMs,
+          createdAt: typingSessions.createdAt,
+        })
+        .from(typingSessions)
+        .where(eq(typingSessions.userId, ctx.user.id))
+        .orderBy(desc(typingSessions.createdAt))
+        .limit(10)
+
+      const recentWpms = recent.map((row) => row.wpm).slice(0, 5)
+      const avgWpmRecent =
+        recentWpms.length === 0
+          ? 0
+          : Math.round(recentWpms.reduce((sum, value) => sum + value, 0) / recentWpms.length)
+
+      return {
+        totalSessions: profile?.totalSessions ?? recent.length,
+        totalTypedChars: profile?.totalTypedChars ?? 0,
+        currentStreak: profile?.currentStreak ?? 0,
+        longestStreak: profile?.longestStreak ?? 0,
+        totalXp: profile?.totalXp ?? 0,
+        currentLevel: profile?.currentLevel ?? 1,
+        currentRank: profile?.currentRank ?? "iron",
+        bestWpm: profile?.bestWpm ?? 0,
+        bestAccuracy: profile?.bestAccuracy ?? 0,
+        bestScore: profile?.bestScore ?? 0,
+        avgWpmRecent,
+        lastActiveAt: profile?.lastActiveAt ?? null,
+        recentSessions: recent,
+      }
+    } catch (error) {
+      console.error("[profile.getStats] Gagal:", error)
+      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database belum tersedia." })
+    }
+  }),
+})

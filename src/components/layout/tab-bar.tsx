@@ -6,12 +6,12 @@ const TABS = [
   { to: "/", label: "Beranda", icon: "🏠", end: true, soon: false },
   { to: "/play", label: "Main", icon: "🎮", end: true, soon: false },
   { to: "/play", label: "Rank", icon: "🏆", end: false, soon: true },
-  { to: "/play", label: "Profil", icon: "👤", end: false, soon: true },
+  { to: "/profile", label: "Profil", icon: "👤", end: false, soon: false },
 ]
 
 /**
  * Navigasi bawah mobile (DESAIN.md §18): fixed bottom, 56px, indikator aktif merah.
- * Tab Rank & Profil belum punya halaman (Phase 3/4) → placeholder "segera hadir".
+ * Tab Rank menyusul Phase 4 (leaderboard); Profil sudah aktif sejak Phase 3.
  */
 export function TabBar() {
   return (

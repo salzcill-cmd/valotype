@@ -86,6 +86,20 @@ const initialState: GuestProgress = {
 interface ProgressState extends GuestProgress {
   resetProgress: () => void
   recordSession: (input: RecordSessionInput) => SessionOutcome
+  /** Ambil alih angka progres dari server (login/load on login, TODO 3.4). */
+  adoptServerProgress: (p: ServerProgress) => void
+}
+
+/** Angka progres dari server (profile) yang bisa diadopsi ke mirror lokal. */
+export interface ServerProgress {
+  totalXp: number
+  bestWpm: number
+  bestAccuracy: number
+  bestScore: number
+  totalSessions: number
+  totalTypedChars: number
+  currentStreak: number
+  longestStreak: number
 }
 
 function updateStreak(
@@ -113,6 +127,20 @@ export const useProgressStore = create<ProgressState>()(
       ...initialState,
 
       resetProgress: () => set(initialState),
+
+      adoptServerProgress: (p) =>
+        set((state) => ({
+          totalXp: p.totalXp,
+          bestWpm: p.bestWpm,
+          bestAccuracy: p.bestAccuracy,
+          bestScore: p.bestScore,
+          totalSessions: p.totalSessions,
+          totalTypedChars: p.totalTypedChars,
+          currentStreak: p.currentStreak,
+          longestStreak: p.longestStreak,
+          // Riwayat sesi terbaru tetap dari perangkat ini
+          recentSessions: state.recentSessions,
+        })),
 
       recordSession: (input) => {
         const state = get()
@@ -199,6 +227,7 @@ export function useProgressView() {
   const bestAccuracy = useProgressStore((s) => s.bestAccuracy)
   const bestScore = useProgressStore((s) => s.bestScore)
   const totalSessions = useProgressStore((s) => s.totalSessions)
+  const totalTypedChars = useProgressStore((s) => s.totalTypedChars)
   const currentStreak = useProgressStore((s) => s.currentStreak)
   const longestStreak = useProgressStore((s) => s.longestStreak)
   const recentSessions = useProgressStore((s) => s.recentSessions)
@@ -213,6 +242,7 @@ export function useProgressView() {
     bestAccuracy,
     bestScore,
     totalSessions,
+    totalTypedChars,
     currentStreak,
     longestStreak,
     recentSessions,

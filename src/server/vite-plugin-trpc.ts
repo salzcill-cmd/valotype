@@ -1,11 +1,16 @@
 import type { IncomingMessage, ServerResponse } from "node:http"
 import { nodeHTTPRequestHandler } from "@trpc/server/adapters/node-http"
 import type { Plugin } from "vite"
-
 import { createTRPCContext } from "./trpc/context.ts"
 import { appRouter } from "./trpc/router.ts"
 
 const ENDPOINT = "/api/trpc"
+
+function isHttpsRequest(req: IncomingMessage): boolean {
+  const forwarded = req.headers["x-forwarded-proto"]
+  if (forwarded === "https") return true
+  return (req.socket as { encrypted?: boolean }).encrypted === true
+}
 
 function handler(req: IncomingMessage, res: ServerResponse): void {
   // Connect middleware ter-mount di ENDPOINT, jadi req.url sudah tanpa prefix /api/trpc
@@ -16,7 +21,12 @@ function handler(req: IncomingMessage, res: ServerResponse): void {
     res,
     path,
     router: appRouter,
-    createContext: (opts) => createTRPCContext({ headers: opts.req.headers }),
+    createContext: (opts) =>
+      createTRPCContext({
+        headers: opts.req.headers,
+        res,
+        secure: isHttpsRequest(opts.req),
+      }),
   })
 }
 

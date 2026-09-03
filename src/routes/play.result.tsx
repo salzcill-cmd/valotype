@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router"
 import { LevelBadge } from "@/components/shared/level-badge"
 import { RankBadge } from "@/components/shared/rank-badge"
 import { Button } from "@/components/ui/button"
+import { GuestPrompt } from "@/features/auth/components/guest-prompt"
 import { useLastSessionStore } from "@/features/progress/last-session-store"
 import { getRankById } from "@/features/progress/ranks"
 import { useCountUp } from "@/hooks/use-count-up"
@@ -172,10 +173,15 @@ export default function PlayResultRoute() {
         )}
       </section>
 
+      {/* Ajakan simpan progres (tamu dengan 3+ sesi) — prd.md §36 */}
+      <div className="anim-result-rise w-full" style={{ animationDelay: "300ms" }}>
+        <GuestPrompt />
+      </div>
+
       {/* CTA */}
       <section
         className="anim-result-rise flex w-full flex-col items-center justify-center gap-3 sm:flex-row"
-        style={{ animationDelay: "320ms" }}
+        style={{ animationDelay: "360ms" }}
       >
         <Button
           onClick={() => navigate(replayPath(session.gameMode), { replace: true })}

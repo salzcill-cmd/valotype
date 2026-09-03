@@ -417,92 +417,93 @@
 
 ### 3.1 Auth System
 
-- [ ] Buat `src/server/auth/password.ts`
-  - [ ] Hash password dengan bcrypt (cost ≥ 12)
-  - [ ] Verify password
+- [x] Buat `src/server/auth/password.ts`
+  - [x] Hash password dengan bcrypt (cost 12) — `bcryptjs@3.0.3`
+  - [x] Verify password
 
-- [ ] Buat `src/server/auth/session.ts`
-  - [ ] Create session token
-  - [ ] Validate session
-  - [ ] HTTP-only cookie
+- [x] Buat `src/server/auth/session.ts`
+  - [x] Create session token — JWT-style HS256 (HMAC via node:crypto, `AUTH_SECRET`)
+  - [x] Validate session — signature timing-safe + expiry 30 hari
+  - [x] HTTP-only cookie — `valotype_session`, `SameSite=Lax`, `Secure` saat HTTPS
 
-- [ ] Buat tRPC routes `auth.*`
-  - [ ] `auth.signup` — email + password + username
-  - [ ] `auth.login` — email + password
-  - [ ] `auth.logout` — clear session
-  - [ ] `auth.me` — get current user
+- [x] Buat tRPC routes `auth.*`
+  - [x] `auth.signup` — email + password + username + migrasi guest (FR-AUTH-004)
+  - [x] `auth.login` — email + password
+  - [x] `auth.logout` — clear session
+  - [x] `auth.me` — get current user (+ profil)
+  - [x] Rate limiting NFR-SEC-002 — 5/menit per IP (signup), 10/menit per email (login)
 
-- [ ] Buat `src/features/auth/components/signup-form.tsx`
-  - [ ] Email input
-  - [ ] Password input
-  - [ ] Username input
-  - [ ] Submit button
-  - [ ] Error handling
-  - [ ] Style sesuai DESAIN.md §8
+- [x] Buat `src/features/auth/components/signup-form.tsx`
+  - [x] Email input / Password input / Username input / Submit button
+  - [x] Error handling + validasi client (username regex, password ≥ 8)
+  - [x] Style sesuai DESAIN.md §8 (border 2px, sudut tajam, fokus merah)
 
-- [ ] Buat `src/features/auth/components/login-form.tsx`
-  - [ ] Email input
-  - [ ] Password input
-  - [ ] Submit button
-  - [ ] Error handling
+- [x] Buat `src/features/auth/components/login-form.tsx`
+  - [x] Email input / Password input / Submit button / Error handling
 
-- [ ] Buat `src/features/auth/hooks/use-auth.ts`
-  - [ ] Check if user is logged in
-  - [ ] Get current user data
-  - [ ] Login/logout functions
+- [x] Buat `src/features/auth/hooks/use-auth.ts`
+  - [x] Check if user is logged in — `auth.me` via TanStack Query (options proxy v11)
+  - [x] Get current user data
+  - [x] Login/logout/signup functions + invalidasi query + sinkron mirror guest
 
 ### 3.2 Guest Mode
 
-- [ ] Implement localStorage-based guest progress
-  - [ ] Store: level, XP, rank, best WPM, streak, sessions
-  - [ ] Load on app start
-  - [ ] Sync to server when user creates account
+- [x] Implement localStorage-based guest progress — sudah ada sejak Phase 2 (`progress-store`)
+  - [x] Store: level, XP, rank, best WPM, streak, sessions — persist `valotype-progress`
+  - [x] Load on app start — persist middleware zustand
+  - [x] Sync to server when user creates account — `guestProgress` di `auth.signup` (di-merge ke profil)
 
-- [ ] Buat `src/features/auth/components/guest-prompt.tsx`
-  - [ ] "Simpan progresmu?" prompt
-  - [ ] Show after 3 sessions or when user wants cross-device
-  - [ ] Options: "Buat Akun" / "Lanjut sebagai Tamu"
+- [x] Buat `src/features/auth/components/guest-prompt.tsx`
+  - [x] "Simpan progresmu?" prompt — di Dashboard & Result screen
+  - [x] Show after 3+ sessions (dismissible via localStorage)
+  - [x] Options: "Buat Akun" / "Masuk" / "Lanjut sebagai Tamu"
 
 ### 3.3 Profile
 
-- [ ] Buat tRPC routes `profile.*`
-  - [ ] `profile.get` — get profile data
-  - [ ] `profile.update` — update username, avatar
-  - [ ] `profile.getStats` — get typing statistics
+- [x] Buat tRPC routes `profile.*` (protected — wajib login)
+  - [x] `profile.get` — get profile data
+  - [x] `profile.update` — update username, title, avatar
+  - [x] `profile.getStats` — statistik sesi (avg WPM 5 sesi terakhir, riwayat)
 
-- [ ] Buat `src/routes/profile.tsx`
-  - [ ] Avatar (placeholder)
-  - [ ] Username + title
-  - [ ] Level + rank
-  - [ ] Best WPM + best accuracy
-  - [ ] Total sessions + total typed chars
-  - [ ] Streak info
-  - [ ] Style sesuai DESAIN.md §17
+- [x] Buat `src/routes/profile.tsx`
+  - [x] Avatar (placeholder huruf awal)
+  - [x] Username + title
+  - [x] Level + rank
+  - [x] Best WPM + best accuracy
+  - [x] Total sessions + total typed chars
+  - [x] Streak info + aktivitas terakhir
+  - [x] CTA daftar untuk tamu / tombol Keluar untuk login
+  - [x] Style sesuai DESAIN.md §17
 
-- [ ] Buat `src/features/profile/components/stats-card.tsx`
-  - [ ] Show stat with label
-  - [ ] Bold number
-  - [ ] Card style sesuai DESAIN.md
+- [x] Buat `src/features/profile/components/stats-card.tsx`
+  - [x] Show stat with label
+  - [x] Bold number
+  - [x] Card style sesuai DESAIN.md
+
+- [x] Buat `src/features/profile/use-profile-view.ts` — sumber tampilan tunggal: server (login) / guest
 
 ### 3.4 Progress Saving
 
-- [ ] Auto-save after each session
-- [ ] Save to server (if logged in) or localStorage (if guest)
-- [ ] Load progress on login
-- [ ] Merge guest data to account
+- [x] Auto-save after each session — `typing.submitResult` (sudah sejak Phase 2)
+- [x] Save to server (if logged in) — sesi diikat `userId` + profil di-update (best/XP/level/rank/streak)
+- [x] Save to localStorage (if guest) — fallback offline (prd §58)
+- [x] Load progress on login — view pindah ke profil server + mirror guest disinkronkan
+- [x] Merge guest data to account — `guestProgress` saat signup (total, best, XP, streak)
 
 ### Phase 3 Verification
 
-- [ ] User bisa signup dengan email — ✅
-- [ ] User bisa login — ✅
-- [ ] User bisa logout — ✅
-- [ ] Guest mode berfungsi — ✅
-- [ ] Progress tersimpan — ✅
-- [ ] Profile menampilkan stats — ✅
-- [ ] Auth error ditangani — ✅
-- [ ] `bunx biome check .` — ✅ zero errors
-- [ ] `bunx tsc --noEmit` — ✅ zero TypeScript errors
-- [ ] `bun run build` — ✅ successful build
+- [x] User bisa signup dengan email — ✅ (curl E2E: cookie + profil + merge guest 250 XP → Lv.3/Gold)
+- [x] User bisa login — ✅ (salah password → 401; benar → cookie sesi)
+- [x] User bisa logout — ✅ (cookie dihapus → `me` null)
+- [x] Guest mode berfungsi — ✅ (submit anonim tetap diterima)
+- [x] Progress tersimpan — ✅ (submit authed: totalSessions +1, XP +57, bestAcc 94→100)
+- [x] Profile menampilkan stats — ✅
+- [x] Auth error ditangani — ✅ (CONFLICT email duplikat, UNAUTHORIZED tanpa cookie)
+- [x] Rate limit auth aktif — ✅ (5/menit per IP)
+- [x] `bunx biome check .` — ✅ zero errors
+- [x] `bunx tsc --noEmit` — ✅ zero TypeScript errors
+- [x] `bun run build` — ✅ successful build
+- [x] DB dev lokal — PostgreSQL 16 throwaway di :5433 (trust), schema ter-push, `.env` gitignored
 
 ---
 
@@ -1192,8 +1193,8 @@ STATUS: PRODUCTION READY ✅
 |-------|-------|--------|
 | Phase 0: Persiapan | ~45 tasks | ✅ |
 | Phase 1: Core Engine | ~25 tasks | ✅ |
-| Phase 2: Game Modes | ~35 tasks | ⬜ |
-| Phase 3: User System | ~20 tasks | ⬜ |
+| Phase 2: Game Modes | ~35 tasks | ✅ |
+| Phase 3: User System | ~20 tasks | ✅ |
 | Phase 4: Social | ~25 tasks | ⬜ |
 | Phase 5: Advanced | ~30 tasks | ⬜ |
 | Phase 6: Landing & Polish | ~40 tasks | ⬜ |

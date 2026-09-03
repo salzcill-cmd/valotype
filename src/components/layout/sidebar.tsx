@@ -3,25 +3,33 @@ import { Link } from "react-router"
 import { LevelBadge } from "@/components/shared/level-badge"
 import { RankBadge } from "@/components/shared/rank-badge"
 import { XpBar } from "@/components/shared/xp-bar"
-import { useProgressView } from "@/features/progress/progress-store"
+import { useAuth } from "@/features/auth/hooks/use-auth"
+import { useProfileView } from "@/features/profile/use-profile-view"
 import { formatRankLabel, getRankProgress } from "@/features/progress/rank-calculator"
 import { cn } from "@/lib/utils"
 
 /**
  * Sidebar progres (DESAIN.md §12/§14) — desktop only.
- * Level, rank, XP bar, streak, dan stats singkat.
+ * Level, rank, XP bar, streak, dan stats singkat (sumber: server saat login).
  */
 export function Sidebar({ className }: { className?: string }) {
-  const view = useProgressView()
+  const view = useProfileView()
   const next = getRankProgress(view.bestWpm, view.bestAccuracy)
+  const { user, isAuthed } = useAuth()
+  const displayName = isAuthed && user ? user.username : "Pemain Tamu"
 
   return (
     <aside className={cn("flex w-full flex-col gap-4", className)} aria-label="Progres kamu">
-      {/* Profil singkat (guest — auth menyusul Phase 3) */}
+      {/* Profil singkat — username login atau tamu */}
       <div className="flex items-center gap-3 border-2 border-foreground bg-surface p-4 shadow-sm">
         <LevelBadge level={view.level.level} size="lg" />
         <div className="min-w-0">
-          <p className="truncate font-display text-lg font-bold">Pemain Tamu</p>
+          <Link
+            to="/profile"
+            className="block truncate font-display text-lg font-bold underline-offset-2 hover:underline"
+          >
+            {displayName}
+          </Link>
           <RankBadge rank={view.rank} size="sm" className="mt-1" />
         </div>
       </div>

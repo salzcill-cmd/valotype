@@ -2,7 +2,9 @@ import { Link } from "react-router"
 
 import { Sidebar } from "@/components/layout/sidebar"
 import { RankBadge } from "@/components/shared/rank-badge"
-import { useProgressView } from "@/features/progress/progress-store"
+import { GuestPrompt } from "@/features/auth/components/guest-prompt"
+import { useAuth } from "@/features/auth/hooks/use-auth"
+import { useProfileView } from "@/features/profile/use-profile-view"
 import { formatRankLabel } from "@/features/progress/rank-calculator"
 import { cn } from "@/lib/utils"
 
@@ -50,9 +52,10 @@ const GAMES = [
 ]
 
 export default function PlayRoute() {
-  const view = useProgressView()
+  const view = useProfileView()
   const last = view.lastSession
   const hasPlayed = view.totalSessions > 0
+  const { isAuthed } = useAuth()
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:py-8">
@@ -61,6 +64,8 @@ export default function PlayRoute() {
         <Sidebar className="hidden lg:flex" />
 
         <div className="flex min-w-0 flex-col gap-6">
+          {/* Ajakan simpan progres (3+ sesi, tamu) — prd.md §36 */}
+          <GuestPrompt />
           {/* Hero CTA (DESAIN.md §14: satu tombol PLAY selalu terlihat) */}
           <section className="flex flex-col gap-4 border-2 border-foreground bg-surface p-5 shadow-lg sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div>
@@ -73,7 +78,9 @@ export default function PlayRoute() {
                   : "Main. Ketik. Jago. Mulai dari latihan bebas — tanpa daftar, langsung ketik."}
               </p>
               <p className="mt-2 font-mono text-xs text-muted">
-                Progres tersimpan otomatis di perangkat ini (guest mode)
+                {isAuthed
+                  ? "Progres tersimpan otomatis ke akun kamu"
+                  : "Progres tersimpan otomatis di perangkat ini (guest mode)"}
               </p>
             </div>
             <Link

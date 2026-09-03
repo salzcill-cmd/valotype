@@ -1,12 +1,76 @@
 import { TRPCError } from "@trpc/server"
+import { eq } from "drizzle-orm"
 import { z } from "zod"
 import { calculateRank } from "../../features/progress/rank-calculator.ts"
+import { calculateXp, getLevelProgress } from "../../features/progress/xp-calculator.ts"
 import { calculateScore, difficultyMultiplier } from "../../features/typing/engine/scoring.ts"
 import { calculateWpm } from "../../features/typing/engine/wpm.ts"
 import { getContentById } from "../../lib/content.ts"
 import { db } from "../db/index.ts"
-import { typingSessions } from "../db/schema.ts"
+import { type Profile, profiles, typingSessions } from "../db/schema.ts"
 import { publicProcedure, router } from "../trpc/init.ts"
+
+/** Tanggal hari ini dalam UTC (paritas dengan streak klien, prd.md §16). */
+function todayKey(date: Date = new Date()): string {
+  return date.toISOString().slice(0, 10)
+}
+
+function dayBefore(key: string): string {
+  const date = new Date(`${key}T00:00:00Z`)
+  date.setUTCDate(date.getUTCDate() - 1)
+  return date.toISOString().slice(0, 10)
+}
+
+/**
+ * Perbarui profil server setelah sesi tersimpan (TODO 3.4 auto-save):
+ * best WPM/akurasi/skor, XP+level, streak harian, total sesi & karakter.
+ */
+async function updateProfileAfterSession(
+  profile: Profile,
+  stats: {
+    netWpm: number
+    accuracy: number
+    score: number
+    xp: number
+    typedLength: number
+  },
+): Promise<void> {
+  const now = new Date()
+  const today = todayKey(now)
+  const lastKey = profile.lastActiveAt ? todayKey(profile.lastActiveAt) : ""
+
+  // Streak: +1 jika kemarin, sama jika hari ini, reset jika bolong (prd.md §16)
+  let { currentStreak, longestStreak } = profile
+  if (lastKey !== today) {
+    currentStreak = lastKey === dayBefore(today) ? currentStreak + 1 : 1
+    longestStreak = Math.max(longestStreak, currentStreak)
+  }
+
+  const totalXp = profile.totalXp + stats.xp
+  const level = getLevelProgress(totalXp)
+  const bestWpm = Math.max(profile.bestWpm, Math.round(stats.netWpm))
+  const bestAccuracy = Math.max(profile.bestAccuracy, Math.round(stats.accuracy))
+  const bestScore = Math.max(profile.bestScore, stats.score)
+
+  await db
+    .update(profiles)
+    .set({
+      bestWpm,
+      bestAccuracy,
+      bestScore,
+      totalSessions: profile.totalSessions + 1,
+      totalTypedChars: profile.totalTypedChars + stats.typedLength,
+      currentStreak,
+      longestStreak,
+      lastActiveAt: now,
+      currentLevel: level.level,
+      currentXp: level.xpInLevel,
+      totalXp,
+      currentRank: calculateRank(bestWpm, bestAccuracy),
+      updatedAt: now,
+    })
+    .where(eq(profiles.userId, profile.userId))
+}
 
 /** Skor mini-game mengikuti spesifikasinya masing-masing (prd.md §15). */
 function gameScore(input: {
@@ -53,9 +117,9 @@ export const typingRouter = router({
   /**
    * Submit hasil sesi mengetik (prd.md §44 / TODO 2.1).
    * Server menghitung ulang WPM/akurasi, melakukan sanity check anti-cheat,
-   * menghitung XP, lalu menyimpan sesi. Update profile menyusul di Phase 3 (auth).
+   * menghitung XP, menyimpan sesi — dan memperbarui profil bila user login (Phase 3).
    */
-  submitResult: publicProcedure.input(submitResultSchema).mutation(async ({ input }) => {
+  submitResult: publicProcedure.input(submitResultSchema).mutation(async ({ input, ctx }) => {
     // 1. Difficulty yang dipakai berasal dari konten, bukan kepercayaan ke client
     const content = getContentById(input.challengeId)
     const difficulty = content?.difficulty ?? input.difficulty
@@ -90,7 +154,7 @@ export const typingRouter = router({
       })
     }
 
-    // 5. Skor + XP (formula prd.md §16)
+    // 5. Skor + XP (formula prd.md §16/§33)
     const score = gameScore({
       gameMode: input.gameMode,
       rawWpm,
@@ -102,16 +166,19 @@ export const typingRouter = router({
     const rewardFraction = input.completed
       ? 1
       : Math.min(1, typedLength / Math.max(1, input.expectedText.length))
-    const comboFactor = Math.min(1 + input.maxCombo * 0.005, 1.5)
-    const xp = Math.round(
-      (netWpm * 0.3 + accuracy * 0.5 + comboFactor * 0.1 + difficultyMultiplier(difficulty) * 0.1) *
-        rewardFraction,
-    )
+    const xp = calculateXp({
+      wpm: netWpm,
+      accuracy,
+      maxCombo: input.maxCombo,
+      difficulty,
+      rewardFraction,
+    })
 
-    // 6. Simpan sesi. Tanpa DATABASE_URL (dev lokal) ini gagal → client
-    //    fallback ke guest progress localStorage (prd.md §58 offline resilience).
+    // 6. Simpan sesi + perbarui profil (bila login). Tanpa DATABASE_URL
+    //    (dev lokal) ini gagal → client fallback ke progres guest localStorage.
     try {
       await db.insert(typingSessions).values({
+        userId: ctx.user?.id ?? null,
         challengeId: input.challengeId,
         gameMode: input.gameMode,
         expectedText: input.expectedText,
@@ -127,6 +194,16 @@ export const typingRouter = router({
         isPractice: false,
         difficulty: String(difficulty),
       })
+
+      if (ctx.user && ctx.profile) {
+        await updateProfileAfterSession(ctx.profile, {
+          netWpm,
+          accuracy,
+          score,
+          xp,
+          typedLength,
+        })
+      }
     } catch (error) {
       console.error("[typing.submitResult] Gagal menyimpan sesi:", error)
       throw new TRPCError({
