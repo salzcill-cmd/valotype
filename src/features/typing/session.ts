@@ -23,6 +23,8 @@ export interface SessionSummary {
   failed: boolean
   /** Karakter yang paling sering salah ketik (weak keys, prd.md §15). */
   errorKeys: string[]
+  /** Peta karakter salah ketik → jumlah (untuk weakness detector, TODO 5.3). */
+  errorCharCounts: Record<string, number>
 }
 
 export function summarizeSession(
@@ -50,5 +52,6 @@ export function summarizeSession(
     completed: result.completed,
     failed: result.failed,
     errorKeys: result.errorKeys,
+    errorCharCounts: result.errorCharCounts,
   }
 }

@@ -234,8 +234,10 @@ export function getContentById(id: string): TypingContent | undefined {
   return TYPING_CONTENT.find((item) => item.id === id)
 }
 
-export function getRandomContent(excludeId?: string): TypingContent {
-  const pool = excludeId ? TYPING_CONTENT.filter((item) => item.id !== excludeId) : TYPING_CONTENT
+export function getRandomContent(excludeId?: string, difficulty?: number): TypingContent {
+  let pool = TYPING_CONTENT
+  if (excludeId) pool = pool.filter((item) => item.id !== excludeId)
+  if (difficulty) pool = pool.filter((item) => item.difficulty === difficulty)
   const index = Math.floor(Math.random() * pool.length)
   const item = pool[index]
   if (!item) throw new Error("Tidak ada konten mengetik tersedia")

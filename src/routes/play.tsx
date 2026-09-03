@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router"
 
 import { Sidebar } from "@/components/layout/sidebar"
@@ -7,6 +8,7 @@ import { GuestPrompt } from "@/features/auth/components/guest-prompt"
 import { useAuth } from "@/features/auth/hooks/use-auth"
 import { useProfileView } from "@/features/profile/use-profile-view"
 import { formatRankLabel } from "@/features/progress/rank-calculator"
+import { useTRPC } from "@/lib/trpc"
 import { cn } from "@/lib/utils"
 
 const GAMES = [
@@ -16,6 +18,14 @@ const GAMES = [
     title: "Latihan Bebas",
     desc: "Teks pilihan acak, tidak ada batas waktu.",
     cta: "Mulai",
+    ready: true,
+  },
+  {
+    to: "/play/daily",
+    icon: "🌅",
+    title: "Tantangan Harian",
+    desc: "Teks unik tiap hari — bonus XP +25 untuk skor terbaik.",
+    cta: "Main",
     ready: true,
   },
   {
@@ -35,20 +45,20 @@ const GAMES = [
     ready: true,
   },
   {
-    to: "/play/game",
+    to: "/play/endurance",
     icon: "🏃",
     title: "Endurance Run",
-    desc: "Bertahan selama mungkin.",
-    cta: "Segera",
-    ready: false,
+    desc: "Marathon tanpa henti — jangan sampai tertinggal dinding!",
+    cta: "Main",
+    ready: true,
   },
   {
-    to: "/play/game",
+    to: "/play/cascade",
     icon: "🔥",
     title: "Combo Cascade",
-    desc: "Kata berjatuhan, jangan sampai lepas.",
-    cta: "Segera",
-    ready: false,
+    desc: "Kata berjatuhan, ketik sebelum menyentuh dasar.",
+    cta: "Main",
+    ready: true,
   },
 ]
 
@@ -57,6 +67,9 @@ export default function PlayRoute() {
   const last = view.lastSession
   const hasPlayed = view.totalSessions > 0
   const { isAuthed } = useAuth()
+  const trpc = useTRPC()
+  const dailyQuery = useQuery(trpc.dailyChallenge.getCurrent.queryOptions({ date: undefined }))
+  const daily = dailyQuery.data
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:py-8">
@@ -76,6 +89,7 @@ export default function PlayRoute() {
               </p>
             </section>
           )}
+
           {/* Hero CTA (DESAIN.md §14: satu tombol PLAY selalu terlihat) */}
           <section className="flex flex-col gap-4 border-2 border-foreground bg-surface p-5 shadow-lg sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div>
@@ -109,37 +123,67 @@ export default function PlayRoute() {
             <QuickStat label="Best ACC" value={`${view.bestAccuracy}%`} />
           </section>
 
+          {/* Tantangan harian (TODO 5.1) */}
+          {daily && (
+            <section className="flex flex-col gap-3 border-2 border-foreground bg-accent p-4 shadow-lg sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
+                <h2 className="font-display text-lg font-bold">🌅 Tantangan Harian</h2>
+                {daily.content ? (
+                  <>
+                    <p className="mt-1 line-clamp-1 font-mono text-sm text-foreground/80">
+                      “{daily.content.text}”
+                    </p>
+                    <p className="mt-1 font-mono text-xs font-bold text-foreground/70">
+                      {daily.completed
+                        ? `Selesai ✓ best ${daily.bestWpm} WPM — coba pecahkan!`
+                        : `Kesulitan ${daily.content.difficulty}/5 · bonus +${daily.bonusXp} XP untuk skor terbaik`}
+                    </p>
+                  </>
+                ) : (
+                  <p className="mt-1 font-mono text-sm text-foreground/80">
+                    Tantangan hari ini belum siap — coba lagi nanti.
+                  </p>
+                )}
+              </div>
+              {daily.content && (
+                <Link
+                  to="/play/daily"
+                  className="inline-flex shrink-0 items-center justify-center border-2 border-foreground bg-primary px-5 py-2.5 font-display text-sm font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+                >
+                  {daily.completed ? "↻ Main Lagi" : "▶ Main Sekarang"}
+                </Link>
+              )}
+            </section>
+          )}
+
           {/* Pilihan mode */}
           <section>
             <h2 className="mb-3 font-display text-xl font-bold">Pilih Arena</h2>
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {GAMES.map((game) =>
-                game.ready ? (
-                  <Link key={game.title} to={game.to} className="group block">
-                    <GameCard
-                      icon={game.icon}
-                      title={game.title}
-                      desc={game.desc}
-                      cta={game.cta}
-                      ready
-                    />
-                  </Link>
-                ) : (
-                  <div
-                    key={game.title}
-                    aria-disabled="true"
-                    className="group block cursor-not-allowed"
-                  >
-                    <GameCard
-                      icon={game.icon}
-                      title={game.title}
-                      desc={game.desc}
-                      cta={game.cta}
-                      ready={false}
-                    />
-                  </div>
-                ),
-              )}
+              {GAMES.map((game) => (
+                <Link key={game.title} to={game.to} className="group block">
+                  <GameCard
+                    icon={game.icon}
+                    title={game.title}
+                    desc={game.desc}
+                    cta={game.cta}
+                    ready={game.ready}
+                  />
+                </Link>
+              ))}
+            </div>
+
+            {/* Akses cepat ke koleksi lencana */}
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-2 border-dashed border-foreground/40 p-3">
+              <p className="font-mono text-xs text-muted">
+                🏅 Kumpulkan 30+ lencana dari semua mode — rahasia tersembunyi menantimu.
+              </p>
+              <Link
+                to="/achievements"
+                className="border-2 border-foreground bg-surface px-3 py-1.5 font-mono text-xs font-bold tracking-widest uppercase shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+              >
+                Lihat Lencana →
+              </Link>
             </div>
           </section>
 
@@ -151,13 +195,7 @@ export default function PlayRoute() {
                 <span className="font-bold text-primary tabular-nums">{last.wpm} WPM</span>
                 <span className="text-muted tabular-nums">{last.accuracy}%</span>
                 <span className="text-muted">+{last.xpEarned} XP</span>
-                <span className="text-muted">
-                  {last.gameMode === "blitz"
-                    ? "⚡ Speed Blitz"
-                    : last.gameMode === "fortress"
-                      ? "🎯 Accuracy Fortress"
-                      : "⌨️ Latihan Bebas"}
-                </span>
+                <span className="text-muted">{gameModeLabel(last.gameMode)}</span>
                 {view.bestWpm === last.wpm && <RankBadge rank={view.rank} size="sm" />}
               </div>
             ) : (
@@ -170,6 +208,24 @@ export default function PlayRoute() {
       </div>
     </main>
   )
+}
+
+/** Label ringkas tiap mode untuk Aktivitas Terakhir. */
+function gameModeLabel(mode: string): string {
+  switch (mode) {
+    case "blitz":
+      return "⚡ Speed Blitz"
+    case "fortress":
+      return "🎯 Accuracy Fortress"
+    case "daily":
+      return "🌅 Tantangan Harian"
+    case "endurance":
+      return "🏃 Endurance Run"
+    case "cascade":
+      return "🔥 Combo Cascade"
+    default:
+      return "⌨️ Latihan Bebas"
+  }
 }
 
 function GameCard({

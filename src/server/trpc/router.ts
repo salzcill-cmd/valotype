@@ -1,4 +1,6 @@
+import { achievementsRouter } from "../routers/achievements.ts"
 import { authRouter } from "../routers/auth.ts"
+import { dailyChallengeRouter } from "../routers/daily-challenge.ts"
 import { healthRouter } from "../routers/health.ts"
 import { leaderboardRouter } from "../routers/leaderboard.ts"
 import { profileRouter } from "../routers/profile.ts"
@@ -10,6 +12,8 @@ export const appRouter = router({
   auth: authRouter,
   profile: profileRouter,
   leaderboard: leaderboardRouter,
+  achievements: achievementsRouter,
+  dailyChallenge: dailyChallengeRouter,
   typing: typingRouter,
 })
 

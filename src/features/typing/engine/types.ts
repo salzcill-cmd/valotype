@@ -11,6 +11,10 @@ export interface ScoreContext {
   maxCombo: number
   difficulty: number
   completed: boolean
+  /** Durasi aktif sesi (ms) — untuk mode berbasis waktu. */
+  durationMs: number
+  /** Karakter berhasil diketik. */
+  typedChars: number
 }
 
 export type ScoreFn = (context: ScoreContext) => number
@@ -34,4 +38,6 @@ export interface TypingGameResult {
   failed: boolean
   /** Karakter yang paling sering salah ketik (untuk "weak keys", prd.md §15). */
   errorKeys: string[]
+  /** Peta karakter salah ketik → jumlah (untuk weakness detector, TODO 5.3). */
+  errorCharCounts: Record<string, number>
 }

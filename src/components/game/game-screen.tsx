@@ -1,18 +1,22 @@
 import { useEffect, useRef, useState } from "react"
-import { Link, useNavigate } from "react-router"
+import { Link } from "react-router"
 
 import { ComboCounter } from "@/components/game/combo-counter"
 import { ProgressBar } from "@/components/game/progress-bar"
 import { ScoreDisplay } from "@/components/game/score-display"
 import { TypingArea } from "@/components/game/typing-area"
 import { Button } from "@/components/ui/button"
-import { useLastSessionStore } from "@/features/progress/last-session-store"
-import { useProgressStore } from "@/features/progress/progress-store"
 import type { GameMode } from "@/features/progress/ranks"
+import {
+  PACE_GRACE_CHARS,
+  type PaceConfig,
+  paceLevel,
+  paceMinWpmAt,
+  paceRequiredCharsAt,
+} from "@/features/typing/engine/pace"
 import type { ScoreFn, TypingGameResult } from "@/features/typing/engine/types"
-import { useSubmitScore } from "@/features/typing/hooks/use-submit-score"
+import { useFinishSession } from "@/features/typing/hooks/use-finish-session"
 import { useTypingGame } from "@/features/typing/hooks/use-typing-game"
-import { summarizeSession } from "@/features/typing/session"
 import type { TypingContent } from "@/lib/content"
 import { getRandomContent } from "@/lib/content"
 import { cn } from "@/lib/utils"
@@ -38,6 +42,8 @@ export interface GameScreenProps {
   maxErrors?: number
   /** Fungsi skor kustom per mode; default formula standar prd.md §33. */
   scoreFn?: ScoreFn
+  /** Mode Endurance Run: dinding kecepatan yang mengejar pemain (TODO 5.4). */
+  pace?: PaceConfig
 }
 
 /**
@@ -54,14 +60,11 @@ export function GameScreen({
   timeLimitMs,
   maxErrors,
   scoreFn,
+  pace,
 }: GameScreenProps) {
-  const navigate = useNavigate()
-  const recordSession = useProgressStore((s) => s.recordSession)
-  const setLastSession = useLastSessionStore((s) => s.setLastSession)
-  const submitScore = useSubmitScore()
+  const finishSession = useFinishSession(mode)
   const [initialContent] = useState<TypingContent>(() => content ?? getRandomContent())
   const typingRef = useRef<HTMLDivElement>(null)
-  const submittedRef = useRef(false)
 
   const game = useTypingGame(initialContent, {
     timeLimitMs,
@@ -106,28 +109,22 @@ export function GameScreen({
   }, [status, game])
 
   /** Setelah selesai: catat ke progres (guest) + kirim ke server (best effort). */
-  const handleComplete = async (result: TypingGameResult) => {
-    if (submittedRef.current) return
-    submittedRef.current = true
-    const content = game.content
-    const session = summarizeSession(result, mode, content)
-    const outcome = recordSession({
-      gameMode: mode,
-      difficulty: content.difficulty,
-      wpm: result.wpm,
-      accuracy: result.accuracy,
-      score: result.score,
-      maxCombo: result.maxCombo,
-      errorCount: result.errorCount,
-      completed: result.completed,
-      typedCharsCount: result.typedChars,
-      totalChars: result.totalChars,
-    })
-    setLastSession(session, outcome)
-    // Kirim ke server bila tersedia; gagal diam-diam → progres lokal tetap (prd.md §58)
-    void submitScore(session)
-    navigate("/play/result", { replace: true })
+  const handleComplete = (result: TypingGameResult) => {
+    finishSession(game.content, result)
   }
+
+  // Endurance Run: dinding kecepatan mengejar — tertinggal → run berakhir
+  const paceLevel_ = pace ? paceLevel(pace, elapsedMs) : 0
+  const requiredWpm = pace ? paceMinWpmAt(pace, paceLevel_) : 0
+  const requiredChars = pace ? paceRequiredCharsAt(pace, elapsedMs) : 0
+  const leadChars = position - requiredChars
+  const caughtByWall = pace !== undefined && status === "playing" && leadChars < -PACE_GRACE_CHARS
+
+  useEffect(() => {
+    if (caughtByWall && status === "playing") {
+      game.abort()
+    }
+  }, [caughtByWall, status, game])
 
   const progress = totalChars === 0 ? 0 : (position / totalChars) * 100
   const hintText =
@@ -155,6 +152,8 @@ export function GameScreen({
           <BlitzTimer remainingMs={Math.max(0, timeLimitMs - elapsedMs)} />
         ) : maxErrors ? (
           <FortressHearts remaining={Math.max(0, maxErrors - errorCount)} max={maxErrors} />
+        ) : pace ? (
+          <PaceChip level={paceLevel_ + 1} minWpm={requiredWpm} leadChars={leadChars} />
         ) : (
           <span className="hidden border-2 border-foreground bg-surface px-3 py-2 font-mono text-sm font-bold shadow-sm sm:block">
             Latihan Bebas
@@ -177,6 +176,8 @@ export function GameScreen({
         <p className="font-mono text-xs font-bold tracking-widest text-muted uppercase">
           {mode === "blitz" && "30 detik — secepat mungkin!"}
           {mode === "fortress" && "Jangan salah ketik — setiap error merusak benteng!"}
+          {mode === "endurance" && `Kecepatan naik tiap 20 detik — butuh ≥ ${requiredWpm} WPM`}
+          {mode === "daily" && `Tantangan harian · Kesulitan ${game.content.difficulty}`}
           {mode === "free" && `${game.content.category} · Kesulitan ${game.content.difficulty}`}
         </p>
 
@@ -195,6 +196,36 @@ export function GameScreen({
           <ScoreDisplay wpm={game.wpm} accuracy={game.accuracy} />
           <ComboCounter combo={game.combo} />
         </div>
+
+        {pace && (
+          <div
+            role="img"
+            aria-label={`Jarak dari dinding kecepatan: ${Math.max(0, Math.round(leadChars))} huruf di depan`}
+            className="flex items-center gap-3 border-2 border-foreground bg-background px-3 py-2 shadow-sm"
+          >
+            <span aria-hidden="true" className="font-mono text-lg font-bold">
+              {leadChars >= 0 ? "🏃" : "💥"}
+            </span>
+            <div
+              aria-hidden="true"
+              className="h-4 flex-1 overflow-hidden border-2 border-foreground bg-danger"
+            >
+              <div
+                className={cn(
+                  "h-full transition-[width] duration-200 ease-linear",
+                  leadChars >= 0 ? "bg-success" : "bg-accent",
+                )}
+                style={{ width: `${Math.min(100, Math.max(0, (leadChars + 80) * 1.25))}%` }}
+              />
+            </div>
+            <span
+              aria-hidden="true"
+              className="w-24 text-right font-mono text-xs font-bold text-muted"
+            >
+              {leadChars >= 0 ? `+${Math.round(leadChars)} huruf di depan` : "tertinggal!"}
+            </span>
+          </div>
+        )}
 
         <ProgressBar percent={progress} />
 
@@ -263,5 +294,33 @@ function FortressHearts({ remaining, max }: { remaining: number; max: number }) 
         </span>
       ))}
     </div>
+  )
+}
+
+/** Chip Endurance Run: level & WPM minimum yang dituntut (TODO 5.4). */
+function PaceChip({
+  level,
+  minWpm,
+  leadChars,
+}: {
+  level: number
+  minWpm: number
+  leadChars: number
+}) {
+  const urgent = leadChars < 0
+  return (
+    <span
+      className={cn(
+        "flex items-center gap-1.5 border-2 border-foreground px-3 py-2 font-mono text-sm font-bold tabular-nums shadow-sm",
+        urgent ? "anim-typing-shake bg-danger text-white" : "bg-surface",
+      )}
+      role="timer"
+      aria-label={`Level ${level}, butuh minimal ${minWpm} WPM`}
+    >
+      <span aria-hidden="true">🏃</span>
+      <span>
+        Lv.{level} · ≥{minWpm} WPM
+      </span>
+    </span>
   )
 }

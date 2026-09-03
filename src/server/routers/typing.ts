@@ -1,53 +1,131 @@
 import { TRPCError } from "@trpc/server"
 import { eq } from "drizzle-orm"
 import { z } from "zod"
+
+import type { AchievementDef } from "../../features/achievements/catalog.ts"
 import { calculateRank } from "../../features/progress/rank-calculator.ts"
 import { calculateXp, getLevelProgress } from "../../features/progress/xp-calculator.ts"
 import { calculateScore, difficultyMultiplier } from "../../features/typing/engine/scoring.ts"
 import { calculateWpm } from "../../features/typing/engine/wpm.ts"
 import { getContentById } from "../../lib/content.ts"
+import { checkAndAwardAchievements, ensureAchievementsSeeded } from "../achievements.ts"
 import { db } from "../db/index.ts"
-import { type Profile, profiles, typingSessions } from "../db/schema.ts"
+import { dailyChallengeCompletions, type Profile, profiles, typingSessions } from "../db/schema.ts"
 import { publicProcedure, router } from "../trpc/init.ts"
+import { DAILY_BONUS_XP, todayKey } from "./daily-challenge.ts"
 
-/** Tanggal hari ini dalam UTC (paritas dengan streak klien, prd.md §16). */
-function todayKey(date: Date = new Date()): string {
-  return date.toISOString().slice(0, 10)
+const GAME_MODES = ["free", "blitz", "fortress", "daily", "endurance", "cascade"] as const
+
+/** Skor mini-game mengikuti spesifikasinya masing-masing (prd.md §15). */
+function gameScore(input: {
+  gameMode: string
+  rawWpm: number
+  accuracyFraction: number
+  difficulty: number
+  maxCombo: number
+  durationMs: number
+  completed: boolean
+}): number {
+  if (input.gameMode === "blitz") {
+    return Math.round(input.rawWpm * input.accuracyFraction)
+  }
+  if (input.gameMode === "fortress") {
+    return Math.round(
+      input.accuracyFraction ** 2 * input.rawWpm * difficultyMultiplier(input.difficulty),
+    )
+  }
+  if (input.gameMode === "endurance") {
+    // Skor = waktu bertahan (detik) × akurasi × difficulty (prd.md §15)
+    return Math.round((input.durationMs / 1000) * input.accuracyFraction * input.difficulty * 10)
+  }
+  return Math.round(
+    calculateScore({
+      wpm: input.rawWpm * input.accuracyFraction,
+      accuracyFraction: input.accuracyFraction,
+      difficulty: input.difficulty,
+      maxCombo: input.maxCombo,
+      completed: input.completed,
+    }).finalScore,
+  )
 }
 
-/** Selisih hari UTC antara dua tanggal YYYY-MM-DD. */
-function diffDays(from: string, to: string): number {
-  const fromMs = Date.parse(`${from}T00:00:00Z`)
-  const toMs = Date.parse(`${to}T00:00:00Z`)
-  return Math.round((toMs - fromMs) / 86_400_000)
+const submitResultSchema = z.object({
+  gameMode: z.enum(GAME_MODES),
+  challengeId: z.string().min(1).max(120),
+  expectedText: z.string().min(1).max(2_000),
+  /** Teks yang berhasil diketik (prefix dari expectedText). */
+  typedText: z.string().max(2_000),
+  difficulty: z.number().int().min(1).max(5),
+  errorCount: z.number().int().min(0).max(1_000),
+  maxCombo: z.number().int().min(0).max(10_000),
+  durationMs: z.number().min(100).max(3_600_000),
+  completed: z.boolean(),
+})
+
+/** Tanggal hari ini UTC (paritas streak klien, prd.md §16/§18). */
+function todayKeyUtc(): string {
+  return todayKey(new Date())
 }
 
-/**
- * Perbarui profil server setelah sesi tersimpan (TODO 3.4 auto-save):
- * best WPM/akurasi/skor, XP+level, streak harian, total sesi & karakter.
- */
+/** Catat penyelesaian tantangan harian; kembalikan bonus bila skor terbaik baru. */
+async function recordDailyCompletion(input: {
+  userId: string
+  score: number
+  wpm: number
+  accuracy: number
+  xp: number
+  date: string
+}): Promise<number> {
+  const existing = await db
+    .select()
+    .from(dailyChallengeCompletions)
+    .where(eq(dailyChallengeCompletions.userId, input.userId))
+  const todayRow = existing.find((row) => row.date === input.date)
+  const newBest = !todayRow || input.score > todayRow.score
+
+  if (newBest) {
+    const now = new Date()
+    if (todayRow) {
+      await db
+        .update(dailyChallengeCompletions)
+        .set({
+          score: input.score,
+          wpm: input.wpm,
+          accuracy: input.accuracy,
+          xpEarned: input.xp,
+          updatedAt: now,
+        })
+        .where(eq(dailyChallengeCompletions.id, todayRow.id))
+    } else {
+      await db.insert(dailyChallengeCompletions).values({
+        userId: input.userId,
+        date: input.date,
+        score: input.score,
+        wpm: input.wpm,
+        accuracy: input.accuracy,
+        xpEarned: input.xp,
+      })
+    }
+  }
+  // Bonus hanya untuk skor terbaik baru (sekali per hari — anti farming)
+  return newBest ? DAILY_BONUS_XP : 0
+}
+
+/** Perbarui profil server setelah sesi: best, XP+level, streak, total. */
 async function updateProfileAfterSession(
   profile: Profile,
-  stats: {
-    netWpm: number
-    accuracy: number
-    score: number
-    xp: number
-    typedLength: number
-  },
+  stats: { netWpm: number; accuracy: number; score: number; xp: number; typedLength: number },
 ): Promise<void> {
   const now = new Date()
-  const today = todayKey(now)
   const lastKey = profile.lastActiveAt ? todayKey(profile.lastActiveAt) : ""
+  const today = todayKeyUtc()
 
-  // Streak (prd.md §16, paritas klien): +1 hari beruntun, 1 hari bolong
-  // tetap aman (grace), 2+ hari bolong → reset.
   let { currentStreak, longestStreak } = profile
   if (lastKey !== today) {
-    if (!lastKey) {
-      currentStreak = 1
-    } else {
-      const diff = diffDays(lastKey, today)
+    if (!lastKey) currentStreak = 1
+    else {
+      const diffMs = Date.parse(`${today}T00:00:00Z`) - Date.parse(`${lastKey}T00:00:00Z`)
+      const diff = Math.round(diffMs / 86_400_000)
       currentStreak = diff === 1 ? currentStreak + 1 : diff === 2 ? currentStreak : 1
     }
     longestStreak = Math.max(longestStreak, currentStreak)
@@ -79,55 +157,14 @@ async function updateProfileAfterSession(
     .where(eq(profiles.userId, profile.userId))
 }
 
-/** Skor mini-game mengikuti spesifikasinya masing-masing (prd.md §15). */
-function gameScore(input: {
-  gameMode: string
-  rawWpm: number
-  accuracyFraction: number
-  difficulty: number
-  maxCombo: number
-  completed: boolean
-}): number {
-  if (input.gameMode === "blitz") {
-    return Math.round(input.rawWpm * input.accuracyFraction)
-  }
-  if (input.gameMode === "fortress") {
-    return Math.round(
-      input.accuracyFraction ** 2 * input.rawWpm * difficultyMultiplier(input.difficulty),
-    )
-  }
-  return Math.round(
-    calculateScore({
-      wpm: input.rawWpm * input.accuracyFraction,
-      accuracyFraction: input.accuracyFraction,
-      difficulty: input.difficulty,
-      maxCombo: input.maxCombo,
-      completed: input.completed,
-    }).finalScore,
-  )
-}
-
-const submitResultSchema = z.object({
-  gameMode: z.enum(["free", "blitz", "fortress"]),
-  challengeId: z.string().min(1),
-  expectedText: z.string().min(1).max(2_000),
-  /** Teks yang berhasil diketik (prefix dari expectedText). */
-  typedText: z.string().max(2_000),
-  difficulty: z.number().int().min(1).max(5),
-  errorCount: z.number().int().min(0).max(1_000),
-  maxCombo: z.number().int().min(0).max(10_000),
-  durationMs: z.number().min(100).max(3_600_000),
-  completed: z.boolean(),
-})
-
 export const typingRouter = router({
   /**
-   * Submit hasil sesi mengetik (prd.md §44 / TODO 2.1).
-   * Server menghitung ulang WPM/akurasi, melakukan sanity check anti-cheat,
-   * menghitung XP, menyimpan sesi — dan memperbarui profil bila user login (Phase 3).
+   * Submit hasil sesi mengetik (prd.md §44 / TODO 2.1 + 5.1/5.2).
+   * Server memverifikasi ulang, menghitung XP, menyimpan sesi, meng-update
+   * profil (bila login), memberi bonus harian, dan memeriksa achievement.
    */
   submitResult: publicProcedure.input(submitResultSchema).mutation(async ({ input, ctx }) => {
-    // 1. Difficulty yang dipakai berasal dari konten, bukan kepercayaan ke client
+    // 1. Difficulty berasal dari konten, bukan kepercayaan ke client
     const content = getContentById(input.challengeId)
     const difficulty = content?.difficulty ?? input.difficulty
 
@@ -143,13 +180,12 @@ export const typingRouter = router({
       })
     }
 
-    // 3. Hitung ulang metrik dari data mentah (jangan percaya angka client)
+    // 3. Hitung ulang metrik dari data mentah
     const { rawWpm, accuracy } = calculateWpm(typedLength, input.errorCount, input.durationMs)
     const accuracyFraction = accuracy / 100
     const netWpm = rawWpm * accuracyFraction
 
-    // 4. Sanity check anti-cheat (prd.md §49): WPM manusia ≤ 200 &
-    //    durasi minimal konsisten (kecepatan tertinggi ~16.7 char/detik)
+    // 4. Sanity check anti-cheat (prd.md §49): WPM ≤ 200 & durasi konsisten
     if (netWpm > 200) {
       throw new TRPCError({ code: "BAD_REQUEST", message: "WPM melebihi batas manusia (200)." })
     }
@@ -161,19 +197,20 @@ export const typingRouter = router({
       })
     }
 
-    // 5. Skor + XP (formula prd.md §16/§33)
+    // 5. Skor + XP dasar (formula prd.md §16/§33)
     const score = gameScore({
       gameMode: input.gameMode,
       rawWpm,
       accuracyFraction,
       difficulty,
       maxCombo: input.maxCombo,
+      durationMs: input.durationMs,
       completed: input.completed,
     })
     const rewardFraction = input.completed
       ? 1
       : Math.min(1, typedLength / Math.max(1, input.expectedText.length))
-    const xp = calculateXp({
+    const baseXp = calculateXp({
       wpm: netWpm,
       accuracy,
       maxCombo: input.maxCombo,
@@ -181,8 +218,6 @@ export const typingRouter = router({
       rewardFraction,
     })
 
-    // 6. Simpan sesi + perbarui profil (bila login). Tanpa DATABASE_URL
-    //    (dev lokal) ini gagal → client fallback ke progres guest localStorage.
     try {
       await db.insert(typingSessions).values({
         userId: ctx.user?.id ?? null,
@@ -202,31 +237,75 @@ export const typingRouter = router({
         difficulty: String(difficulty),
       })
 
+      let totalXp = baseXp
+      let bonusApplied = false
+
+      // 6. Tantangan harian: bonus satu kali untuk skor terbaik hari ini (TODO 5.1)
+      if (ctx.user && ctx.profile && input.gameMode === "daily" && input.completed) {
+        const bonus = await recordDailyCompletion({
+          userId: ctx.user.id,
+          score,
+          wpm: Math.round(netWpm),
+          accuracy,
+          xp: baseXp,
+          date: todayKeyUtc(),
+        })
+        if (bonus > 0) {
+          totalXp += bonus
+          bonusApplied = true
+        }
+      }
+
+      // 7. Update profil bila login
       if (ctx.user && ctx.profile) {
         await updateProfileAfterSession(ctx.profile, {
           netWpm,
           accuracy,
           score,
-          xp,
+          xp: totalXp,
           typedLength,
         })
       }
+
+      // 8. Periksa achievement baru (hanya user login, TODO 5.2)
+      const unlocked: AchievementDef[] = []
+      if (ctx.user && ctx.profile) {
+        await ensureAchievementsSeeded()
+        const newly = await checkAndAwardAchievements({
+          userId: ctx.user.id,
+          session: {
+            gameMode: input.gameMode,
+            netWpm,
+            accuracy,
+            score,
+            maxCombo: input.maxCombo,
+            completed: input.completed,
+            difficulty,
+            category: content?.category ?? "school",
+            expectedLength: input.expectedText.length,
+          },
+        })
+        unlocked.push(...newly)
+      }
+
+      return {
+        verified: true,
+        wpm: Math.round(netWpm),
+        rawWpm: Math.round(rawWpm),
+        accuracy: Math.round(accuracy),
+        score,
+        xp: Math.round(totalXp),
+        rank: calculateRank(Math.round(netWpm), Math.round(accuracy)),
+        bonusApplied,
+        unlocked: unlocked.map((achievement) => achievement.id),
+      }
     } catch (error) {
-      console.error("[typing.submitResult] Gagal menyimpan sesi:", error)
+      if (error instanceof TRPCError) throw error
+      console.error("[typing.submitResult] Gagal:", error)
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Gagal menyimpan sesi. Coba lagi.",
       })
-    }
-
-    return {
-      verified: true,
-      wpm: Math.round(netWpm),
-      rawWpm: Math.round(rawWpm),
-      accuracy: Math.round(accuracy),
-      score,
-      xp,
-      rank: calculateRank(Math.round(netWpm), Math.round(accuracy)),
     }
   }),
 })

@@ -134,6 +134,8 @@ export function useTypingGame(initialContent: TypingContent, options: TypingGame
           maxCombo: maxComboRef.current,
           difficulty: content.difficulty,
           completed,
+          durationMs,
+          typedChars: correctChars,
         }),
         maxCombo: maxComboRef.current,
         errorCount: errorCountRef.current,
@@ -143,6 +145,7 @@ export function useTypingGame(initialContent: TypingContent, options: TypingGame
         completed,
         failed,
         errorKeys: topErrorKeys(errorKeyCountsRef.current),
+        errorCharCounts: Object.fromEntries(errorKeyCountsRef.current),
       }
       setResult(finalResult)
       setElapsedMs(durationMs)
@@ -170,6 +173,11 @@ export function useTypingGame(initialContent: TypingContent, options: TypingGame
     }, 100)
     return () => window.clearInterval(id)
   }, [status, activeElapsedMs])
+
+  /** Akhiri paksa dari luar (mis. Endurance kalah threshold) — tidak dihitung selesai. */
+  const abort = useCallback(() => {
+    finishRef.current(false, true)
+  }, [])
 
   const restart = useCallback(
     (nextContent: TypingContent) => {
@@ -296,6 +304,7 @@ export function useTypingGame(initialContent: TypingContent, options: TypingGame
     elapsedMs,
     result,
     restart,
+    abort,
     pause,
     resume,
     handleKeyDown,

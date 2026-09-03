@@ -22,6 +22,7 @@ import {
   type ShareCardData,
   type ShareFormat,
 } from "@/features/typing/components/share-card"
+import { WeaknessReport } from "@/features/typing/components/weakness-report"
 import { useCountUp } from "@/hooks/use-count-up"
 import { cn } from "@/lib/utils"
 
@@ -35,13 +36,40 @@ const MODE_META: Record<string, { title: string; icon: string }> = {
   free: { title: "Latihan Bebas", icon: "⌨️" },
   blitz: { title: "Speed Blitz", icon: "⚡" },
   fortress: { title: "Accuracy Fortress", icon: "🎯" },
+  daily: { title: "Tantangan Harian", icon: "🌅" },
+  endurance: { title: "Endurance Run", icon: "🏃" },
+  cascade: { title: "Combo Cascade", icon: "🔥" },
 }
 
 /** Route game → mode yang sesuai untuk "Main Lagi". */
 function replayPath(gameMode: string): string {
-  if (gameMode === "blitz") return "/play/blitz"
-  if (gameMode === "fortress") return "/play/fortress"
-  return "/play/game"
+  const paths: Record<string, string> = {
+    free: "/play/game",
+    blitz: "/play/blitz",
+    fortress: "/play/fortress",
+    daily: "/play/daily",
+    endurance: "/play/endurance",
+    cascade: "/play/cascade",
+  }
+  return paths[gameMode] ?? "/play/game"
+}
+
+/** Judul hasil sesuai mode & kondisi akhir sesi. */
+function resultHeading(session: { gameMode: string; failed: boolean; completed: boolean }): string {
+  if (session.failed) {
+    switch (session.gameMode) {
+      case "fortress":
+        return "BENTENG RUNTUH! 💥"
+      case "endurance":
+        return "DINDING MENYUSUL! 💨"
+      case "cascade":
+        return "GAME OVER! 💥"
+      default:
+        return "GAGAL! 😤"
+    }
+  }
+  if (session.completed) return "SELESAI! 🎉"
+  return "WAKTU HABIS! ⏰"
 }
 
 export default function PlayResultRoute() {
@@ -67,11 +95,17 @@ export default function PlayResultRoute() {
   const rankDef = getRankById(outcome.rank)
   const hasWeakKeys = session.errorKeys.length > 0
   const bestLabel =
-    session.gameMode === "free"
-      ? "rekor latihan"
-      : session.gameMode === "blitz"
-        ? "rekor blitz"
-        : "rekor fortress"
+    session.gameMode === "blitz"
+      ? "rekor blitz"
+      : session.gameMode === "fortress"
+        ? "rekor fortress"
+        : session.gameMode === "daily"
+          ? "rekor harian"
+          : session.gameMode === "endurance"
+            ? "rekor endurance"
+            : session.gameMode === "cascade"
+              ? "rekor cascade"
+              : "rekor latihan"
 
   // Data berbagi (prd.md §20: WPM, akurasi, rank, kombo, CTA)
   const username = authUser?.username ?? ""
@@ -147,13 +181,7 @@ export default function PlayResultRoute() {
         <p className="font-mono text-xs font-bold tracking-widest text-muted uppercase">
           {meta.icon} {meta.title}
         </p>
-        <h1 className="font-display text-3xl font-bold sm:text-4xl">
-          {session.failed
-            ? "BENTENG RUNTUH! 💥"
-            : session.completed
-              ? "SELESAI! 🎉"
-              : "WAKTU HABIS! ⏰"}
-        </h1>
+        <h1 className="font-display text-3xl font-bold sm:text-4xl">{resultHeading(session)}</h1>
       </header>
 
       {/* Kartu skor utama (DESAIN.md §16: kuning, border tebal) */}
@@ -249,30 +277,11 @@ export default function PlayResultRoute() {
         className="anim-result-rise w-full border-2 border-foreground bg-surface p-4 shadow-sm"
         style={{ animationDelay: "240ms" }}
       >
-        {hasWeakKeys ? (
-          <>
-            <h2 className="font-display text-sm font-bold tracking-widest uppercase">
-              ⚠️ Huruf yang perlu diperhatikan
-            </h2>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {session.errorKeys.map((key) => (
-                <span
-                  key={key}
-                  className="border-2 border-foreground bg-danger px-2 py-1 font-mono text-lg font-bold text-white uppercase shadow-sm"
-                >
-                  {key === " " ? "spasi" : key}
-                </span>
-              ))}
-            </div>
-            <p className="mt-2 font-mono text-xs text-muted">
-              Latihan mengetik yang fokus ke akurasi bisa membantu.
-            </p>
-          </>
-        ) : (
-          <p className="text-center font-mono text-xs text-muted">
-            💪 Tidak ada huruf bermasalah — akurasi kamu bersih!
-          </p>
-        )}
+        <WeaknessReport
+          expectedText={session.expectedText}
+          typedChars={session.typedChars}
+          errorCharCounts={session.errorCharCounts ?? {}}
+        />
       </section>
 
       {/* Perbandingan tantangan teman (TODO 4.4) */}

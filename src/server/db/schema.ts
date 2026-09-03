@@ -100,6 +100,25 @@ export const achievements = pgTable("achievements", {
   rarity: text("rarity").notNull().default("common"),
 })
 
+export const dailyChallengeCompletions = pgTable(
+  "daily_challenge_completions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    /** Tanggal tantangan, format YYYY-MM-DD (UTC, paritas prd.md §18). */
+    date: text("date").notNull(),
+    score: integer("score").notNull().default(0),
+    wpm: integer("wpm").notNull().default(0),
+    accuracy: real("accuracy").notNull().default(0),
+    xpEarned: integer("xp_earned").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [uniqueIndex("daily_comp_user_date_idx").on(table.userId, table.date)],
+)
+
 export const userAchievements = pgTable(
   "user_achievements",
   {
@@ -130,6 +149,13 @@ export const typingSessionsRelations = relations(typingSessions, ({ one }) => ({
   user: one(users, { fields: [typingSessions.userId], references: [users.id] }),
 }))
 
+export const dailyChallengeCompletionsRelations = relations(
+  dailyChallengeCompletions,
+  ({ one }) => ({
+    user: one(users, { fields: [dailyChallengeCompletions.userId], references: [users.id] }),
+  }),
+)
+
 export const achievementsRelations = relations(achievements, ({ many }) => ({
   userAchievements: many(userAchievements),
 }))
@@ -153,3 +179,5 @@ export type Achievement = typeof achievements.$inferSelect
 export type NewAchievement = typeof achievements.$inferInsert
 export type UserAchievement = typeof userAchievements.$inferSelect
 export type NewUserAchievement = typeof userAchievements.$inferInsert
+export type DailyCompletion = typeof dailyChallengeCompletions.$inferSelect
+export type NewDailyCompletion = typeof dailyChallengeCompletions.$inferInsert

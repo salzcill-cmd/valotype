@@ -608,115 +608,115 @@
 
 ### 5.1 Daily Challenge
 
-- [ ] Buat tRPC route `dailyChallenge.getCurrent`
-  - [ ] Generate unique challenge per day
-  - [ ] Based on date seed (consistent per day)
-  - [ ] Medium difficulty
+- [x] Buat tRPC route `dailyChallenge.getCurrent`
+  - [x] Generate unique challenge per day
+  - [x] Based on date seed (consistent per day)
+  - [x] Medium difficulty
 
-- [ ] Buat `src/features/typing/components/daily-challenge.tsx`
-  - [ ] Show daily challenge on dashboard
-  - [ ] Show if completed today
-  - [ ] Bonus XP indicator
-  - [ ] Style sesuai DESAIN.md
+- [x] Buat `src/features/typing/components/daily-challenge.tsx`
+  - [x] Show daily challenge on dashboard
+  - [x] Show if completed today
+  - [x] Bonus XP indicator
+  - [x] Style sesuai DESAIN.md
 
-- [ ] Implement daily challenge completion tracking
-  - [ ] Store: userId, date, completed, score
-  - [ ] Prevent double completion (best score counts)
+- [x] Implement daily challenge completion tracking
+  - [x] Store: userId, date, completed, score
+  - [x] Prevent double completion (best score counts)
 
 ### 5.2 Achievement System
 
-- [ ] Buat `src/server/db/schema.ts` — achievements reference data
-  - [ ] 30+ achievements defined
-  - [ ] Categories: speed, accuracy, consistency, exploration, mastery, challenge, milestone
+- [x] Buat `src/server/db/schema.ts` — achievements reference data
+  - [x] 30+ achievements defined
+  - [x] Categories: speed, accuracy, consistency, exploration, mastery, challenge, milestone
 
-- [ ] Buat tRPC routes `achievements.*`
-  - [ ] `achievements.getAll` — all with unlock status
-  - [ ] `achievements.getRecent` — recently unlocked
+- [x] Buat tRPC routes `achievements.*`
+  - [x] `achievements.getAll` — all with unlock status
+  - [x] `achievements.getRecent` — recently unlocked
 
-- [ ] Buat achievement check logic
-  - [ ] Check after each session
-  - [ ] Unlock if criteria met
-  - [ ] Return newly unlocked achievements
+- [x] Buat achievement check logic
+  - [x] Check after each session
+  - [x] Unlock if criteria met
+  - [x] Return newly unlocked achievements
 
-- [ ] Buat `src/routes/achievements.tsx`
-  - [ ] Grid of achievement cards
-  - [ ] Unlocked vs locked visual
-  - [ ] Category filter
-  - [ ] Style sesuai DESAIN.md §7
+- [x] Buat `src/routes/achievements.tsx`
+  - [x] Grid of achievement cards
+  - [x] Unlocked vs locked visual
+  - [x] Category filter
+  - [x] Style sesuai DESAIN.md §7
 
-- [ ] Buat `src/components/shared/achievement-card.tsx`
-  - [ ] Icon + name + description
-  - [ ] XP reward display
-  - [ ] Rarity indicator
-  - [ ] Unlocked date (if unlocked)
-  - [ ] Locked state (greyed, lock icon)
+- [x] Buat `src/components/shared/achievement-card.tsx`
+  - [x] Icon + name + description
+  - [x] XP reward display
+  - [x] Rarity indicator
+  - [x] Unlocked date (if unlocked)
+  - [x] Locked state (greyed, lock icon)
 
 ### 5.3 Weakness Detection
 
-- [ ] Buat `src/features/typing/engine/weakness-detector.ts`
-  - [ ] Track errors per character
-  - [ ] Calculate error rate per character
-  - [ ] Flag characters with error rate > 2× average as "weak"
-  - [ ] Map errors to finger/row
+- [x] Buat `src/features/typing/engine/weakness-detector.ts`
+  - [x] Track errors per character
+  - [x] Calculate error rate per character
+  - [x] Flag characters with error rate > 2× average as "weak"
+  - [x] Map errors to finger/row
 
-- [ ] Buat `src/features/typing/components/weakness-report.tsx`
-  - [ ] Show weak keys with visual indicator
-  - [ ] Suggest next practice
-  - [ ] Show improvement over time
+- [x] Buat `src/features/typing/components/weakness-report.tsx`
+  - [x] Show weak keys with visual indicator
+  - [x] Suggest next practice
+  - [x] Show improvement over time
 
-- [ ] Integrate into result screen
-  - [ ] Show weak keys after session
-  - [ ] Link to targeted practice
+- [x] Integrate into result screen
+  - [x] Show weak keys after session
+  - [x] Link to targeted practice
 
 ### 5.4 Endurance Run Mini-Game
 
-- [ ] Buat `src/features/games/endurance-run/index.ts`
-  - [ ] Speed increases every 20 seconds
-  - [ ] Survive as long as possible
-  - [ ] Minimum WPM threshold
-  - [ ] Score = time survived × accuracy × difficulty
+- [x] Buat `src/features/games/endurance-run/index.ts`
+  - [x] Speed increases every 20 seconds
+  - [x] Survive as long as possible
+  - [x] Minimum WPM threshold
+  - [x] Score = time survived × accuracy × difficulty
 
-- [ ] Buat `src/features/games/endurance-run/component.tsx`
-  - [ ] Speed indicator
-  - [ ] Survival timer
-  - [ ] Health/threshold bar
-  - [ ] Game over on failure
-  - [ ] Result screen
+- [x] Buat `src/features/games/endurance-run/component.tsx`
+  - [x] Speed indicator
+  - [x] Survival timer
+  - [x] Health/threshold bar
+  - [x] Game over on failure
+  - [x] Result screen
 
 ### 5.5 Combo Cascade Mini-Game
 
-- [ ] Buat `src/features/games/combo-cascade/index.ts`
-  - [ ] Words fall from top
-  - [ ] Type before word reaches bottom
-  - [ ] 3 lives
-  - [ ] Combo multiplier
+- [x] Buat `src/features/games/combo-cascade/index.ts`
+  - [x] Words fall from top
+  - [x] Type before word reaches bottom
+  - [x] 3 lives
+  - [x] Combo multiplier
 
-- [ ] Buat `src/features/games/combo-cascade/component.tsx`
-  - [ ] Falling words animation
-  - [ ] Current target word highlighted
-  - [ ] Lives display
-  - [ ] Combo display
-  - [ ] Game over screen
+- [x] Buat `src/features/games/combo-cascade/component.tsx`
+  - [x] Falling words animation
+  - [x] Current target word highlighted
+  - [x] Lives display
+  - [x] Combo display
+  - [x] Game over screen
 
 ### 5.6 Adaptive Difficulty
 
-- [ ] Buat `src/features/typing/engine/adaptive-difficulty.ts`
-  - [ ] Track recent performance (last 5 sessions)
-  - [ ] Adjust text complexity
-  - [ ] Focus on weak keys
-  - [ ] Adjust speed pressure
+- [x] Buat `src/features/typing/engine/adaptive-difficulty.ts`
+  - [x] Track recent performance (last 5 sessions)
+  - [x] Adjust text complexity
+  - [x] Focus on weak keys
+  - [x] Adjust speed pressure
 
 ### Phase 5 Verification
 
-- [ ] Daily challenge berfungsi — ✅
-- [ ] Achievements bisa di-unlock — ✅
-- [ ] Weakness detection akurat — ✅
-- [ ] Endurance Run berfungsi — ✅
-- [ ] Combo Cascade berfungsi — ✅
-- [ ] Adaptive difficulty berfungsi — ✅
-- [ ] `bunx biome check .` — ✅ zero errors
-- [ ] `bunx tsc --noEmit` — ✅ zero TypeScript errors
-- [ ] `bun run build` — ✅ successful build
+- [x] Daily challenge berfungsi — ✅
+- [x] Achievements bisa di-unlock — ✅
+- [x] Weakness detection akurat — ✅
+- [x] Endurance Run berfungsi — ✅
+- [x] Combo Cascade berfungsi — ✅
+- [x] Adaptive difficulty berfungsi — ✅
+- [x] `bunx biome check .` — ✅ zero errors
+- [x] `bunx tsc --noEmit` — ✅ zero TypeScript errors
+- [x] `bun run build` — ✅ successful build
 
 ---
 

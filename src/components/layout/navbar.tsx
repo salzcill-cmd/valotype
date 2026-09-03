@@ -45,6 +45,9 @@ export function Navbar() {
           <NavLink to="/leaderboard" className={navLinkClass}>
             Rank
           </NavLink>
+          <NavLink to="/achievements" className={navLinkClass}>
+            Lencana
+          </NavLink>
         </nav>
 
         <div className="flex items-center gap-2">
