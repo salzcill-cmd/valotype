@@ -248,6 +248,10 @@
   --z-overlay: 300;
   --z-modal: 400;
   --z-toast: 500;
+
+  /* Heights (DESAIN.md §18) → utilities h-navbar / h-tabbar */
+  --height-navbar: 64px;
+  --height-tabbar: 56px;
 }
 
 /* --- Base styles --- */
@@ -360,4 +364,20 @@
   100% {
     transform: scale(1);
   }
+}
+
+/* Result screen: elemen muncul bertahap (DESAIN.md §19 — stagger) */
+@keyframes result-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.anim-result-rise {
+  animation: result-rise 400ms ease-out both;
 }
