@@ -307,3 +307,57 @@
     }
   }
 }
+
+/* --- Typing effects & feedback (DESAIN.md §19/§20) --- */
+@layer utilities {
+  /* Kursor: garis vertikal merah berkedip di karakter aktif (DESAIN.md §15) */
+  .typing-caret {
+    animation: typing-caret-blink 1s ease-in-out infinite;
+  }
+
+  /* Karakter salah: shake kiri-kanan 3px (DESAIN.md §20) */
+  .anim-typing-shake {
+    animation: typing-shake 150ms ease-in-out;
+  }
+
+  /* Kombo naik: pulse scale (DESAIN.md §19) */
+  .anim-combo-pop {
+    animation: combo-pop 200ms ease-out;
+  }
+}
+
+@keyframes typing-caret-blink {
+  0%,
+  55% {
+    border-color: var(--color-danger);
+  }
+  56%,
+  100% {
+    border-color: transparent;
+  }
+}
+
+@keyframes typing-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes combo-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
