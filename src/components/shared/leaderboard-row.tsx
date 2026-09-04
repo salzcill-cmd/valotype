@@ -27,21 +27,38 @@ export function LeaderboardRow({
     <div
       aria-current={isCurrentUser ? "true" : undefined}
       className={cn(
-        "flex items-center gap-3 border-2 border-foreground px-3 py-2 shadow-sm sm:gap-4 sm:px-4",
-        isCurrentUser ? "bg-accent" : "bg-surface",
+        "card-hover flex items-center gap-3 border-2 border-foreground px-3 py-2 shadow-sm sm:gap-4 sm:px-4",
+        position === 1
+          ? "bg-[color-mix(in_srgb,var(--accent)_18%,var(--surface))]"
+          : position === 2
+            ? "bg-[color-mix(in_srgb,var(--secondary)_9%,var(--surface))]"
+            : position === 3
+              ? "bg-[color-mix(in_srgb,var(--success)_9%,var(--surface))]"
+              : isCurrentUser
+                ? "bg-accent"
+                : "bg-surface",
       )}
     >
       <span
         aria-hidden="true"
         className={cn(
-          "hidden h-8 w-8 shrink-0 items-center justify-center border-2 border-foreground font-mono text-xs font-bold text-white sm:flex",
-          position === 1 ? "bg-primary" : position <= 3 ? "bg-secondary" : "bg-foreground/70",
+          "hidden h-8 w-8 shrink-0 items-center justify-center border-2 border-foreground font-mono text-xs font-bold sm:flex transition-transform duration-200",
+          position === 1
+            ? "anim-glow-pulse bg-primary text-white"
+            : position <= 3
+              ? "bg-secondary text-white"
+              : "bg-foreground/70 text-white",
         )}
       >
         {username.slice(0, 1).toUpperCase()}
       </span>
 
-      <span className="w-8 shrink-0 text-center font-mono text-lg font-bold tabular-nums">
+      <span
+        className={cn(
+          "w-8 shrink-0 text-center font-mono text-lg font-bold tabular-nums",
+          position === 1 && "text-primary",
+        )}
+      >
         {medal ?? position}
       </span>
 

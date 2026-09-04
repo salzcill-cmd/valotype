@@ -19,6 +19,7 @@ const GAMES = [
     desc: "Teks pilihan acak, tidak ada batas waktu.",
     cta: "Mulai",
     ready: true,
+    tone: { strip: "bg-primary", box: "bg-primary", text: "text-white" },
   },
   {
     to: "/play/daily",
@@ -27,6 +28,7 @@ const GAMES = [
     desc: "Teks unik tiap hari — bonus XP +25 untuk skor terbaik.",
     cta: "Main",
     ready: true,
+    tone: { strip: "bg-accent", box: "bg-accent", text: "text-foreground" },
   },
   {
     to: "/play/blitz",
@@ -35,6 +37,7 @@ const GAMES = [
     desc: "Ketik secepat mungkin dalam 30 detik.",
     cta: "Main",
     ready: true,
+    tone: { strip: "bg-warning", box: "bg-warning", text: "text-foreground" },
   },
   {
     to: "/play/fortress",
@@ -43,6 +46,7 @@ const GAMES = [
     desc: "5 kesalahan dan bentengmu runtuh.",
     cta: "Main",
     ready: true,
+    tone: { strip: "bg-secondary", box: "bg-secondary", text: "text-white" },
   },
   {
     to: "/play/endurance",
@@ -51,6 +55,7 @@ const GAMES = [
     desc: "Marathon tanpa henti — jangan sampai tertinggal dinding!",
     cta: "Main",
     ready: true,
+    tone: { strip: "bg-success", box: "bg-success", text: "text-white" },
   },
   {
     to: "/play/cascade",
@@ -59,6 +64,7 @@ const GAMES = [
     desc: "Kata berjatuhan, ketik sebelum menyentuh dasar.",
     cta: "Main",
     ready: true,
+    tone: { strip: "bg-foreground", box: "bg-foreground", text: "text-background" },
   },
 ]
 
@@ -175,6 +181,7 @@ export default function PlayRoute() {
                     desc={game.desc}
                     cta={game.cta}
                     ready={game.ready}
+                    tone={game.tone}
                   />
                 </Link>
               ))}
@@ -241,12 +248,14 @@ function GameCard({
   desc,
   cta,
   ready,
+  tone,
 }: {
   icon: string
   title: string
   desc: string
   cta: string
   ready: boolean
+  tone: { strip: string; box: string; text: string }
 }) {
   return (
     <div
@@ -255,14 +264,21 @@ function GameCard({
         ready ? "group-hover:shadow-lg" : "opacity-60",
       )}
     >
-      {/* strip aksen atas — muncul saat hover */}
+      {/* strip aksen warna mode — muncul saat hover */}
       <span
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-accent transition-transform duration-300 ease-out group-hover:scale-x-100"
+        className={cn(
+          "absolute inset-x-0 top-0 h-1 origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100",
+          tone.strip,
+        )}
       />
       <span
         aria-hidden="true"
-        className="flex h-11 w-11 items-center justify-center border-2 border-foreground bg-background text-2xl shadow-sm transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:rotate-3"
+        className={cn(
+          "flex h-11 w-11 items-center justify-center border-2 border-foreground text-2xl shadow-sm transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:rotate-3",
+          tone.box,
+          tone.text,
+        )}
       >
         {icon}
       </span>

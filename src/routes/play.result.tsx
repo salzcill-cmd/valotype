@@ -20,6 +20,15 @@ import { useCountUp } from "@/hooks/use-count-up"
 import { usePageTitle } from "@/hooks/use-page-title"
 import { cn } from "@/lib/utils"
 
+/** Partikel perayaan saat rekor baru — posisi & jeda acak tetap deterministik. */
+const SPARKLES = [
+  { icon: "✨", left: "8%", delay: 0 },
+  { icon: "⭐", left: "22%", delay: 400 },
+  { icon: "🎉", left: "46%", delay: 200 },
+  { icon: "✨", left: "68%", delay: 600 },
+  { icon: "⭐", left: "86%", delay: 300 },
+] as const
+
 const primaryButtonClass =
   "h-auto border-2 border-foreground px-6 py-3 font-display text-sm font-bold tracking-widest uppercase shadow hover:shadow-hover active:translate-x-[2px] active:translate-y-[2px] active:shadow-active"
 
@@ -157,12 +166,25 @@ export default function PlayResultRoute() {
           className="pointer-events-none absolute inset-0 anim-shimmer bg-[linear-gradient(115deg,transparent_30%,rgb(255_255_255/0.28)_50%,transparent_70%)] bg-[length:220%_100%]"
         />
         {(outcome.bestWpm || outcome.bestAccuracy || outcome.bestScore) && (
-          <span
-            aria-hidden="true"
-            className="anim-glow-pulse absolute top-3 left-3 border-2 border-foreground bg-primary px-2 py-0.5 font-display text-[0.625rem] font-bold tracking-widest text-primary-foreground uppercase"
-          >
-            🏆 Rekor Baru
-          </span>
+          <>
+            <span
+              aria-hidden="true"
+              className="anim-glow-pulse absolute top-3 left-3 border-2 border-foreground bg-primary px-2 py-0.5 font-display text-[0.625rem] font-bold tracking-widest text-primary-foreground uppercase"
+            >
+              🏆 Rekor Baru
+            </span>
+            {/* Sparkle perayaan — hanya saat rekor baru, aman reduced-motion */}
+            {SPARKLES.map((s) => (
+              <span
+                key={`${s.left}-${s.delay}`}
+                aria-hidden="true"
+                className="anim-sparkle pointer-events-none absolute bottom-2 text-lg"
+                style={{ left: s.left, animationDelay: `${s.delay}ms` }}
+              >
+                {s.icon}
+              </span>
+            ))}
+          </>
         )}
         <div className="relative z-10">
           <p className="font-mono text-[2.5rem] leading-none font-bold text-primary sm:text-score">

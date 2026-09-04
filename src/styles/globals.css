@@ -17,13 +17,13 @@
 
 /* --- Raw palette (DESAIN.md §2 & §31) --- */
 :root {
-  --color-primary: #e63946;
+  --color-primary: #d92d3a;
   --color-primary-dark: #b71c1c;
   --color-primary-light: #ff5252;
   --color-secondary: #1a73e8;
   --color-accent: #ffd600;
   --color-success: #00c853;
-  --color-danger: #ff1744;
+  --color-danger: #d62828;
   --color-warning: #ff9800;
 
   --color-bg: #f5f5f5;
@@ -32,8 +32,8 @@
   --color-surface-dark: #1e1e1e;
   --color-foreground: #1a1a1a;
   --color-foreground-dark: #f5f5f5;
-  --color-muted: #9e9e9e;
-  --color-muted-dark: #757575;
+  --color-muted: #6f6f6f;
+  --color-muted-dark: #9e9e9e;
   --color-border: #1a1a1a;
   --color-border-dark: #333333;
   --color-shadow: #1a1a1a;
@@ -756,6 +756,11 @@ body::after {
     animation: premium-shimmer 3s linear infinite;
   }
 
+  /* Partikel perayaan — hanya untuk momen spesial (rekor baru) */
+  .anim-sparkle {
+    animation: premium-sparkle 2.4s ease-out infinite;
+  }
+
   /* Gradasi teks premium (headline/angka utama saja) */
   .text-gradient-brand {
     background: linear-gradient(
@@ -833,5 +838,19 @@ body::after {
   }
   100% {
     background-position: -100% 0;
+  }
+}
+
+@keyframes premium-sparkle {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.6) rotate(-8deg);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-46px) scale(1.15) rotate(10deg);
   }
 }

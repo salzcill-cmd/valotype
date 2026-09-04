@@ -68,7 +68,7 @@ export function LeaderboardPreview() {
           <div className="border-t-2 border-foreground p-3 text-center">
             <Link
               to="/leaderboard"
-              className="font-display text-sm font-bold tracking-widest text-primary uppercase hover:underline"
+              className="inline-block px-2 py-1.5 font-display text-sm font-bold tracking-widest text-primary uppercase hover:underline"
             >
               Lihat Semua →
             </Link>

@@ -89,7 +89,7 @@ export default function LeaderboardRoute() {
               Mau muncul di papan ini?{" "}
               <Link
                 to={isAuthed ? "/play" : "/signup"}
-                className="font-bold text-primary underline underline-offset-2"
+                className="inline-block py-1 font-bold text-primary underline underline-offset-2"
               >
                 {isAuthed ? "Main sekarang →" : "Buat akun gratis →"}
               </Link>

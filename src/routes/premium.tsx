@@ -192,7 +192,7 @@ export default function PremiumRoute() {
           {!isAuthed && (
             <p className="mt-2 text-center font-mono text-xs text-muted">
               Sudah punya akun?{" "}
-              <Link to="/login?next=/premium" className="font-bold underline">
+              <Link to="/login?next=/premium" className="inline-block py-1.5 font-bold underline underline-offset-2">
                 Masuk dulu
               </Link>
             </p>

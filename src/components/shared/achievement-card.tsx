@@ -7,7 +7,7 @@ interface AchievementCardProps extends AchievementDef {
 }
 
 const RARITY_META: Record<AchievementRarity, { label: string; className: string }> = {
-  common: { label: "Umum", className: "bg-[#9e9e9e] text-white" },
+  common: { label: "Umum", className: "bg-[#757575] text-white" },
   rare: { label: "Langka", className: "bg-secondary text-white" },
   epic: { label: "Epik", className: "bg-accent text-foreground" },
   legendary: { label: "Legendaris", className: "bg-primary text-white" },

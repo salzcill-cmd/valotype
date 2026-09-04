@@ -22,6 +22,16 @@ import type { TypingContent } from "@/lib/content"
 import { getRandomContent } from "@/lib/content"
 import { cn } from "@/lib/utils"
 
+/** Warna aksen tiap mode — konsisten dengan kartu arena di dashboard. */
+const MODE_ACCENT: Record<GameMode, string> = {
+  free: "bg-primary",
+  blitz: "bg-warning",
+  fortress: "bg-secondary",
+  endurance: "bg-success",
+  daily: "bg-accent",
+  cascade: "bg-foreground",
+}
+
 const primaryButtonClass =
   "h-auto border-2 border-foreground px-6 py-3 font-display text-sm font-bold tracking-widest uppercase shadow hover:shadow-hover active:translate-x-[2px] active:translate-y-[2px] active:shadow-active"
 
@@ -157,7 +167,13 @@ export function GameScreen({
         ) : pace ? (
           <PaceChip level={paceLevel_ + 1} minWpm={requiredWpm} leadChars={leadChars} />
         ) : (
-          <span className="hidden border-2 border-foreground bg-surface px-3 py-2 font-mono text-sm font-bold shadow-sm sm:block">
+          <span
+            className={cn(
+              "hidden border-2 border-foreground px-3 py-2 font-mono text-sm font-bold shadow-sm sm:block",
+              MODE_ACCENT[mode],
+              mode === "free" ? "text-primary-foreground" : "",
+            )}
+          >
             Latihan Bebas
           </span>
         )}
@@ -176,15 +192,25 @@ export function GameScreen({
           (status === "paused" || status === "completed") && "select-none",
         )}
       >
-        {/* hairline aksen atas — mode aktif */}
+        {/* hairline aksen warna mode — mengembang saat bermain */}
         <span
           aria-hidden="true"
           className={cn(
-            "absolute inset-x-0 top-0 h-1 origin-left bg-primary transition-transform duration-300",
+            "absolute inset-x-0 top-0 h-1 origin-left transition-transform duration-300",
+            MODE_ACCENT[mode],
             status === "playing" ? "scale-x-100" : "scale-x-0",
           )}
         />
-        <p className="font-mono text-xs font-bold tracking-widest text-muted uppercase">
+        <p
+          className={cn(
+            "flex items-center gap-2 font-mono text-xs font-bold tracking-widest uppercase",
+            "text-muted",
+          )}
+        >
+          <span
+            aria-hidden="true"
+            className={cn("inline-block h-2.5 w-2.5 border-2 border-foreground", MODE_ACCENT[mode])}
+          />
           {mode === "blitz" && "30 detik — secepat mungkin!"}
           {mode === "fortress" && "Jangan salah ketik — setiap error merusak benteng!"}
           {mode === "endurance" && `Kecepatan naik tiap 20 detik — butuh ≥ ${requiredWpm} WPM`}

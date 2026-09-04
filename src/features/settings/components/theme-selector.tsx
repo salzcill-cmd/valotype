@@ -10,7 +10,7 @@ const ACCENT_META: Record<
 > = {
   neo: {
     name: "Neo-Brutalist",
-    swatches: ["#e63946", "#f5f5f5", "#1a1a1a"],
+    swatches: ["#d92d3a", "#f5f5f5", "#1a1a1a"],
     desc: "Merah & putih khas ValoType",
   },
   midnight: {
@@ -98,7 +98,7 @@ export function ThemeSelector({
       {!isPremium && !isAuthLoading && (
         <p className="col-span-full border-2 border-dashed border-foreground/40 p-2 font-mono text-xs text-muted">
           Tema selain Neo-Brutalist untuk member premium.{" "}
-          <Link to="/premium" className="font-bold text-primary underline">
+          <Link to="/premium" className="inline-block py-1.5 font-bold text-primary underline underline-offset-2">
             Lihat Premium →
           </Link>
         </p>
