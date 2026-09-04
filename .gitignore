@@ -29,4 +29,3 @@ dist-ssr
 *.sw?
 .vercel
 .env*
-api/trpc/index.js
