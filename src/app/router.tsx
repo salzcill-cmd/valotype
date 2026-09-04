@@ -10,6 +10,7 @@ import ChallengeRoute from "@/routes/challenge"
 import IndexRoute from "@/routes/index"
 import LeaderboardRoute from "@/routes/leaderboard"
 import LoginRoute from "@/routes/login"
+import NotFoundRoute from "@/routes/not-found"
 import PlayRoute from "@/routes/play"
 import PlayDailyRoute from "@/routes/play.daily"
 import PlayGameRoute from "@/routes/play.game"
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
       { path: "/settings", element: <SettingsRoute /> },
       { path: "/achievements", element: <AchievementsRoute /> },
       { path: "/premium", element: <PremiumRoute /> },
+      { path: "*", element: <NotFoundRoute /> },
     ],
   },
   {

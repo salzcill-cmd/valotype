@@ -143,7 +143,8 @@ export const authRouter = router({
       let profileValues: NewProfile = {
         userId: created.id,
         title: "Pemula",
-        lastActiveAt: now,
+        // lastActiveAt dibiarkan null: streak dihitung dari sesi pertama
+        // (diisi updateProfileAfterSession saat submit pertama).
       }
       if (guestProgress) profileValues = mergeGuestProgress(profileValues, guestProgress)
 

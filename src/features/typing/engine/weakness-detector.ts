@@ -63,8 +63,13 @@ export function detectWeakKeys(
 
   const averageRate = rates.reduce((sum, item) => sum + item.rate, 0) / rates.length
 
+  // Ambang normal: 2× rata-rata. Bila hanya satu karakter yang cukup sering
+  // muncul (sesi pendek), rata-rata = rate-nya sendiri → fallback ke > 0 agar
+  // kelemahan tetap terdeteksi (TODO 8 — edge case sesi singkat).
+  const threshold = rates.length === 1 ? 0 : averageRate * 2
+
   const weakKeys: WeakKey[] = rates
-    .filter((item) => item.rate > 0 && item.rate > averageRate * 2)
+    .filter((item) => item.rate > threshold)
     .sort((a, b) => b.rate - a.rate)
     .slice(0, 6)
     .map((item) => ({

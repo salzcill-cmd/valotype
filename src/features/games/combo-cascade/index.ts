@@ -17,6 +17,21 @@ export const CASCADE_SPAWN_MIN_MS = 750
 /** Maksimal kata tampil bersamaan di layar. */
 export const CASCADE_MAX_WORDS = 5
 
+/** Tinggi arena dalam persen (100% = dari atas ke dasar). */
+export const LANE_HEIGHT = 100
+
+/** Satu kata yang sedang jatuh di arena (state game). */
+export interface FallingWord {
+  id: number
+  text: string
+  /** Waktu (basis elapsed aktif, ms) saat kata mulai jatuh. */
+  spawnAt: number
+  /** Waktu tempuh jatuh (ms) saat kata diciptakan — tetap walau level naik. */
+  fallMs: number
+  /** Jumlah huruf yang sudah diketik benar. */
+  typed: number
+}
+
 /** Kata bersih per level (level naik setelah N kata berhasil). */
 export const CASCADE_WORDS_PER_LEVEL = 6
 

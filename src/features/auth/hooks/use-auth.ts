@@ -11,7 +11,7 @@ export type AuthUser = NonNullable<RouterOutput["auth"]["me"]["user"]>
 export type AuthProfile = NonNullable<RouterOutput["auth"]["me"]["profile"]>
 
 /** Premium aktif: flag server menyala & belum lewat masa berlaku (TODO 7.1). */
-function isPremiumActive(user: AuthUser | null): boolean {
+export function isPremiumActive(user: AuthUser | null): boolean {
   if (!user) return false
   if (!user.isPremium) return false
   if (user.premiumExpiresAt === null) return true // tanpa tanggal = aktif permanen (dev/seed)
