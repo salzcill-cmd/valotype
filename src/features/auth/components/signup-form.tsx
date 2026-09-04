@@ -72,6 +72,7 @@ export function SignupForm() {
           id="signup-username"
           required
           autoComplete="username"
+          // biome-ignore lint/a11y/noAutofocus: kenyamanan — langsung fokus ke kolom utama
           autoFocus
           placeholder="raka123"
           className={inputClass}

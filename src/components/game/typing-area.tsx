@@ -75,8 +75,8 @@ export function TypingArea({
         const status = charStatuses[index] ?? "pending"
         const isCurrent = index === currentIndex && status !== "error"
         return (
-          // biome-ignore lint/suspicious/noArrayIndexKey: daftar karakter statis, index = posisi unik
           <span
+            // biome-ignore lint/suspicious/noArrayIndexKey: daftar karakter statis, index = posisi unik
             key={index}
             ref={
               isCurrent

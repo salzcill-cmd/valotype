@@ -101,6 +101,7 @@ export default function AchievementsRoute() {
           aria-hidden="true"
         >
           {Array.from({ length: 6 }, (_, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: placeholder skeleton statis
             <div key={index} className="flex h-40 flex-col gap-2 p-4">
               <div className="flex items-start justify-between gap-2">
                 <Skeleton className="h-12 w-12" />

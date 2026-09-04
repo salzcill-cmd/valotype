@@ -48,6 +48,7 @@ export function LoginForm() {
           type="email"
           required
           autoComplete="email"
+          // biome-ignore lint/a11y/noAutofocus: kenyamanan — langsung fokus ke kolom utama
           autoFocus
           placeholder="kamu@email.com"
           className={inputClass}

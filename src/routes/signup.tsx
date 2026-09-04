@@ -24,7 +24,10 @@ export default function SignupRoute() {
       footer={
         <>
           Sudah punya akun?{" "}
-          <Link to="/login" className="inline-block py-1 font-bold text-primary underline underline-offset-2">
+          <Link
+            to="/login"
+            className="inline-block py-1 font-bold text-primary underline underline-offset-2"
+          >
             Masuk →
           </Link>
         </>

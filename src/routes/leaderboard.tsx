@@ -157,6 +157,7 @@ export default function LeaderboardRoute() {
       {loading && (
         <ol className="mt-4 flex flex-col gap-2" aria-hidden="true">
           {Array.from({ length: 8 }, (_, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: placeholder skeleton statis
             <li key={index} className="flex items-center gap-3 px-3 py-2 sm:gap-4 sm:px-4">
               <Skeleton className="h-8 w-8" />
               <Skeleton className="h-4 w-8" />

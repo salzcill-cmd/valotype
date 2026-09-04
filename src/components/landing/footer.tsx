@@ -98,11 +98,17 @@ export function Footer() {
 
         <p className="mt-10 border-t-2 border-dashed border-foreground pt-6 text-center font-mono text-xs text-muted">
           © 2026 ValoWeb · Dibuat dengan ❤️ untuk Indonesia Emas 2045 ·{" "}
-          <Link to="/" className="inline-block px-1 py-1.5 underline underline-offset-2 hover:text-foreground">
+          <Link
+            to="/"
+            className="inline-block px-1 py-1.5 underline underline-offset-2 hover:text-foreground"
+          >
             Beranda
           </Link>{" "}
           ·{" "}
-          <Link to="/play" className="inline-block px-1 py-1.5 underline underline-offset-2 hover:text-foreground">
+          <Link
+            to="/play"
+            className="inline-block px-1 py-1.5 underline underline-offset-2 hover:text-foreground"
+          >
             Main
           </Link>
         </p>
