@@ -3,6 +3,7 @@ import { useState } from "react"
 import { Link } from "react-router"
 
 import { LeaderboardRow } from "@/components/shared/leaderboard-row"
+import { Reveal } from "@/components/shared/reveal"
 import { useAuth } from "@/features/auth/hooks/use-auth"
 import type { RankId } from "@/features/progress/ranks"
 import { useTRPC } from "@/lib/trpc"
@@ -56,12 +57,18 @@ export default function LeaderboardRoute() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 lg:py-8">
-      <header>
-        <h1 className="font-display text-3xl font-bold">LEADERBOARD 🏆</h1>
-        <p className="mt-1 text-muted">
-          {headline}
-          {percentileQuery.data?.total === 0 && isGlobal && " — jadilah yang pertama!"}
-        </p>
+      <header className="flex items-center gap-3">
+        <span
+          aria-hidden="true"
+          className="h-10 w-3 border-2 border-foreground bg-primary shadow-sm"
+        />
+        <div>
+          <h1 className="font-display text-3xl font-bold">LEADERBOARD 🏆</h1>
+          <p className="mt-0.5 text-muted">
+            {headline}
+            {percentileQuery.data?.total === 0 && isGlobal && " — jadilah yang pertama!"}
+          </p>
+        </div>
       </header>
 
       {/* Posisi user (prd.md §17: "Kamu lebih cepat dari 93% pemain!") */}
@@ -131,8 +138,8 @@ export default function LeaderboardRoute() {
 
       {/* Daftar peringkat */}
       <ol className="mt-4 flex flex-col gap-2">
-        {rows.map((row) => (
-          <li key={`${tab}-${row.userId}`}>
+        {rows.map((row, index) => (
+          <Reveal as="li" key={`${tab}-${row.userId}`} delay={Math.min(index * 35, 350)}>
             <LeaderboardRow
               position={row.position}
               username={row.username}
@@ -141,7 +148,7 @@ export default function LeaderboardRoute() {
               rank={row.rank}
               isCurrentUser={row.isCurrentUser}
             />
-          </li>
+          </Reveal>
         ))}
       </ol>
 

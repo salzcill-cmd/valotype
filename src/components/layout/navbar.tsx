@@ -6,8 +6,11 @@ import { usePreferencesStore } from "@/stores/preferences-store"
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   cn(
-    "px-3 py-2 font-display text-sm font-bold tracking-widest uppercase transition-colors",
-    isActive ? "bg-primary text-primary-foreground shadow-sm" : "hover:bg-background",
+    "relative px-3 py-2 font-display text-sm font-bold tracking-widest uppercase transition-colors",
+    "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left after:bg-primary after:transition-transform after:duration-300",
+    isActive
+      ? "text-primary after:scale-x-100"
+      : "text-foreground/80 after:scale-x-0 hover:text-primary hover:after:scale-x-100",
   )
 
 const chipClass =
@@ -29,14 +32,14 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-sticky border-b-2 border-foreground bg-surface shadow-[0_4px_0_var(--shadow-color)]">
+    <header className="sticky top-0 z-sticky border-b-2 border-foreground bg-surface/85 shadow-[0_4px_0_var(--shadow-color)] backdrop-blur-md supports-[backdrop-filter]:bg-[color-mix(in_srgb,var(--surface)_72%,transparent)]">
       <div className="mx-auto flex h-navbar max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center border-2 border-foreground bg-primary font-display text-lg font-bold text-primary-foreground shadow-sm">
+        <Link to="/" className="group flex items-center gap-2">
+          <span className="flex h-8 w-8 items-center justify-center border-2 border-foreground bg-primary font-display text-lg font-bold text-primary-foreground shadow-[3px_3px_0_var(--shadow-color)] transition-transform duration-200 group-hover:-rotate-6 group-hover:shadow-[4px_4px_0_var(--shadow-color)]">
             V
           </span>
           <span className="hidden font-display text-lg font-bold tracking-tight sm:block">
-            ValoType
+            Valo<span className="text-primary">Type</span>
           </span>
         </Link>
 

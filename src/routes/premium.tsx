@@ -89,14 +89,24 @@ export default function PremiumRoute() {
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 lg:py-10">
       {/* Hero */}
-      <header className="border-2 border-foreground bg-surface p-6 text-center shadow-lg sm:p-10">
-        <p className="font-mono text-xs font-bold tracking-[0.3em] text-muted uppercase">
+      <header className="relative overflow-hidden border-2 border-foreground bg-surface p-6 text-center shadow-lg sm:p-10">
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-10 -right-10 h-40 w-40 rounded-full border-2 border-foreground/15 bg-[color-mix(in_srgb,var(--accent)_18%,transparent)] blur-xl"
+        />
+        <p className="relative font-mono text-xs font-bold tracking-[0.3em] text-muted uppercase">
           ValoType Premium
         </p>
-        <h1 className="mt-2 font-display text-3xl font-bold sm:text-5xl">
-          {active ? "Kamu sudah Premium 💛" : "Naikkan level analitikmu"}
+        <h1 className="relative mt-2 font-display text-3xl font-bold sm:text-5xl">
+          {active ? (
+            "Kamu sudah Premium 💛"
+          ) : (
+            <>
+              Naikkan level <span className="text-gradient-brand">analitikmu</span>
+            </>
+          )}
         </h1>
-        <p className="mx-auto mt-3 max-w-xl text-muted">
+        <p className="relative mx-auto mt-3 max-w-xl text-muted">
           {active
             ? "Terima kasih sudah mendukung ValoType. Semua fitur premium sudah aktif di akunmu."
             : "Latihan inti tetap gratis selamanya. Premium membuka analitik mendalam & tema eksklusif — tanpa mengunci kemampuan mengetik."}
@@ -131,8 +141,8 @@ export default function PremiumRoute() {
                   onClick={() => setPlanId(id)}
                   aria-pressed={selected}
                   className={cn(
-                    "flex flex-col gap-2 border-2 border-foreground bg-surface p-5 text-left shadow transition-all",
-                    selected ? "shadow-lg" : "hover:shadow",
+                    "card-hover flex flex-col gap-2 border-2 border-foreground bg-surface p-5 text-left shadow transition-all",
+                    selected ? "shadow-lg" : "hover:shadow-lg",
                     selected && "ring-4 ring-primary/40",
                   )}
                 >

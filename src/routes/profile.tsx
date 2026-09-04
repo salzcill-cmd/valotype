@@ -135,14 +135,18 @@ function IdentityHeader({
   rank: Parameters<typeof RankBadge>[0]["rank"]
 }) {
   return (
-    <header className="flex flex-col gap-5 border-2 border-foreground bg-surface p-6 shadow-lg sm:flex-row sm:items-center">
+    <header className="relative flex flex-col gap-5 overflow-hidden border-2 border-foreground bg-surface p-6 shadow-lg sm:flex-row sm:items-center">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-12 -left-12 h-40 w-40 rounded-full bg-[color-mix(in_srgb,var(--accent)_18%,transparent)] blur-2xl"
+      />
       <div
         aria-hidden="true"
-        className="flex h-20 w-20 shrink-0 items-center justify-center border-2 border-foreground bg-primary font-display text-4xl font-bold text-primary-foreground shadow-sm"
+        className="relative flex h-20 w-20 shrink-0 items-center justify-center border-2 border-foreground bg-primary font-display text-4xl font-bold text-primary-foreground shadow-sm transition-transform duration-300 hover:rotate-3 hover:scale-105"
       >
         {avatarLetter}
       </div>
-      <div className="min-w-0 flex-1">
+      <div className="relative min-w-0 flex-1">
         <h1 className="truncate font-display text-3xl font-bold">{name}</h1>
         <p className="font-display text-sm font-bold text-muted">"{title}"</p>
         {email && <p className="mt-0.5 truncate font-mono text-xs text-muted">{email}</p>}

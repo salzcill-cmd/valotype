@@ -147,25 +147,40 @@ export default function PlayResultRoute() {
 
       {/* Kartu skor utama (DESAIN.md §16: kuning, border tebal) */}
       <section
-        className="anim-result-rise w-full border-2 border-foreground bg-accent p-6 text-center shadow-lg"
+        className="anim-result-rise relative w-full overflow-hidden border-2 border-foreground bg-accent p-6 text-center shadow-lg"
         style={{ animationDelay: "0ms" }}
       >
-        <p className="font-mono text-[2.5rem] leading-none font-bold text-primary sm:text-score">
-          {session.wpm}
-        </p>
-        <p className="font-mono text-xs font-bold tracking-widest text-foreground/70 uppercase">
-          WPM
-        </p>
-        <p className="mt-3 font-mono text-2xl font-bold">{session.accuracy}% Akurasi</p>
-        <p className="mt-1 font-mono text-lg font-bold">
-          Score: {session.score.toLocaleString("id-ID")}
-        </p>
-
-        <div className="mt-4 flex items-center justify-center gap-3">
-          <RankBadge rank={outcome.rank} />
-          <span className="border-2 border-foreground bg-surface px-3 py-1 font-display text-sm font-bold shadow-sm">
-            {rankDef.icon} {rankDef.name}
+        {/* kilau lembut berjalan di kartu skor */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 anim-shimmer bg-[linear-gradient(115deg,transparent_30%,rgb(255_255_255/0.28)_50%,transparent_70%)] bg-[length:220%_100%]"
+        />
+        {(outcome.bestWpm || outcome.bestAccuracy || outcome.bestScore) && (
+          <span
+            aria-hidden="true"
+            className="anim-glow-pulse absolute top-3 left-3 border-2 border-foreground bg-primary px-2 py-0.5 font-display text-[0.625rem] font-bold tracking-widest text-primary-foreground uppercase"
+          >
+            🏆 Rekor Baru
           </span>
+        )}
+        <div className="relative z-10">
+          <p className="font-mono text-[2.5rem] leading-none font-bold text-primary sm:text-score">
+            {session.wpm}
+          </p>
+          <p className="font-mono text-xs font-bold tracking-widest text-foreground/70 uppercase">
+            WPM
+          </p>
+          <p className="mt-3 font-mono text-2xl font-bold">{session.accuracy}% Akurasi</p>
+          <p className="mt-1 font-mono text-lg font-bold">
+            Score: {session.score.toLocaleString("id-ID")}
+          </p>
+
+          <div className="mt-4 flex items-center justify-center gap-3">
+            <RankBadge rank={outcome.rank} />
+            <span className="border-2 border-foreground bg-surface px-3 py-1 font-display text-sm font-bold shadow-sm">
+              {rankDef.icon} {rankDef.name}
+            </span>
+          </div>
         </div>
       </section>
 
@@ -216,7 +231,7 @@ export default function PlayResultRoute() {
           className="anim-result-rise w-full border-2 border-foreground bg-surface p-3 text-center shadow-sm"
           style={{ animationDelay: "160ms" }}
         >
-          <p className="font-display text-sm font-bold tracking-widest text-success uppercase">
+          <p className="anim-glow-pulse font-display text-sm font-bold tracking-widest text-success uppercase">
             🏆 {bestLabel} baru!
           </p>
         </section>

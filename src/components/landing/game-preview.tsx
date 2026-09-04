@@ -1,5 +1,7 @@
 import { Link } from "react-router"
 
+import { Reveal } from "@/components/shared/reveal"
+
 const GAMES = [
   {
     icon: "⚡",
@@ -46,15 +48,15 @@ export function GamePreview() {
       </p>
 
       <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {GAMES.map((game) => (
-          <li key={game.name}>
+        {GAMES.map((game, index) => (
+          <Reveal as="li" key={game.name} delay={index * 80}>
             <Link
               to={game.to}
               className="group flex h-full flex-col border-2 border-foreground bg-surface p-6 shadow transition-all hover:-translate-y-1 hover:bg-background hover:shadow-hover active:translate-x-[2px] active:translate-y-[2px] active:shadow-active"
             >
               <span
                 aria-hidden="true"
-                className="flex h-14 w-14 items-center justify-center border-2 border-foreground bg-primary text-2xl shadow-sm transition-transform group-hover:scale-110"
+                className="flex h-14 w-14 items-center justify-center border-2 border-foreground bg-primary text-2xl shadow-sm transition-transform group-hover:scale-110 group-hover:rotate-6"
               >
                 {game.icon}
               </span>
@@ -64,7 +66,7 @@ export function GamePreview() {
                 Main →
               </span>
             </Link>
-          </li>
+          </Reveal>
         ))}
       </ul>
     </section>

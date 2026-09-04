@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router"
 
 import { RankBadge } from "@/components/shared/rank-badge"
+import { Reveal } from "@/components/shared/reveal"
 import { useTRPC } from "@/lib/trpc"
 
 const FALLBACK = [
@@ -48,12 +49,12 @@ export function LeaderboardPreview() {
           Bersaing dengan keyboard master dari seluruh Indonesia.
         </p>
 
-        <div className="mx-auto mt-10 max-w-2xl border-2 border-foreground bg-background shadow">
+        <Reveal className="mx-auto mt-10 max-w-2xl border-2 border-foreground bg-background shadow">
           <ol>
             {rows.map((row, index) => (
               <li
                 key={row.username}
-                className="flex items-center gap-3 border-b-2 border-dashed border-foreground px-4 py-3 last:border-b-0"
+                className="flex items-center gap-3 border-b-2 border-dashed border-foreground px-4 py-3 transition-colors duration-200 last:border-b-0 hover:bg-[color-mix(in_srgb,var(--accent)_12%,transparent)]"
               >
                 <span className="w-8 font-mono text-sm font-bold text-muted">
                   {MEDALS[index] ?? `#${row.position}`}
@@ -72,7 +73,7 @@ export function LeaderboardPreview() {
               Lihat Semua →
             </Link>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   )

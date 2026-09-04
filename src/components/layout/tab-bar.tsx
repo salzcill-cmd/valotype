@@ -17,7 +17,7 @@ export function TabBar() {
   return (
     <nav
       aria-label="Navigasi bawah"
-      className="fixed inset-x-0 bottom-0 z-sticky border-t-2 border-foreground bg-surface shadow-[0_-4px_0_var(--shadow-color)] md:hidden"
+      className="fixed inset-x-0 bottom-0 z-sticky border-t-2 border-foreground bg-surface/90 shadow-[0_-4px_0_var(--shadow-color)] backdrop-blur-md supports-[backdrop-filter]:bg-[color-mix(in_srgb,var(--surface)_78%,transparent)] md:hidden"
     >
       <ul className="mx-auto flex h-tabbar max-w-7xl items-stretch">
         {TABS.map((tab) => (
@@ -34,10 +34,18 @@ export function TabBar() {
             >
               {({ isActive }) => (
                 <>
-                  {isActive && (
-                    <span className="absolute top-0 h-1 w-8 bg-primary" aria-hidden="true" />
-                  )}
-                  <span className="text-lg leading-none" aria-hidden="true">
+                  <span
+                    className={`absolute top-0 h-1 rounded-full transition-all duration-300 ${
+                      isActive ? "w-10 bg-primary" : "w-0 bg-transparent"
+                    }`}
+                    aria-hidden="true"
+                  />
+                  <span
+                    className={`text-lg leading-none transition-transform duration-200 ${
+                      isActive ? "-translate-y-0.5 scale-110" : ""
+                    }`}
+                    aria-hidden="true"
+                  >
                     {tab.icon}
                   </span>
                   {tab.label}

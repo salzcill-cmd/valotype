@@ -394,6 +394,49 @@ html[data-accent] {
   --sidebar-accent-foreground: var(--foreground);
 }
 
+/* ============================================================
+   Premium atmosphere — lapisan di atas tema (seluruh aplikasi)
+   Grid halus + noise tipis + radial tint, tanpa mengubah identitas.
+   ============================================================ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      60rem 32rem at 85% -10%,
+      color-mix(in srgb, var(--primary) 9%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      50rem 30rem at -10% 30%,
+      color-mix(in srgb, var(--accent) 7%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      40rem 26rem at 60% 110%,
+      color-mix(in srgb, var(--secondary) 6%, transparent),
+      transparent 60%
+    );
+}
+
+/* Grid arsitektural halus (DESAIN.md §24 — structured play) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 0%, black 30%, transparent 100%);
+}
+
 /* --- Tailwind theme mapping (DESAIN.md §31) --- */
 @theme inline {
   /* Semantic colors → utilities: bg-background, text-foreground, ... */
@@ -458,13 +501,15 @@ html[data-accent] {
   --text-score: 4.5rem;
   --text-score--line-height: 1;
 
-  /* Shadows (DESAIN.md §5 — hard, offset, no blur) */
+  /* Shadows (DESAIN.md §5 — hard offset; ditambah lapisan lembut utk depth premium) */
   --shadow-sm: 2px 2px 0 var(--shadow-color);
   --shadow: 4px 4px 0 var(--shadow-color);
   --shadow-lg: 6px 6px 0 var(--shadow-color);
+  --shadow-xl: 8px 8px 0 var(--shadow-color), 0 18px 40px -18px rgb(0 0 0 / 0.35);
   --shadow-primary: 4px 4px 0 var(--color-primary-dark);
-  --shadow-hover: 2px 2px 0 var(--shadow-color);
-  --shadow-active: 0 0 0 var(--shadow-color);
+  --shadow-glow: 0 0 0 2px var(--background), 0 0 24px -4px rgb(230 57 70 / 0.45);
+  --shadow-hover: 3px 3px 0 var(--shadow-color);
+  --shadow-active: 1px 1px 0 var(--shadow-color);
 
   /* Radius (DESAIN.md §5 — sharp corners; shadcn chain resolves to 0) */
   --radius: 0px;
@@ -475,6 +520,11 @@ html[data-accent] {
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Texture & efek premium */
+  --noise-opacity: 0.05;
+  --glass-bg: color-mix(in srgb, var(--surface) 78%, transparent);
+  --grid-line: color-mix(in srgb, var(--foreground) 7%, transparent);
 
   /* Z-index (DESAIN.md §31) */
   --z-dropdown: 100;
@@ -626,4 +676,162 @@ html[data-accent] {
 
 .anim-result-rise {
   animation: result-rise 400ms ease-out both;
+}
+
+/* ============================================================
+   Premium motion — utilities & keyframes halus (seluruh aplikasi)
+   Semua dalam payung `@media (prefers-reduced-motion: no-preference)`
+   agar aksesibilitas tetap aman (duplicate guard di base sudah ada).
+   ============================================================ */
+@layer utilities {
+  /* Masuk halus saat elemen muncul (scroll reveal / mount) */
+  .anim-fade-up {
+    animation: premium-fade-up 550ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .anim-fade-in {
+    animation: premium-fade-in 400ms ease-out both;
+  }
+
+  .anim-scale-in {
+    animation: premium-scale-in 350ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  /* Hover card: naik + shadow mengembang (dipakai komponen kartu) */
+  .card-hover {
+    transition:
+      transform var(--transition-base),
+      box-shadow var(--transition-base),
+      background-color var(--transition-base);
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .card-hover:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        5px 5px 0 var(--shadow-color),
+        0 16px 32px -16px rgb(0 0 0 / 0.35);
+    }
+    .card-hover:active {
+      transform: translateY(-1px);
+      box-shadow: 3px 3px 0 var(--shadow-color);
+    }
+  }
+
+  /* Tombol utama: kilau lewat saat hover */
+  .btn-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-shine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    translate: -120% 0;
+    background: linear-gradient(
+      105deg,
+      transparent 30%,
+      rgb(255 255 255 / 0.35) 50%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .btn-shine:hover::after {
+      animation: premium-shine 750ms ease forwards;
+    }
+  }
+
+  /* Aksen bergerak pelan (maskot / emoji / ikon dekoratif) */
+  .anim-float {
+    animation: premium-float 4s ease-in-out infinite;
+  }
+
+  /* Denyut lembut untuk elemen "hidup" (rekor baru, streak aktif) */
+  .anim-glow-pulse {
+    animation: premium-glow-pulse 2.4s ease-in-out infinite;
+  }
+
+  /* Kilau pelan berjalan (XP bar, kartu aktif, separator) */
+  .anim-shimmer {
+    animation: premium-shimmer 3s linear infinite;
+  }
+
+  /* Gradasi teks premium (headline/angka utama saja) */
+  .text-gradient-brand {
+    background: linear-gradient(
+      100deg,
+      var(--primary) 10%,
+      color-mix(in srgb, var(--primary) 55%, var(--accent)) 60%,
+      var(--accent) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@keyframes premium-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes premium-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes premium-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes premium-shine {
+  to {
+    translate: 120% 0;
+  }
+}
+
+@keyframes premium-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes premium-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 0%, transparent);
+  }
+}
+
+@keyframes premium-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
 }

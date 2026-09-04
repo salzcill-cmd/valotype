@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/shared/reveal"
 import { ValoMascot } from "@/components/shared/valo-mascot"
 import { RANKS } from "@/features/progress/ranks"
 
@@ -25,7 +26,7 @@ export function ProgressionPreview() {
           </p>
         </div>
 
-        <div className="border-2 border-foreground bg-surface p-6 shadow sm:p-8">
+        <Reveal className="border-2 border-foreground bg-surface p-6 shadow sm:p-8">
           <ol className="flex flex-wrap items-center justify-center gap-x-2 gap-y-3">
             {RANKS.map((rank, index) => (
               <li key={rank.id} className="flex items-center gap-2">
@@ -52,12 +53,17 @@ export function ProgressionPreview() {
           <p className="mt-6 text-center font-mono text-sm text-muted">
             Setiap rank butuh kombinasi WPM &amp; akurasi yang lebih tinggi.
           </p>
-        </div>
+        </Reveal>
       </div>
 
       {/* Misi Indonesia Emas 2045 (DESAIN.md §13.1) */}
-      <div className="mt-16 border-2 border-foreground bg-primary p-8 shadow-[6px_6px_0_var(--shadow-color)] sm:p-10">
-        <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
+      <Reveal className="relative mt-16 overflow-hidden border-2 border-foreground bg-primary p-8 shadow-[6px_6px_0_var(--shadow-color)] sm:p-10">
+        {/* kilau tipis berjalan di atas band */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 anim-shimmer bg-[linear-gradient(115deg,transparent_35%,rgb(255_255_255/0.12)_50%,transparent_65%)] bg-[length:220%_100%]"
+        />
+        <div className="relative z-10 flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
           <ValoMascot pose="happy" size={120} label="Valo bangga" className="shrink-0" />
           <div>
             <p className="font-display text-2xl leading-snug font-bold text-primary-foreground sm:text-3xl">
@@ -68,7 +74,7 @@ export function ProgressionPreview() {
             </p>
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   )
 }

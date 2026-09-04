@@ -16,6 +16,8 @@ const STEPS = [
   },
 ] as const
 
+import { Reveal } from "@/components/shared/reveal"
+
 /** Cara kerja dalam 3 langkah (DESAIN.md §13.1, TODO 6.1). */
 export function HowItWorks() {
   return (
@@ -37,32 +39,31 @@ export function HowItWorks() {
 
         <ol className="mt-10 grid gap-6 sm:grid-cols-3">
           {STEPS.map((step, index) => (
-            <li
-              key={step.title}
-              className="relative border-2 border-foreground bg-background p-6 shadow transition-all hover:-translate-y-1 hover:shadow-hover"
-            >
-              <span
-                aria-hidden="true"
-                className="flex h-12 w-12 items-center justify-center border-2 border-foreground bg-primary font-display text-xl font-bold text-primary-foreground shadow-sm"
-              >
-                {index + 1}
-              </span>
-              <div className="mt-4 flex items-center gap-2">
-                <span aria-hidden="true" className="text-2xl">
-                  {step.icon}
-                </span>
-                <h3 className="font-display text-xl font-bold uppercase">{step.title}</h3>
-              </div>
-              <p className="mt-2 text-muted">{step.text}</p>
-              {index < STEPS.length - 1 && (
+            <Reveal as="li" key={step.title} delay={index * 90} className="relative">
+              <div className="relative h-full border-2 border-foreground bg-background p-6 shadow transition-all hover:-translate-y-1 hover:shadow-hover">
                 <span
                   aria-hidden="true"
-                  className="absolute top-1/2 -right-5 hidden -translate-y-1/2 font-mono text-2xl font-bold text-muted sm:block"
+                  className="flex h-12 w-12 items-center justify-center border-2 border-foreground bg-primary font-display text-xl font-bold text-primary-foreground shadow-sm"
                 >
-                  →
+                  {index + 1}
                 </span>
-              )}
-            </li>
+                <div className="mt-4 flex items-center gap-2">
+                  <span aria-hidden="true" className="text-2xl">
+                    {step.icon}
+                  </span>
+                  <h3 className="font-display text-xl font-bold uppercase">{step.title}</h3>
+                </div>
+                <p className="mt-2 text-muted">{step.text}</p>
+                {index < STEPS.length - 1 && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-1/2 -right-5 hidden -translate-y-1/2 font-mono text-2xl font-bold text-muted sm:block"
+                  >
+                    →
+                  </span>
+                )}
+              </div>
+            </Reveal>
           ))}
         </ol>
       </div>

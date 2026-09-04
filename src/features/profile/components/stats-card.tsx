@@ -24,10 +24,12 @@ export function StatsCard({
   return (
     <div
       className={cn(
-        "border-2 border-foreground p-4 shadow-sm",
+        "card-hover relative overflow-hidden border-2 border-foreground p-4 shadow-sm",
         tone === "accent" && "bg-accent",
         tone === "primary" && "bg-primary text-primary-foreground",
         tone === "default" && "bg-surface",
+        // Kilau lembut di pojok — kedalaman tanpa mengubah warna inti
+        "after:pointer-events-none after:absolute after:inset-0 after:bg-[radial-gradient(6rem_4rem_at_90%_-20%,color-mix(in_srgb,white_28%,transparent),transparent_70%)]",
         className,
       )}
     >

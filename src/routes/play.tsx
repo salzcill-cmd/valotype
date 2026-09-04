@@ -158,7 +158,13 @@ export default function PlayRoute() {
 
           {/* Pilihan mode */}
           <section>
-            <h2 className="mb-3 font-display text-xl font-bold">Pilih Arena</h2>
+            <div className="mb-3 flex items-center gap-3">
+              <span
+                aria-hidden="true"
+                className="h-5 w-2 border-2 border-foreground bg-primary shadow-sm"
+              />
+              <h2 className="font-display text-xl font-bold">Pilih Arena</h2>
+            </div>
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {GAMES.map((game) => (
                 <Link key={game.title} to={game.to} className="group block">
@@ -244,24 +250,34 @@ function GameCard({
   return (
     <div
       className={cn(
-        "flex h-full flex-col gap-2 border-2 border-foreground bg-surface p-4 shadow transition-all",
+        "card-hover relative flex h-full flex-col gap-2 overflow-hidden border-2 border-foreground bg-surface p-4 shadow",
         ready ? "group-hover:shadow-lg" : "opacity-60",
       )}
     >
-      <span className="text-3xl" aria-hidden="true">
+      {/* strip aksen atas — muncul saat hover */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-accent transition-transform duration-300 ease-out group-hover:scale-x-100"
+      />
+      <span
+        aria-hidden="true"
+        className="flex h-11 w-11 items-center justify-center border-2 border-foreground bg-background text-2xl shadow-sm transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:rotate-3"
+      >
         {icon}
       </span>
-      <span className="font-display text-base font-bold">{title}</span>
+      <span className="mt-1 font-display text-base font-bold transition-colors duration-200 group-hover:text-primary">
+        {title}
+      </span>
       <span className="text-sm text-muted">{desc}</span>
       <span
         className={cn(
-          "mt-1 inline-flex w-fit border-2 border-foreground px-3 py-1 font-mono text-xs font-bold tracking-widest uppercase shadow-sm",
+          "mt-1 inline-flex w-fit border-2 border-foreground px-3 py-1 font-mono text-xs font-bold tracking-widest uppercase shadow-sm transition-all duration-200",
           ready
-            ? "bg-primary text-primary-foreground group-hover:shadow-hover"
+            ? "bg-primary text-primary-foreground group-hover:shadow-hover group-hover:brightness-110"
             : "bg-background text-muted",
         )}
       >
-        {cta}
+        {cta} {ready ? "→" : "🔒"}
       </span>
     </div>
   )
@@ -269,7 +285,7 @@ function GameCard({
 
 function QuickStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="border-2 border-foreground bg-surface px-3 py-2 shadow-sm">
+    <div className="border-2 border-foreground bg-surface px-3 py-2 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
       <p className="truncate font-mono text-lg font-bold tabular-nums">{value}</p>
       <p className="truncate font-mono text-[0.625rem] font-bold tracking-widest text-muted uppercase">
         {label}

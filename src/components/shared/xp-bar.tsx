@@ -26,10 +26,15 @@ export function XpBar({ xpInLevel, xpToNext, className }: XpBarProps) {
         aria-valuemin={0}
         aria-valuemax={100}
         aria-label="Progres XP"
-        className="h-5 w-full overflow-hidden border-2 border-foreground bg-background shadow-sm"
+        className="relative h-5 w-full overflow-hidden border-2 border-foreground bg-background shadow-sm transition-shadow hover:shadow-hover"
       >
+        {/* kilau diagonal berjalan di atas fill */}
         <div
-          className="h-full bg-accent transition-[width] duration-300 ease-out"
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-10 anim-shimmer bg-[linear-gradient(120deg,transparent_25%,rgb(255_255_255/0.4)_50%,transparent_75%)] bg-[length:200%_100%]"
+        />
+        <div
+          className="h-full bg-accent transition-[width] duration-500 ease-out"
           style={{ width: `${percent}%` }}
         />
       </div>

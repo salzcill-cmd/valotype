@@ -169,10 +169,19 @@ export function GameScreen({
       {/* Kartu mengetik */}
       <section
         className={cn(
-          "relative flex flex-col gap-4 border-2 border-foreground bg-surface p-4 shadow-lg sm:p-6",
+          "relative flex flex-col gap-4 border-2 border-foreground bg-surface p-4 shadow-lg transition-shadow duration-300 sm:p-6",
+          status === "playing" && "shadow-xl",
           (status === "paused" || status === "completed") && "select-none",
         )}
       >
+        {/* hairline aksen atas — mode aktif */}
+        <span
+          aria-hidden="true"
+          className={cn(
+            "absolute inset-x-0 top-0 h-1 origin-left bg-primary transition-transform duration-300",
+            status === "playing" ? "scale-x-100" : "scale-x-0",
+          )}
+        />
         <p className="font-mono text-xs font-bold tracking-widest text-muted uppercase">
           {mode === "blitz" && "30 detik — secepat mungkin!"}
           {mode === "fortress" && "Jangan salah ketik — setiap error merusak benteng!"}
@@ -265,7 +274,7 @@ function BlitzTimer({ remainingMs }: { remainingMs: number }) {
     <span
       className={cn(
         "border-2 border-foreground px-3 py-2 font-mono text-xl font-bold tabular-nums shadow-sm",
-        urgent ? "bg-danger text-white" : "bg-surface",
+        urgent ? "anim-glow-pulse bg-danger text-white" : "bg-surface",
       )}
       role="timer"
       aria-label={`Sisa waktu ${seconds} detik`}
