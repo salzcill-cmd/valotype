@@ -18,6 +18,7 @@ export function SignupForm() {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const [localError, setLocalError] = useState<string | null>(null)
 
   const onSubmit = async (event: FormEvent) => {
@@ -43,6 +44,15 @@ export function SignupForm() {
     }
   }
 
+  const passwordStrengths =
+    password.length === 0
+      ? null
+      : password.length < 8
+        ? { label: "Terlalu pendek", className: "bg-danger", text: "text-danger" }
+        : password.length < 12
+          ? { label: "Cukup", className: "bg-accent", text: "text-foreground" }
+          : { label: "Kuat 💪", className: "bg-success", text: "text-success" }
+
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4" noValidate>
       {(signupError || localError) && (
@@ -62,6 +72,7 @@ export function SignupForm() {
           id="signup-username"
           required
           autoComplete="username"
+          autoFocus
           placeholder="raka123"
           className={inputClass}
           value={username}
@@ -90,23 +101,50 @@ export function SignupForm() {
         <label htmlFor="signup-password" className={labelClass}>
           Password
         </label>
-        <input
-          id="signup-password"
-          type="password"
-          required
-          autoComplete="new-password"
-          placeholder="Minimal 8 karakter"
-          className={inputClass}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="relative">
+          <input
+            id="signup-password"
+            type={showPassword ? "text" : "password"}
+            required
+            autoComplete="new-password"
+            placeholder="Minimal 8 karakter"
+            className={cn(inputClass, "pr-12")}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((value) => !value)}
+            aria-pressed={showPassword}
+            aria-label={showPassword ? "Sembunyikan password" : "Lihat password"}
+            className="absolute inset-y-0 right-0 flex w-11 items-center justify-center border-l-2 border-foreground font-mono text-sm font-bold text-muted transition-colors hover:bg-background hover:text-foreground"
+          >
+            {showPassword ? "🙈" : "👁"}
+          </button>
+        </div>
+        {/* Indikator kekuatan password */}
+        {passwordStrengths && (
+          <div className="mt-1 flex items-center gap-2">
+            <div className="h-2 w-16 overflow-hidden border-2 border-foreground bg-background">
+              <div
+                className={`h-full ${passwordStrengths.className} transition-[width] duration-300`}
+                style={{
+                  width: password.length < 8 ? "33%" : password.length < 12 ? "66%" : "100%",
+                }}
+              />
+            </div>
+            <span className={`font-mono text-xs font-bold ${passwordStrengths.text}`}>
+              {passwordStrengths.label}
+            </span>
+          </div>
+        )}
       </div>
 
       <button
         type="submit"
         disabled={signupPending}
         className={cn(
-          "mt-1 border-2 border-foreground bg-primary px-6 py-3 font-display text-base font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[2px] active:translate-y-[2px] active:shadow-active disabled:cursor-not-allowed disabled:opacity-60",
+          "btn-shine mt-1 border-2 border-foreground bg-primary px-6 py-3 font-display text-base font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[2px] active:translate-y-[2px] active:shadow-active disabled:cursor-not-allowed disabled:opacity-60",
         )}
       >
         {signupPending ? "Membuat akun…" : "→ Buat Akun"}

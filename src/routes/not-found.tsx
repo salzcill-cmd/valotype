@@ -1,9 +1,10 @@
 import { Link } from "react-router"
-
 import { ValoMascot } from "@/components/shared/valo-mascot"
+import { usePageTitle } from "@/hooks/use-page-title"
 
 /** Halaman 404 (TODO 8.8): route tak dikenal → pesan ramah + CTA pulang. */
 export default function NotFoundRoute() {
+  usePageTitle("404 · Halaman Tidak Ditemukan")
   return (
     <main className="mx-auto flex w-full max-w-xl flex-col items-center justify-center gap-5 px-4 py-16 text-center">
       <ValoMascot pose="confused" size={80} />

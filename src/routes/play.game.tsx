@@ -1,8 +1,8 @@
 import { useState } from "react"
-
 import { GameScreen } from "@/components/game/game-screen"
 import { useProgressView } from "@/features/progress/progress-store"
 import { recommendDifficulty } from "@/features/typing/engine/adaptive-difficulty"
+import { usePageTitle } from "@/hooks/use-page-title"
 import type { TypingContent } from "@/lib/content"
 import { getRandomContent } from "@/lib/content"
 
@@ -11,6 +11,7 @@ import { getRandomContent } from "@/lib/content"
  * Difficulty menyesuaikan performa 5 sesi terakhir (TODO 5.6 adaptive).
  */
 export default function PlayGameRoute() {
+  usePageTitle("Latihan Bebas ⌨️")
   const { recentSessions } = useProgressView()
 
   const [content] = useState<TypingContent>(() => {

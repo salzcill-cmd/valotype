@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router"
-
 import { GameScreen } from "@/components/game/game-screen"
+import { usePageTitle } from "@/hooks/use-page-title"
 import type { TypingContent } from "@/lib/content"
 import { useTRPC } from "@/lib/trpc"
 
@@ -11,6 +11,7 @@ import { useTRPC } from "@/lib/trpc"
  * (diterapkan server saat submit). Tanpa bonus ganda — anti farming.
  */
 export default function PlayDailyRoute() {
+  usePageTitle("Tantangan Harian 🌅")
   const trpc = useTRPC()
   const query = useQuery(trpc.dailyChallenge.getCurrent.queryOptions({ date: undefined }))
 

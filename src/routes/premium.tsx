@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router"
-
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/features/auth/hooks/use-auth"
 import {
@@ -8,6 +7,7 @@ import {
   type PremiumPlanId,
   useSubscription,
 } from "@/features/premium/hooks/use-subscription"
+import { usePageTitle } from "@/hooks/use-page-title"
 import { cn } from "@/lib/utils"
 
 /** Fitur Free vs Premium (prd.md §21 — tabel jujur, tanpa manipulasi). */
@@ -59,6 +59,7 @@ const FEATURE_ROWS: Array<{ feature: string; free: string; premium: string; high
   ]
 
 export default function PremiumRoute() {
+  usePageTitle("Premium 💛")
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { isAuthed, isAuthLoading, isPremium, user } = useAuth()

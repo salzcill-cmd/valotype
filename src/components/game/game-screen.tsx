@@ -17,6 +17,7 @@ import {
 import type { ScoreFn, TypingGameResult } from "@/features/typing/engine/types"
 import { useFinishSession } from "@/features/typing/hooks/use-finish-session"
 import { useTypingGame } from "@/features/typing/hooks/use-typing-game"
+import { usePageTitle } from "@/hooks/use-page-title"
 import type { TypingContent } from "@/lib/content"
 import { getRandomContent } from "@/lib/content"
 import { cn } from "@/lib/utils"
@@ -62,6 +63,7 @@ export function GameScreen({
   scoreFn,
   pace,
 }: GameScreenProps) {
+  usePageTitle(`${icon} ${title}`)
   const finishSession = useFinishSession(mode)
   const [initialContent] = useState<TypingContent>(() => content ?? getRandomContent())
   const typingRef = useRef<HTMLDivElement>(null)

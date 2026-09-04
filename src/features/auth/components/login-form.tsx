@@ -15,6 +15,7 @@ export function LoginForm() {
   const { login, loginPending, loginError } = useAuth()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault()
@@ -47,6 +48,7 @@ export function LoginForm() {
           type="email"
           required
           autoComplete="email"
+          autoFocus
           placeholder="kamu@email.com"
           className={inputClass}
           value={email}
@@ -58,23 +60,34 @@ export function LoginForm() {
         <label htmlFor="login-password" className={labelClass}>
           Password
         </label>
-        <input
-          id="login-password"
-          type="password"
-          required
-          autoComplete="current-password"
-          placeholder="••••••••"
-          className={inputClass}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="relative">
+          <input
+            id="login-password"
+            type={showPassword ? "text" : "password"}
+            required
+            autoComplete="current-password"
+            placeholder="••••••••"
+            className={cn(inputClass, "pr-12")}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((value) => !value)}
+            aria-pressed={showPassword}
+            aria-label={showPassword ? "Sembunyikan password" : "Lihat password"}
+            className="absolute inset-y-0 right-0 flex w-11 items-center justify-center border-l-2 border-foreground font-mono text-sm font-bold text-muted transition-colors hover:bg-background hover:text-foreground"
+          >
+            {showPassword ? "🙈" : "👁"}
+          </button>
+        </div>
       </div>
 
       <button
         type="submit"
         disabled={loginPending}
         className={cn(
-          "mt-1 border-2 border-foreground bg-primary px-6 py-3 font-display text-base font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[2px] active:translate-y-[2px] active:shadow-active disabled:cursor-not-allowed disabled:opacity-60",
+          "btn-shine mt-1 border-2 border-foreground bg-primary px-6 py-3 font-display text-base font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[2px] active:translate-y-[2px] active:shadow-active disabled:cursor-not-allowed disabled:opacity-60",
         )}
       >
         {loginPending ? "Memasuki arena…" : "→ Masuk"}

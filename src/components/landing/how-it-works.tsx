@@ -24,7 +24,7 @@ export function HowItWorks() {
     <section
       id="cara-kerja"
       aria-labelledby="cara-kerja-title"
-      className="border-y-2 border-foreground bg-surface"
+      className="scroll-mt-20 border-y-2 border-foreground bg-surface"
     >
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <h2

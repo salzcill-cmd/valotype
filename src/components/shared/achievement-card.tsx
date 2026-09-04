@@ -37,16 +37,25 @@ export function AchievementCard({
   return (
     <div
       className={cn(
-        "relative flex h-full flex-col gap-1.5 border-2 border-foreground p-4 shadow-sm",
+        "group card-hover relative flex h-full flex-col gap-1.5 border-2 border-foreground p-4 shadow-sm",
         unlocked ? "bg-surface" : "bg-surface/60",
       )}
       aria-disabled={!unlocked}
     >
+      {/* strip aksen rarity di sisi kiri */}
+      <span
+        aria-hidden="true"
+        className={cn(
+          "absolute inset-y-0 left-0 w-1.5 transition-opacity",
+          unlocked ? "bg-primary opacity-100" : "opacity-20",
+        )}
+      />
+
       <div className="flex items-start justify-between gap-2">
         <span
           aria-hidden="true"
           className={cn(
-            "flex h-12 w-12 items-center justify-center border-2 border-foreground text-2xl shadow-sm",
+            "flex h-12 w-12 items-center justify-center border-2 border-foreground text-2xl shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3",
             unlocked ? "bg-accent" : "bg-background grayscale",
           )}
         >
@@ -66,7 +75,11 @@ export function AchievementCard({
       <p className="flex-1 font-mono text-xs leading-relaxed text-muted">{description}</p>
 
       <div className="flex items-center justify-between gap-2 border-t-2 border-dashed border-foreground/30 pt-2">
-        <span className="font-mono text-xs font-bold text-primary">+{xpReward} XP</span>
+        <span
+          className={cn("font-mono text-xs font-bold", unlocked ? "text-primary" : "text-muted")}
+        >
+          +{xpReward} XP
+        </span>
         <span className="font-mono text-[0.65rem] font-bold tracking-widest text-muted uppercase">
           {unlocked && unlockedAt ? `Dibuka ${formatDate(unlockedAt)}` : category}
         </span>

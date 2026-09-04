@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { Link } from "react-router"
-
 import { LeaderboardRow } from "@/components/shared/leaderboard-row"
 import { Reveal } from "@/components/shared/reveal"
 import { useAuth } from "@/features/auth/hooks/use-auth"
 import type { RankId } from "@/features/progress/ranks"
+import { usePageTitle } from "@/hooks/use-page-title"
 import { useTRPC } from "@/lib/trpc"
 import { cn } from "@/lib/utils"
 
@@ -24,6 +24,7 @@ interface RowData {
 }
 
 export default function LeaderboardRoute() {
+  usePageTitle("Leaderboard 🏆")
   const [tab, setTab] = useState<Tab>("global")
   const [count, setCount] = useState(PAGE_SIZE)
   const { isAuthed, isAuthLoading } = useAuth()

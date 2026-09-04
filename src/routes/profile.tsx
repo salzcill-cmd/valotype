@@ -1,5 +1,4 @@
 import { Link } from "react-router"
-
 import { LevelBadge } from "@/components/shared/level-badge"
 import { RankBadge } from "@/components/shared/rank-badge"
 import { XpBar } from "@/components/shared/xp-bar"
@@ -8,8 +7,10 @@ import { AnalyticsDashboard } from "@/features/profile/components/analytics-dash
 import { StatsCard } from "@/features/profile/components/stats-card"
 import { useProfileView } from "@/features/profile/use-profile-view"
 import { formatRankLabel } from "@/features/progress/rank-calculator"
+import { usePageTitle } from "@/hooks/use-page-title"
 
 export default function ProfileRoute() {
+  usePageTitle("Profil")
   const { isAuthed, isAuthLoading } = useAuth()
 
   // Tamu → ajakan simpan progres; login → profil server (TODO 3.3)

@@ -1,8 +1,8 @@
 import { useEffect } from "react"
 import { Link, Navigate, useParams, useSearchParams } from "react-router"
-
 import { GameScreen } from "@/components/game/game-screen"
 import { setActiveChallenge } from "@/features/typing/challenge"
+import { usePageTitle } from "@/hooks/use-page-title"
 import { getContentById } from "@/lib/content"
 
 function readInt(value: string | null, fallback: number): number {
@@ -16,6 +16,7 @@ function readInt(value: string | null, fallback: number): number {
  * pengirim tantangan di result screen.
  */
 export default function ChallengeRoute() {
+  usePageTitle("Tantangan ⚔️")
   const { contentId } = useParams()
   const [searchParams] = useSearchParams()
   const content = contentId ? getContentById(contentId) : undefined

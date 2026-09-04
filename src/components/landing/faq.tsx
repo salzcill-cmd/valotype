@@ -43,7 +43,7 @@ export function Faq() {
     <section
       id="faq"
       aria-labelledby="faq-title"
-      className="border-y-2 border-foreground bg-surface"
+      className="scroll-mt-20 border-y-2 border-foreground bg-surface"
     >
       <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
         <h2

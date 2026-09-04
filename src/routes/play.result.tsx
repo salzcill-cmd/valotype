@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { Link, Navigate, useNavigate } from "react-router"
-
 import { LevelBadge } from "@/components/shared/level-badge"
 import { RankBadge } from "@/components/shared/rank-badge"
 import { StreakDisplay } from "@/components/shared/streak-display"
@@ -18,6 +17,7 @@ import type { ShareCardData, ShareFormat } from "@/features/typing/components/sh
 import { ShareSection } from "@/features/typing/components/share-section"
 import { WeaknessReport } from "@/features/typing/components/weakness-report"
 import { useCountUp } from "@/hooks/use-count-up"
+import { usePageTitle } from "@/hooks/use-page-title"
 import { cn } from "@/lib/utils"
 
 const primaryButtonClass =
@@ -67,6 +67,7 @@ function resultHeading(session: { gameMode: string; failed: boolean; completed: 
 }
 
 export default function PlayResultRoute() {
+  usePageTitle("Hasil")
   const navigate = useNavigate()
   const session = useLastSessionStore((s) => s.session)
   const outcome = useLastSessionStore((s) => s.outcome)

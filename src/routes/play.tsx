@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router"
-
 import { Sidebar } from "@/components/layout/sidebar"
 import { RankBadge } from "@/components/shared/rank-badge"
 import { streakMilestoneMessage } from "@/components/shared/streak-display"
@@ -8,6 +7,7 @@ import { GuestPrompt } from "@/features/auth/components/guest-prompt"
 import { useAuth } from "@/features/auth/hooks/use-auth"
 import { useProfileView } from "@/features/profile/use-profile-view"
 import { formatRankLabel } from "@/features/progress/rank-calculator"
+import { usePageTitle } from "@/hooks/use-page-title"
 import { useTRPC } from "@/lib/trpc"
 import { cn } from "@/lib/utils"
 
@@ -63,6 +63,7 @@ const GAMES = [
 ]
 
 export default function PlayRoute() {
+  usePageTitle("Main · Arena")
   const view = useProfileView()
   const last = view.lastSession
   const hasPlayed = view.totalSessions > 0

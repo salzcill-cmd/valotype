@@ -35,7 +35,7 @@ export function GamePreview() {
     <section
       id="fitur"
       aria-labelledby="fitur-title"
-      className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6"
+      className="scroll-mt-20 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6"
     >
       <h2
         id="fitur-title"

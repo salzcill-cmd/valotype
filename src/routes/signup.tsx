@@ -1,8 +1,8 @@
 import { Link, Navigate } from "react-router"
-
 import { AuthShell } from "@/features/auth/components/auth-shell"
 import { SignupForm } from "@/features/auth/components/signup-form"
 import { useAuth } from "@/features/auth/hooks/use-auth"
+import { usePageTitle } from "@/hooks/use-page-title"
 
 const BENEFITS = [
   "Progres tersimpan lintas perangkat",
@@ -11,6 +11,7 @@ const BENEFITS = [
 ]
 
 export default function SignupRoute() {
+  usePageTitle("Daftar")
   const { isAuthed, isAuthLoading } = useAuth()
 
   if (!isAuthLoading && isAuthed) return <Navigate to="/play" replace />

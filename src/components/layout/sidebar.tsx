@@ -71,19 +71,36 @@ export function Sidebar({ className }: { className?: string }) {
           <p className="font-mono text-xs text-muted">🏆 Kamu sudah di rank tertinggi!</p>
         )}
         <Link
-          to="/play"
-          className="mt-2 inline-block font-mono text-xs font-bold text-primary underline underline-offset-2"
+          to="/profile"
+          className="mt-2 inline-block border-2 border-foreground bg-accent px-2.5 py-1 font-mono text-xs font-bold uppercase shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
         >
-          Lihat progres →
+          Progres Lengkap →
         </Link>
       </div>
+
+      {/* Ajakan akun: guest → daftar; user → profil */}
+      {!isAuthed && (
+        <div className="border-2 border-dashed border-foreground/40 bg-background p-4 text-center">
+          <p className="font-mono text-xs leading-relaxed text-muted">
+            Progresmu hanya di perangkat ini.{" "}
+            <span className="font-bold text-foreground">Buat akun gratis</span> agar tersimpan
+            selamanya.
+          </p>
+          <Link
+            to="/signup"
+            className="btn-shine mt-2 block border-2 border-foreground bg-primary px-3 py-1.5 font-display text-xs font-bold tracking-widest text-primary-foreground uppercase shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+          >
+            Daftar Gratis
+          </Link>
+        </div>
+      )}
     </aside>
   )
 }
 
 function SideStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="border-2 border-foreground bg-surface px-3 py-2 shadow-sm">
+    <div className="border-2 border-foreground bg-surface px-3 py-2 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
       <p className="truncate font-mono text-lg font-bold tabular-nums">{value}</p>
       <p className="truncate font-mono text-[0.625rem] font-bold tracking-widest text-muted uppercase">
         {label}

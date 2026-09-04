@@ -19,6 +19,7 @@ import { parseKeyEvent, shouldPreventDefault } from "@/features/typing/engine/in
 import type { TypingGameResult } from "@/features/typing/engine/types"
 import { calculateWpm } from "@/features/typing/engine/wpm"
 import { useFinishSession } from "@/features/typing/hooks/use-finish-session"
+import { usePageTitle } from "@/hooks/use-page-title"
 import type { TypingContent } from "@/lib/content"
 import { cn } from "@/lib/utils"
 
@@ -29,6 +30,7 @@ import { cn } from "@/lib/utils"
  * kata × akurasi (formula standar, paritas verifikasi server).
  */
 export function ComboCascadeGame() {
+  usePageTitle("🔥 Combo Cascade")
   const finishSession = useFinishSession("cascade")
   const pool = useMemo(() => buildCascadeWordPool(), [])
 

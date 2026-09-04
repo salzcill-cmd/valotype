@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router"
-
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/dialog"
 import { useAuth } from "@/features/auth/hooks/use-auth"
 import { ThemeSelector } from "@/features/settings/components/theme-selector"
+import { usePageTitle } from "@/hooks/use-page-title"
 import { cn } from "@/lib/utils"
 import { type Theme, usePreferencesStore } from "@/stores/preferences-store"
 
@@ -28,6 +28,7 @@ const knobClass = (active: boolean) =>
   )
 
 export default function SettingsRoute() {
+  usePageTitle("Pengaturan ⚙️")
   const navigate = useNavigate()
   const theme = usePreferencesStore((s) => s.theme)
   const accentTheme = usePreferencesStore((s) => s.accentTheme)
@@ -66,9 +67,15 @@ export default function SettingsRoute() {
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 lg:py-8">
-      <header>
-        <h1 className="font-display text-3xl font-bold">PENGATURAN ⚙️</h1>
-        <p className="mt-1 text-muted">Tampilan, gerakan, dan akun.</p>
+      <header className="flex items-center gap-3">
+        <span
+          aria-hidden="true"
+          className="h-10 w-3 border-2 border-foreground bg-primary shadow-sm"
+        />
+        <div>
+          <h1 className="font-display text-3xl font-bold">PENGATURAN ⚙️</h1>
+          <p className="mt-0.5 text-muted">Tampilan, gerakan, dan akun.</p>
+        </div>
       </header>
 
       {notice && (
@@ -82,7 +89,13 @@ export default function SettingsRoute() {
 
       {/* Tampilan */}
       <section className={cn(sectionClass, "mt-5")}>
-        <h2 className="font-display text-base font-bold">Tampilan</h2>
+        <div className="flex items-center gap-2">
+          <span
+            aria-hidden="true"
+            className="h-4 w-1.5 border-2 border-foreground bg-primary shadow-sm"
+          />
+          <h2 className="font-display text-base font-bold">Tampilan</h2>
+        </div>
         <p className="mt-0.5 font-mono text-xs text-muted">Terang / gelap / ikut sistem</p>
         <fieldset className="mt-3 flex border-2 border-foreground shadow-sm">
           <legend className="sr-only">Mode terang-gelap</legend>
@@ -117,7 +130,13 @@ export default function SettingsRoute() {
 
       {/* Gerakan & suara */}
       <section className={cn(sectionClass, "mt-4")}>
-        <h2 className="font-display text-base font-bold">Gerakan & Suara</h2>
+        <div className="flex items-center gap-2">
+          <span
+            aria-hidden="true"
+            className="h-4 w-1.5 border-2 border-foreground bg-primary shadow-sm"
+          />
+          <h2 className="font-display text-base font-bold">Gerakan & Suara</h2>
+        </div>
 
         <div className="mt-3 flex items-center justify-between gap-4">
           <div>
@@ -130,6 +149,7 @@ export default function SettingsRoute() {
             type="button"
             role="switch"
             aria-checked={reducedMotion}
+            aria-label="Kurangi gerakan"
             onClick={toggleReducedMotion}
             className={switchClass(reducedMotion)}
           >
@@ -146,6 +166,7 @@ export default function SettingsRoute() {
             type="button"
             role="switch"
             aria-checked={soundEnabled}
+            aria-label="Efek suara"
             onClick={toggleSound}
             className={switchClass(soundEnabled)}
           >
@@ -156,7 +177,13 @@ export default function SettingsRoute() {
 
       {/* Akun */}
       <section className={cn(sectionClass, "mt-4")}>
-        <h2 className="font-display text-base font-bold">Akun</h2>
+        <div className="flex items-center gap-2">
+          <span
+            aria-hidden="true"
+            className="h-4 w-1.5 border-2 border-foreground bg-primary shadow-sm"
+          />
+          <h2 className="font-display text-base font-bold">Akun</h2>
+        </div>
 
         {isAuthLoading ? (
           <p className="mt-2 font-mono text-sm text-muted">Memuat…</p>
