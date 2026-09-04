@@ -11,6 +11,8 @@
 [![Drizzle](https://img.shields.io/badge/Drizzle_ORM-C5F74F?logo=drizzle&logoColor=000)](https://orm.drizzle.team/)
 [![Tailwind](https://img.shields.io/badge/Tailwind_CSS_4-38BDF8?logo=tailwindcss&logoColor=fff)](https://tailwindcss.com/)
 [![Biome](https://img.shields.io/badge/Biome-60A5FA?logo=biome&logoColor=fff)](https://biomejs.dev/)
+[![CI](https://github.com/salzcill-cmd/valotype/actions/workflows/ci.yml/badge.svg)](https://github.com/salzcill-cmd/valotype/actions/workflows/ci.yml)
+[![Deploy](https://github.com/salzcill-cmd/valotype/actions/workflows/deploy.yml/badge.svg)](https://github.com/salzcill-cmd/valotype/actions/workflows/deploy.yml)
 
 </div>
 
@@ -49,8 +51,9 @@
 | Frontend | React 19 · Vite 8 · TypeScript · Tailwind CSS 4 · Radix UI |
 | Data client | TanStack Query · Zustand (persist) · tRPC client |
 | Backend | tRPC server (node-http) · Drizzle ORM · PostgreSQL |
+| Produksi | Vercel (static + serverless function `/api/trpc`) · Neon Postgres |
 | Auth | bcryptjs + sesi (AUTH_SECRET) |
-| Lainnya | Biome (lint+format) · Playwright (audit UI) |
+| Lainnya | Biome (lint+format) · Playwright (audit UI) · GitHub Actions |
 
 ## 🚀 Menjalankan Lokal
 
@@ -86,6 +89,8 @@ Dengan **npm**: ganti `bun` → `npm` (mis. `npm run dev`).
 
 | Perintah | Fungsi |
 | --- | --- |
+| `vercel dev` | Menjalankan full-stack lokal (frontend + API) |
+| `vercel deploy --prod` | Deploy manual ke Vercel production |
 | `bun run dev` | Dev server (Vite + HMR) |
 | `bun run build` | Typecheck + build produksi (`dist/`) |
 | `bun run preview` | Preview build produksi |
@@ -98,6 +103,8 @@ Dengan **npm**: ganti `bun` → `npm` (mis. `npm run dev`).
 ## 📁 Struktur Proyek
 
 ```
+api/              # Vercel serverless function tRPC (/api/trpc/*)
+.github/          # GitHub Actions: CI + Deploy ke Vercel
 src/
 ├── app/          # Router & providers (QueryClient, tRPC)
 ├── components/   # game, landing, layout, shared, ui (shadcn)
@@ -113,6 +120,60 @@ src/
 docs/             # screenshot UI (dipakai README)
 ```
 
+## ☁️ Deploy ke Vercel
+
+Frontend di-_build_ sebagai statis (`dist/`), sementara API tRPC berjalan sebagai
+serverless function di `api/trpc/[...path].ts` (Node runtime, endpoint `/api/trpc/*` —
+sama dengan dev server).
+
+### 1. Database produksi (Neon Postgres)
+
+1. Buat project di [Neon](https://neon.tech) (free tier) dan salin *connection string*
+   (mis. `postgresql://user:password@ep-xxx.region.neon.tech/neondb?sslmode=require`).
+2. Push skema:
+   ```bash
+   DATABASE_URL="<neon-url>" bun run db:push
+   ```
+
+### 2. Project Vercel
+
+1. Import repo di [vercel.com/new](https://vercel.com/new) (framework terdeteksi otomatis:
+   Vite, build `bun run build`, output `dist` — lihat `vercel.json`).
+2. Tambahkan **Environment Variables** (Production + Preview):
+
+   | Variabel | Wajib? | Keterangan |
+   | --- | --- | --- |
+   | `DATABASE_URL` | ✅ | Connection string Neon |
+   | `AUTH_SECRET` | ✅ | `bunx openssl rand -base64 32` — sama di semua env |
+   | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | opsional | OAuth Google |
+   | `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` | opsional | Pembayaran (mock default) |
+
+3. Deploy pertama otomatis; tiap push ke `main` di-deploy ulang lewat workflow
+   `deploy.yml` (atau integrasi GitHub bawaan Vercel).
+
+### 3. Deploy manual via CLI
+
+```bash
+bunx vercel login
+bunx vercel link
+bunx vercel deploy --prod
+```
+
+## 🤖 CI/CD
+
+| Workflow | Trigger | Isi |
+| --- | --- | --- |
+| `ci.yml` | push `main` & PR | `bun install` → typecheck → lint → build |
+| `deploy.yml` | push `main` + manual | build & deploy ke Vercel production (`--prebuilt`) |
+
+Secrets GitHub yang dibutuhkan untuk deploy otomatis:
+
+| Secret | Dari mana |
+| --- | --- |
+| `VERCEL_TOKEN` | Vercel Dashboard → Account → Tokens |
+| `VERCEL_ORG_ID` | `bunx vercel link` → `.vercel/project.json` → `orgId` |
+| `VERCEL_PROJECT_ID` | Sama, `projectId` |
+
 ## 📚 Dokumentasi Produk
 
 - [`prd.md`](./prd.md) — Product Requirements Document
@@ -125,6 +186,10 @@ docs/             # screenshot UI (dipakai README)
 ```bash
 bun run typecheck && bun run lint && bun run build
 ```
+
+Seluruh pipeline ini juga dijalankan otomatis oleh **GitHub Actions** (`ci.yml`)
+pada setiap push/PR — regresi langsung terlihat sebelum merge.
+
 
 Audit UI headless (overflow, error konsol, touch target) dijalankan dengan Playwright pada 10 ukuran viewport (320px → 1920px).
 
