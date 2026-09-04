@@ -48,14 +48,27 @@ export default function PlayDailyRoute() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="border-b-2 border-foreground bg-accent">
-        <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
-          <p className="truncate font-mono text-xs font-bold tracking-widest uppercase">
-            🌅 Tantangan Harian · {formatDate(data.date)}
+      <div className="relative overflow-hidden border-b-2 border-foreground bg-accent">
+        {/* kilau lembut berjalan */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 anim-shimmer bg-[linear-gradient(115deg,transparent_35%,rgb(255_255_255/0.3)_50%,transparent_65%)] bg-[length:220%_100%]"
+        />
+        <div className="relative mx-auto flex w-full max-w-3xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
+          <p className="flex min-w-0 items-center gap-2.5 font-mono text-xs font-bold tracking-widest uppercase">
+            <span
+              aria-hidden="true"
+              className="flex h-7 w-7 shrink-0 items-center justify-center border-2 border-foreground bg-primary text-sm shadow-sm"
+            >
+              🌅
+            </span>
+            <span className="truncate">
+              Tantangan Harian · <span className="text-primary">{formatDate(data.date)}</span>
+            </span>
           </p>
           <Link
             to="/play"
-            className="shrink-0 border border-foreground bg-surface px-2 py-1 font-mono text-xs font-bold uppercase shadow-sm"
+            className="shrink-0 border-2 border-foreground bg-surface px-2.5 py-1 font-mono text-xs font-bold uppercase shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
           >
             ← Batal
           </Link>
