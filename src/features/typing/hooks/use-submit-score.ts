@@ -33,6 +33,7 @@ export function useSubmitScore() {
           maxCombo: session.maxCombo,
           durationMs: session.durationMs,
           completed: session.completed,
+          errorKeys: session.errorCharCounts,
         })
         return res
       } catch {

@@ -864,21 +864,21 @@
 
 ### 6.6 SEO
 
-- [ ] Setup metadata
-  - [ ] Title tags per page
-  - [ ] Meta description
-  - [ ] Open Graph tags
-  - [ ] Favicon
+- [x] Setup metadata
+  - [x] Title tags per page
+  - [x] Meta description
+  - [x] Open Graph tags
+  - [x] Favicon
 
-- [ ] Buat `public/robots.txt`
-- [ ] Buat `public/sitemap.xml`
+- [x] Buat `public/robots.txt`
+- [x] Buat `public/sitemap.xml`
 
 ### 6.7 Content
 
-- [ ] Expand typing content
-  - [ ] Minimal 50+ teks Indonesia
-  - [ ] Categories: school, tech, science, sports, culture, environment
-  - [ ] Difficulty levels 1-5
+- [x] Expand typing content
+  - [x] Minimal 50+ teks Indonesia
+  - [x] Categories: school, tech, science, sports, culture, environment
+  - [x] Difficulty levels 1-5
 
 ### Phase 6 Verification
 
@@ -905,73 +905,77 @@
 
 ### 7.1 Premium Subscription
 
-- [ ] Setup payment provider (Midtrans/Xendit) — [RESEARCH REQUIRED]
-- [ ] Buat tRPC routes `subscription.*`
-  - [ ] `subscription.getStatus` — check subscription
-  - [ ] `subscription.createCheckout` — create payment
-  - [ ] `subscription.webhook` — handle payment callback
+- [x] Setup payment provider (Stripe-ready; mock default tanpa kredensial — `src/server/payments/provider.ts`)
+- [x] Buat tRPC routes `subscription.*`
+  - [x] `subscription.getStatus` — check subscription
+  - [x] `subscription.createCheckout` — create payment
+  - [x] `subscription.webhook` — handle payment callback
+  - [x] `subscription.confirmMockCheckout` — simulasi callback (dev/E2E)
+  - [x] `subscription.cancel` — batalkan (berlaku sampai akhir periode)
 
-- [ ] Buat `src/routes/premium.tsx`
-  - [ ] Feature comparison table
-  - [ ] Free vs Premium features
-  - [ ] Pricing display
-  - [ ] CTA: "Upgrade ke Premium"
-  - [ ] Style sesuai DESAIN.md
-  - [ ] Jangan manipulatif, jujur tentang value
+- [x] Buat `src/routes/premium.tsx`
+  - [x] Feature comparison table
+  - [x] Free vs Premium features
+  - [x] Pricing display (Rp 39rb/bln · Rp 349rb/thn)
+  - [x] CTA: "Upgrade ke Premium"
+  - [x] Style sesuai DESAIN.md
+  - [x] Jangan manipulatif, jujur tentang value
 
-- [ ] Implement premium gates
-  - [ ] Advanced analytics → premium only
-  - [ ] Custom themes → premium only
-  - [ ] Advanced challenges → premium only
-  - [ ] Core learning → always free
+- [x] Implement premium gates
+  - [x] Advanced analytics → premium only (`premiumProcedure` + UI prompt)
+  - [x] Custom themes → premium only (lock + 🔒 badge)
+  - [x] Advanced challenges → tetap gratis (prd §21: semua mini-game ✅ free)
+  - [x] Core learning → always free
 
 ### 7.2 Advanced Analytics (Premium)
 
-- [ ] Buat `src/features/profile/components/analytics-dashboard.tsx`
-  - [ ] WPM over time (line chart)
-  - [ ] Accuracy trend (line chart)
-  - [ ] Session history table
-  - [ ] Weakness heatmap
-  - [ ] Improvement percentage
-  - [ ] Style sesuai DESAIN.md
+- [x] Buat `src/features/profile/components/analytics-dashboard.tsx`
+  - [x] WPM over time (line chart SVG murni, tanpa lib)
+  - [x] Accuracy trend (line chart)
+  - [x] Session history table
+  - [x] Weakness heatmap
+  - [x] Improvement percentage
+  - [x] Style sesuai DESAIN.md
 
-- [ ] Buat `src/features/typing/components/weakness-heatmap.tsx`
-  - [ ] Visual keyboard heatmap
-  - [ ] Red = weak, Green = strong
-  - [ ] Interactive (hover to see details)
+- [x] Buat `src/features/typing/components/weakness-heatmap.tsx`
+  - [x] Visual keyboard heatmap (QWERTY)
+  - [x] Red = weak, Green = strong
+  - [x] Interactive (hover to see details)
+
+- [x] Server: `profile.getAnalytics` (premium) — trend 30 sesi, improvement %, agregat error keys; `submitResult` kini menyimpan `errorKeys`
 
 ### 7.3 Custom Themes (Premium)
 
-- [ ] Implement theme system
-  - [ ] Default: Neo-Brutalist (red/white)
-  - [ ] Midnight: Dark blue/purple
-  - [ ] Forest: Green/brown
-  - [ ] Sunset: Orange/pink
-  - [ ] Ocean: Teal/blue
+- [x] Implement theme system (`[data-accent]` override CSS vars)
+  - [x] Default: Neo-Brutalist (red/white)
+  - [x] Midnight: Dark blue/purple
+  - [x] Forest: Green/brown
+  - [x] Sunset: Orange/pink
+  - [x] Ocean: Teal/blue
 
-- [ ] Buat `src/features/settings/components/theme-selector.tsx`
-  - [ ] Show all themes with preview
-  - [ ] Premium badge on locked themes
-  - [ ] Apply theme on select
+- [x] Buat `src/features/settings/components/theme-selector.tsx`
+  - [x] Show all themes with preview (swatch warna)
+  - [x] Premium badge on locked themes
+  - [x] Apply theme on select (persist ke localStorage)
 
 ### 7.4 Content Management
 
-- [ ] Buat `src/lib/content.json` — typing content database
-  - [ ] Structured format: id, text, category, difficulty, targetKeys
-  - [ ] 100+ texts
-  - [ ] Easy to add new content
+- [x] Buat `src/lib/content.json` — typing content database
+  - [x] Structured format: id, text, category, difficulty, targetKeys
+  - [x] 100+ texts (105 entries, 7 kategori, difficulty 1–5)
+  - [x] Easy to add new content (edit JSON — `content.ts` loader tanpa code change)
 
-- [ ] Buat admin routes (minimal)
-  - [ ] `admin.getContent` — list content
-  - [ ] `admin.addContent` — add new text
-  - [ ] Protected by admin role
+- [x] Buat admin routes (minimal)
+  - [x] `admin.getContent` — list content (dari DB `typing_contents`)
+  - [x] `admin.addContent` — add new text (+ validasi id unik CONFLICT)
+  - [x] Protected by admin role (`adminProcedure` — env `ADMIN_EMAILS`)
 
 ### 7.5 Internationalization Prep
 
-- [ ] Setup i18n structure (but not full implementation)
-  - [ ] `src/i18n/id.json` — Bahasa Indonesia
-  - [ ] `src/i18n/en.json` — English (placeholder)
-  - [ ] `src/lib/i18n.ts` — translation function
+- [x] Setup i18n structure (but not full implementation)
+  - [x] `src/i18n/id.json` — Bahasa Indonesia (default)
+  - [x] `src/i18n/en.json` — English (placeholder)
+  - [x] `src/lib/i18n.ts` — translation function (`t`/`lookup`, fallback id → key)
 
 ### Phase 7 Verification
 

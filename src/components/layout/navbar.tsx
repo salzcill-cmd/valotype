@@ -60,6 +60,9 @@ export function Navbar() {
           <NavLink to="/achievements" className={navLinkClass}>
             Lencana
           </NavLink>
+          <NavLink to="/premium" className={navLinkClass}>
+            Premium
+          </NavLink>
         </nav>
 
         <div className="flex items-center gap-2">

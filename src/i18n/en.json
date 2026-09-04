@@ -1,0 +1,25 @@
+{
+  "app": {
+    "name": "ValoType",
+    "tagline": "The game that happens to make you great at typing."
+  },
+  "nav": {
+    "play": "Play",
+    "rank": "Rank",
+    "badges": "Badges",
+    "premium": "Premium",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "retry": "Retry"
+  },
+  "home": {
+    "heroTitle": "Type. Score. Level Up.",
+    "ctaPlay": "Start Playing"
+  }
+}

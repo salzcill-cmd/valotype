@@ -10,6 +10,14 @@ type RouterOutput = inferRouterOutputs<AppRouter>
 export type AuthUser = NonNullable<RouterOutput["auth"]["me"]["user"]>
 export type AuthProfile = NonNullable<RouterOutput["auth"]["me"]["profile"]>
 
+/** Premium aktif: flag server menyala & belum lewat masa berlaku (TODO 7.1). */
+function isPremiumActive(user: AuthUser | null): boolean {
+  if (!user) return false
+  if (!user.isPremium) return false
+  if (user.premiumExpiresAt === null) return true // tanpa tanggal = aktif permanen (dev/seed)
+  return new Date(user.premiumExpiresAt).getTime() > Date.now()
+}
+
 /** Progres guest (localStorage) yang disinkronkan saat signup (FR-AUTH-004). */
 export interface GuestProgressPayload {
   totalXp?: number
@@ -103,10 +111,13 @@ export function useAuth() {
   const user: AuthUser | null = meQuery.data?.user ?? null
   const profile: AuthProfile | null = meQuery.data?.profile ?? null
 
+  const isPremium = isPremiumActive(user)
+
   return {
     user,
     profile,
     isAuthed: user !== null,
+    isPremium,
     /** Masih memuat status sesi pertama kali (sebelum cookie dicek). */
     isAuthLoading: meQuery.isLoading,
     signup,

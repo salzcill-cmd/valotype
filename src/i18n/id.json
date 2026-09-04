@@ -1,0 +1,25 @@
+{
+  "app": {
+    "name": "ValoType",
+    "tagline": "Game yang kebetulan membuatmu jago mengetik."
+  },
+  "nav": {
+    "play": "Main",
+    "rank": "Rank",
+    "badges": "Lencana",
+    "premium": "Premium",
+    "profile": "Profil",
+    "settings": "Pengaturan"
+  },
+  "common": {
+    "loading": "Memuat…",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "close": "Tutup",
+    "retry": "Coba lagi"
+  },
+  "home": {
+    "heroTitle": "Ketik. Skor. Naik Level.",
+    "ctaPlay": "Mulai Main"
+  }
+}

@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { useAuth } from "@/features/auth/hooks/use-auth"
+import { ThemeSelector } from "@/features/settings/components/theme-selector"
 import { cn } from "@/lib/utils"
 import { type Theme, usePreferencesStore } from "@/stores/preferences-store"
 
@@ -29,9 +30,11 @@ const knobClass = (active: boolean) =>
 export default function SettingsRoute() {
   const navigate = useNavigate()
   const theme = usePreferencesStore((s) => s.theme)
+  const accentTheme = usePreferencesStore((s) => s.accentTheme)
   const soundEnabled = usePreferencesStore((s) => s.soundEnabled)
   const reducedMotion = usePreferencesStore((s) => s.reducedMotion)
   const setTheme = usePreferencesStore((s) => s.setTheme)
+  const setAccentTheme = usePreferencesStore((s) => s.setAccentTheme)
   const toggleSound = usePreferencesStore((s) => s.toggleSound)
   const toggleReducedMotion = usePreferencesStore((s) => s.toggleReducedMotion)
   const {
@@ -80,9 +83,9 @@ export default function SettingsRoute() {
       {/* Tampilan */}
       <section className={cn(sectionClass, "mt-5")}>
         <h2 className="font-display text-base font-bold">Tampilan</h2>
-        <p className="mt-0.5 font-mono text-xs text-muted">Tema warna antarmuka</p>{" "}
+        <p className="mt-0.5 font-mono text-xs text-muted">Terang / gelap / ikut sistem</p>
         <fieldset className="mt-3 flex border-2 border-foreground shadow-sm">
-          <legend className="sr-only">Tema</legend>
+          <legend className="sr-only">Mode terang-gelap</legend>
           {(
             [
               { id: "light", label: "☀️ Terang" },
@@ -104,6 +107,12 @@ export default function SettingsRoute() {
             </button>
           ))}
         </fieldset>
+
+        <p className="mt-5 font-display text-sm font-bold">Tema visual</p>
+        <p className="mt-0.5 font-mono text-xs text-muted">
+          Aksen warna seluruh antarmuka — sebagian untuk premium (TODO 7.3)
+        </p>
+        <ThemeSelector accent={accentTheme} onChange={(accent) => setAccentTheme(accent)} />
       </section>
 
       {/* Gerakan & suara */}

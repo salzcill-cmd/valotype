@@ -4,6 +4,7 @@ import { LevelBadge } from "@/components/shared/level-badge"
 import { RankBadge } from "@/components/shared/rank-badge"
 import { XpBar } from "@/components/shared/xp-bar"
 import { useAuth } from "@/features/auth/hooks/use-auth"
+import { AnalyticsDashboard } from "@/features/profile/components/analytics-dashboard"
 import { StatsCard } from "@/features/profile/components/stats-card"
 import { useProfileView } from "@/features/profile/use-profile-view"
 import { formatRankLabel } from "@/features/progress/rank-calculator"
@@ -63,7 +64,7 @@ function GuestProfile() {
 
 /** Profil user login — data server sebagai sumber kebenaran. */
 function AuthedProfile() {
-  const { user, profile, logout, logoutPending } = useAuth()
+  const { user, profile, logout, logoutPending, isPremium } = useAuth()
   const view = useProfileView()
   if (!user) return <GuestProfile />
 
@@ -91,6 +92,27 @@ function AuthedProfile() {
           {logoutPending ? "Keluar…" : "Keluar"}
         </button>
       </div>
+
+      {/* Analitik premium (prd.md §21): grafik tren + heatmap — TODO 7.2 */}
+      {isPremium ? (
+        <AnalyticsDashboard />
+      ) : (
+        <section className="mt-5 flex flex-col items-start justify-between gap-3 border-2 border-foreground bg-accent/30 p-4 shadow-sm sm:flex-row sm:items-center">
+          <div>
+            <h2 className="font-display text-base font-bold">📊 Ingin lihat tren & kelemahanmu?</h2>
+            <p className="mt-1 max-w-md text-sm text-muted">
+              Grafik WPM, akurasi, dan peta jari lemah tersedia untuk member premium. Inti latihan
+              tetap gratis.
+            </p>
+          </div>
+          <Link
+            to="/premium"
+            className="inline-flex shrink-0 items-center justify-center border-2 border-foreground bg-primary px-5 py-2.5 font-display text-sm font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+          >
+            Lihat Premium 💛
+          </Link>
+        </section>
+      )}
 
       <ProfileStats view={view} />
     </main>

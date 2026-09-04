@@ -14,6 +14,7 @@ import PlayRoute from "@/routes/play"
 import PlayDailyRoute from "@/routes/play.daily"
 import PlayGameRoute from "@/routes/play.game"
 import PlayResultRoute from "@/routes/play.result"
+import PremiumRoute from "@/routes/premium"
 import ProfileRoute from "@/routes/profile"
 import SettingsRoute from "@/routes/settings"
 import SignupRoute from "@/routes/signup"
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
       { path: "/leaderboard", element: <LeaderboardRoute /> },
       { path: "/settings", element: <SettingsRoute /> },
       { path: "/achievements", element: <AchievementsRoute /> },
+      { path: "/premium", element: <PremiumRoute /> },
     ],
   },
   {

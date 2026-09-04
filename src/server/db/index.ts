@@ -10,7 +10,6 @@ import * as schema from "./schema.ts"
  * process.env saat variabel belum ada — production tetap dari env platform.
  */
 function loadLocalEnvIfMissing(): void {
-  if (process.env.DATABASE_URL) return
   const candidates = [".env.local", ".env"]
   const file = candidates.find((name) => existsSync(name))
   if (!file) return
@@ -21,6 +20,7 @@ function loadLocalEnvIfMissing(): void {
     if (eqIndex <= 0) continue
     const key = line.slice(0, eqIndex).trim()
     const value = line.slice(eqIndex + 1).trim()
+    // Isi hanya bila belum ada — env platform (production) tetap prioritas
     if (key && !process.env[key]) process.env[key] = value
   }
 }

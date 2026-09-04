@@ -4,7 +4,7 @@ import { z } from "zod"
 
 import { db } from "../db/index.ts"
 import { profiles, typingSessions, users } from "../db/schema.ts"
-import { protectedProcedure, router } from "../trpc/init.ts"
+import { premiumProcedure, protectedProcedure, router } from "../trpc/init.ts"
 import { safeUser } from "./auth.ts"
 
 const updateSchema = z.object({
@@ -132,6 +132,76 @@ export const profileRouter = router({
       }
     } catch (error) {
       console.error("[profile.getStats] Gagal:", error)
+      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database belum tersedia." })
+    }
+  }),
+
+  /**
+   * Analytics premium (TODO 7.2): tren WPM/akurasi, improvement %,
+   * dan agregasi weak keys (error keys) untuk finger heatmap.
+   */
+  getAnalytics: premiumProcedure.query(async ({ ctx }) => {
+    try {
+      const sessions = await db
+        .select({
+          id: typingSessions.id,
+          gameMode: typingSessions.gameMode,
+          wpm: typingSessions.wpm,
+          accuracy: typingSessions.accuracy,
+          score: typingSessions.score,
+          errorKeys: typingSessions.errorKeys,
+          createdAt: typingSessions.createdAt,
+        })
+        .from(typingSessions)
+        .where(eq(typingSessions.userId, ctx.user.id))
+        .orderBy(desc(typingSessions.createdAt))
+        .limit(30)
+
+      // Tren: dari terlama → terbaru (sumbu X waktu)
+      const trend = sessions.reverse().map((row) => ({
+        wpm: row.wpm,
+        accuracy: Math.round(row.accuracy),
+        createdAt: row.createdAt,
+      }))
+
+      // Improvement: rata-rata 5 sesi terakhir vs 5 sesi sebelumnya
+      const wpms = trend.map((point) => point.wpm).filter((value) => value > 0)
+      const recent5 = wpms.slice(-5)
+      const prev5 = wpms.slice(-10, -5)
+      const avg = (list: number[]) =>
+        list.length === 0 ? 0 : list.reduce((sum, value) => sum + value, 0) / list.length
+      const avgRecent = avg(recent5)
+      const avgPrev = avg(prev5)
+      const improvement =
+        avgPrev === 0
+          ? avgRecent > 0
+            ? 100
+            : 0
+          : Math.round(((avgRecent - avgPrev) / avgPrev) * 100)
+
+      // Agregasi weak keys dari semua sesi (untuk heatmap keyboard)
+      const keyCounts: Record<string, number> = {}
+      for (const row of sessions) {
+        if (row.errorKeys && typeof row.errorKeys === "object") {
+          for (const [key, count] of Object.entries(row.errorKeys as Record<string, number>)) {
+            keyCounts[key] = (keyCounts[key] ?? 0) + count
+          }
+        }
+      }
+      const errorKeys = Object.entries(keyCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 20)
+        .map(([key, count]) => ({ key, count }))
+
+      return {
+        trend,
+        improvement,
+        avgWpm: Math.round(avg(wpms)),
+        totalSessionsAnalyzed: sessions.length,
+        errorKeys,
+      }
+    } catch (error) {
+      console.error("[profile.getAnalytics] Gagal:", error)
       throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database belum tersedia." })
     }
   }),

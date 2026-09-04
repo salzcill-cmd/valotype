@@ -3,6 +3,7 @@ import {
   boolean,
   index,
   integer,
+  jsonb,
   pgTable,
   real,
   text,
@@ -81,6 +82,8 @@ export const typingSessions = pgTable(
     isVerified: boolean("is_verified").notNull().default(false),
     isPractice: boolean("is_practice").notNull().default(false),
     difficulty: text("difficulty").notNull().default("1"),
+    /** Karakter yang sering salah ketik (JSON map char → count, TODO 7.2). */
+    errorKeys: jsonb("error_keys"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
@@ -99,6 +102,39 @@ export const achievements = pgTable("achievements", {
   xpReward: integer("xp_reward").notNull().default(0),
   rarity: text("rarity").notNull().default("common"),
 })
+
+export const subscriptions = pgTable(
+  "subscriptions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    planId: text("plan_id").notNull().default("premium_monthly"),
+    status: text("status").notNull().default("active"),
+    provider: text("provider").notNull().default("mock"),
+    providerRef: text("provider_ref"),
+    currentPeriodEnd: timestamp("current_period_end", { withTimezone: true }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [uniqueIndex("subscriptions_user_idx").on(table.userId)],
+)
+
+export const typingContents = pgTable(
+  "typing_contents",
+  {
+    id: text("id").primaryKey(),
+    text: text("text").notNull(),
+    category: text("category").notNull().default("school"),
+    difficulty: integer("difficulty").notNull().default(1),
+    language: text("language").notNull().default("id-ID"),
+    targetKeys: jsonb("target_keys"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("typing_contents_category_idx").on(table.category)],
+)
 
 export const dailyChallengeCompletions = pgTable(
   "daily_challenge_completions",
@@ -139,6 +175,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   profile: one(profiles, { fields: [users.id], references: [profiles.userId] }),
   sessions: many(typingSessions),
   achievements: many(userAchievements),
+  subscription: one(subscriptions, { fields: [users.id], references: [subscriptions.userId] }),
 }))
 
 export const profilesRelations = relations(profiles, ({ one }) => ({
@@ -181,3 +218,7 @@ export type UserAchievement = typeof userAchievements.$inferSelect
 export type NewUserAchievement = typeof userAchievements.$inferInsert
 export type DailyCompletion = typeof dailyChallengeCompletions.$inferSelect
 export type NewDailyCompletion = typeof dailyChallengeCompletions.$inferInsert
+export type Subscription = typeof subscriptions.$inferSelect
+export type NewSubscription = typeof subscriptions.$inferInsert
+export type TypingContentRow = typeof typingContents.$inferSelect
+export type NewTypingContentRow = typeof typingContents.$inferInsert

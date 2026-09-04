@@ -60,6 +60,8 @@ const submitResultSchema = z.object({
   maxCombo: z.number().int().min(0).max(10_000),
   durationMs: z.number().min(100).max(3_600_000),
   completed: z.boolean(),
+  /** Karakter yang paling sering salah ketik (analytics premium, TODO 7.2). */
+  errorKeys: z.record(z.string(), z.number().int().min(1)).optional(),
 })
 
 /** Tanggal hari ini UTC (paritas streak klien, prd.md §16/§18). */
@@ -235,6 +237,7 @@ export const typingRouter = router({
         isVerified: true,
         isPractice: false,
         difficulty: String(difficulty),
+        errorKeys: input.errorKeys ?? null,
       })
 
       let totalXp = baseXp

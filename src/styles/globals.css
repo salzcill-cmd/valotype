@@ -160,6 +160,240 @@
   --sidebar-ring: var(--color-primary-light);
 }
 
+/* ============================================================
+   Premium custom themes (TODO 7.3 — prd.md §21)
+   Accent diterapkan via [data-accent] pada <html>, di atas light/dark.
+   ============================================================ */
+
+/* --- Midnight: biru malam / ungu (premium) --- */
+html[data-accent="midnight"] {
+  --primary: #4c51bf;
+  --primary-dark: #373a9e;
+  --primary-light: #6b70e8;
+  --secondary: #1e3a8a;
+  --accent: #f6c453;
+  --background: #eef0fb;
+  --foreground: #1a1f3d;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --popover: #ffffff;
+  --border: #232753;
+  --border-color: #232753;
+  --input: #ffffff;
+  --ring: #4c51bf;
+  --muted: #7a80b5;
+  --muted-foreground: #7a80b5;
+  --shadow-color: #232753;
+  --success: #0f9d58;
+  --danger: #d93025;
+  --warning: #f29900;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1a1f3d;
+  --sidebar-accent: #eef0fb;
+  --sidebar-border: #232753;
+  --sidebar-ring: #4c51bf;
+}
+html[data-accent="midnight"].dark {
+  --primary: #8b90f0;
+  --primary-dark: #6b70e8;
+  --primary-light: #a5a8f5;
+  --primary-foreground: #10122b;
+  --secondary: #7ea0f6;
+  --accent: #f6c453;
+  --accent-foreground: #10122b;
+  --background: #0f1126;
+  --foreground: #e8e9fb;
+  --surface: #1a1d3a;
+  --card: #1a1d3a;
+  --popover: #1a1d3a;
+  --border: #31366b;
+  --border-color: #31366b;
+  --input: #1a1d3a;
+  --ring: #8b90f0;
+  --muted: #8d92c9;
+  --muted-foreground: #8d92c9;
+  --shadow-color: #000000;
+  --sidebar: #1a1d3a;
+  --sidebar-foreground: #e8e9fb;
+  --sidebar-accent: #0f1126;
+  --sidebar-border: #31366b;
+  --sidebar-ring: #8b90f0;
+}
+
+/* --- Forest: hijau / cokelat tanah (premium) --- */
+html[data-accent="forest"] {
+  --primary: #2e7d32;
+  --primary-dark: #1b5e20;
+  --primary-light: #4caf50;
+  --secondary: #6d4c41;
+  --accent: #d7a24a;
+  --background: #eef5ec;
+  --foreground: #1c2b1a;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --popover: #ffffff;
+  --border: #23311f;
+  --border-color: #23311f;
+  --input: #ffffff;
+  --ring: #2e7d32;
+  --muted: #6f8a6a;
+  --muted-foreground: #6f8a6a;
+  --shadow-color: #23311f;
+  --success: #2e7d32;
+  --danger: #c62828;
+  --warning: #f9a825;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1c2b1a;
+  --sidebar-accent: #eef5ec;
+  --sidebar-border: #23311f;
+  --sidebar-ring: #2e7d32;
+}
+html[data-accent="forest"].dark {
+  --primary: #6fbf73;
+  --primary-dark: #4caf50;
+  --primary-light: #93d394;
+  --primary-foreground: #0c1a0b;
+  --secondary: #b39a8f;
+  --accent: #d7a24a;
+  --accent-foreground: #1c1506;
+  --background: #0f1a0e;
+  --foreground: #e4f1e2;
+  --surface: #17251a;
+  --card: #17251a;
+  --popover: #17251a;
+  --border: #2c4428;
+  --border-color: #2c4428;
+  --input: #17251a;
+  --ring: #6fbf73;
+  --muted: #7fa37b;
+  --muted-foreground: #7fa37b;
+  --shadow-color: #000000;
+  --sidebar: #17251a;
+  --sidebar-foreground: #e4f1e2;
+  --sidebar-accent: #0f1a0e;
+  --sidebar-border: #2c4428;
+  --sidebar-ring: #6fbf73;
+}
+
+/* --- Sunset: oranye / pink senja (premium) --- */
+html[data-accent="sunset"] {
+  --primary: #e65100;
+  --primary-dark: #bf360c;
+  --primary-light: #ff7043;
+  --secondary: #ad1457;
+  --accent: #ffca28;
+  --background: #fdf1ec;
+  --foreground: #3b1a10;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --popover: #ffffff;
+  --border: #57220f;
+  --border-color: #57220f;
+  --input: #ffffff;
+  --ring: #e65100;
+  --muted: #b07f6c;
+  --muted-foreground: #b07f6c;
+  --shadow-color: #57220f;
+  --success: #2e7d32;
+  --danger: #c62828;
+  --warning: #f9a825;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #3b1a10;
+  --sidebar-accent: #fdf1ec;
+  --sidebar-border: #57220f;
+  --sidebar-ring: #e65100;
+}
+html[data-accent="sunset"].dark {
+  --primary: #ff8257;
+  --primary-dark: #ff7043;
+  --primary-light: #ffa488;
+  --primary-foreground: #2b0d02;
+  --secondary: #f06292;
+  --accent: #ffca28;
+  --accent-foreground: #2b1a02;
+  --background: #1f0f08;
+  --foreground: #fdeae2;
+  --surface: #2b1710;
+  --card: #2b1710;
+  --popover: #2b1710;
+  --border: #4d2c1e;
+  --border-color: #4d2c1e;
+  --input: #2b1710;
+  --ring: #ff8257;
+  --muted: #c08f7c;
+  --muted-foreground: #c08f7c;
+  --shadow-color: #000000;
+  --sidebar: #2b1710;
+  --sidebar-foreground: #fdeae2;
+  --sidebar-accent: #1f0f08;
+  --sidebar-border: #4d2c1e;
+  --sidebar-ring: #ff8257;
+}
+
+/* --- Ocean: teal / biru laut (premium) --- */
+html[data-accent="ocean"] {
+  --primary: #00796b;
+  --primary-dark: #00564c;
+  --primary-light: #26a69a;
+  --secondary: #1565c0;
+  --accent: #f9a825;
+  --background: #eaf6f5;
+  --foreground: #0e2f2c;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --popover: #ffffff;
+  --border: #0e3b37;
+  --border-color: #0e3b37;
+  --input: #ffffff;
+  --ring: #00796b;
+  --muted: #5f8f8a;
+  --muted-foreground: #5f8f8a;
+  --shadow-color: #0e3b37;
+  --success: #00796b;
+  --danger: #c62828;
+  --warning: #f9a825;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0e2f2c;
+  --sidebar-accent: #eaf6f5;
+  --sidebar-border: #0e3b37;
+  --sidebar-ring: #00796b;
+}
+html[data-accent="ocean"].dark {
+  --primary: #4db6ac;
+  --primary-dark: #26a69a;
+  --primary-light: #80cbc4;
+  --primary-foreground: #04211d;
+  --secondary: #64b5f6;
+  --accent: #f9a825;
+  --accent-foreground: #211502;
+  --background: #0a1c1a;
+  --foreground: #dcf2f0;
+  --surface: #122b28;
+  --card: #122b28;
+  --popover: #122b28;
+  --border: #1e463f;
+  --border-color: #1e463f;
+  --input: #122b28;
+  --ring: #4db6ac;
+  --muted: #6d9b96;
+  --muted-foreground: #6d9b96;
+  --shadow-color: #000000;
+  --sidebar: #122b28;
+  --sidebar-foreground: #dcf2f0;
+  --sidebar-accent: #0a1c1a;
+  --sidebar-border: #1e463f;
+  --sidebar-ring: #4db6ac;
+}
+
+/* Sidebar & ring mengikuti aksen terpilih (bukan palet mentah default) */
+html[data-accent] {
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-ring: var(--ring);
+  --sidebar-accent: var(--background);
+  --sidebar-accent-foreground: var(--foreground);
+}
+
 /* --- Tailwind theme mapping (DESAIN.md §31) --- */
 @theme inline {
   /* Semantic colors → utilities: bg-background, text-foreground, ... */
