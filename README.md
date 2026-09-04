@@ -93,6 +93,7 @@ Dengan **npm**: ganti `bun` → `npm` (mis. `npm run dev`).
 | `vercel deploy --prod` | Deploy manual ke Vercel production |
 | `bun run dev` | Dev server (Vite + HMR) |
 | `bun run build` | Typecheck + build produksi (`dist/`) |
+| `bun run build:api` | Bundle fungsi serverless tRPC → `api/trpc/index.js` |
 | `bun run preview` | Preview build produksi |
 | `bun run typecheck` | Cek tipe (tsc) |
 | `bun run lint` | Biome check |

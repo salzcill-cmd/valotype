@@ -1,8 +1,8 @@
 import type { IncomingMessage, ServerResponse } from "node:http"
 import { nodeHTTPRequestHandler } from "@trpc/server/adapters/node-http"
 
-import { createTRPCContext } from "../../src/server/trpc/context.ts"
-import { appRouter } from "../../src/server/trpc/router.ts"
+import { createTRPCContext } from "../src/server/trpc/context.ts"
+import { appRouter } from "../src/server/trpc/router.ts"
 
 /** Prefix API — konsisten dengan client (httpLink url "/api/trpc"). */
 const ENDPOINT = "/api/trpc"
