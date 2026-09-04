@@ -203,16 +203,40 @@ export default function PlayRoute() {
             </div>
           </section>
 
-          {/* Sesi terakhir */}
+          {/* Sesi terakhir — resume cepat ke mode yang sama (kemudahan) */}
           <section className="border-2 border-foreground bg-surface p-4 shadow-sm">
-            <h2 className="mb-2 font-display text-base font-bold">Aktivitas Terakhir</h2>
             {last ? (
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-sm">
-                <span className="font-bold text-primary tabular-nums">{last.wpm} WPM</span>
-                <span className="text-muted tabular-nums">{last.accuracy}%</span>
-                <span className="text-muted">+{last.xpEarned} XP</span>
-                <span className="text-muted">{gameModeLabel(last.gameMode)}</span>
-                {view.bestWpm === last.wpm && <RankBadge rank={view.rank} size="sm" />}
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-3">
+                  <span
+                    aria-hidden="true"
+                    className={`flex h-12 w-12 shrink-0 items-center justify-center border-2 border-foreground text-xl shadow-sm ${
+                      modeMeta(last.gameMode).box
+                    } ${modeMeta(last.gameMode).text}`}
+                  >
+                    {modeMeta(last.gameMode).icon}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="font-mono text-xs font-bold tracking-widest text-muted uppercase">
+                      Sesi terakhir
+                    </p>
+                    <h2 className="truncate font-display text-base font-bold">
+                      {modeMeta(last.gameMode).title}
+                    </h2>
+                    <p className="truncate font-mono text-xs text-muted tabular-nums">
+                      {last.wpm} WPM · {last.accuracy}% akurasi · +{last.xpEarned} XP
+                    </p>
+                  </div>
+                </div>
+                <div className="flex shrink-0 items-center gap-2">
+                  {view.bestWpm === last.wpm && <RankBadge rank={view.rank} size="sm" />}
+                  <Link
+                    to={modeMeta(last.gameMode).to}
+                    className="inline-flex items-center gap-1 border-2 border-foreground bg-primary px-4 py-2.5 font-display text-sm font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+                  >
+                    ↻ Main Lagi
+                  </Link>
+                </div>
               </div>
             ) : (
               <p className="text-sm text-muted">
@@ -226,7 +250,66 @@ export default function PlayRoute() {
   )
 }
 
-/** Label ringkas tiap mode untuk Aktivitas Terakhir. */
+/** Meta tiap mode: judul, ikon, warna kotak, dan rute main. */
+function modeMeta(mode: string): {
+  title: string
+  icon: string
+  box: string
+  text: string
+  to: string
+} {
+  switch (mode) {
+    case "blitz":
+      return {
+        title: "Speed Blitz",
+        icon: "⚡",
+        box: "bg-warning",
+        text: "text-foreground",
+        to: "/play/blitz",
+      }
+    case "fortress":
+      return {
+        title: "Accuracy Fortress",
+        icon: "🎯",
+        box: "bg-secondary",
+        text: "text-white",
+        to: "/play/fortress",
+      }
+    case "daily":
+      return {
+        title: "Tantangan Harian",
+        icon: "🌅",
+        box: "bg-accent",
+        text: "text-foreground",
+        to: "/play/daily",
+      }
+    case "endurance":
+      return {
+        title: "Endurance Run",
+        icon: "🏃",
+        box: "bg-success",
+        text: "text-white",
+        to: "/play/endurance",
+      }
+    case "cascade":
+      return {
+        title: "Combo Cascade",
+        icon: "🔥",
+        box: "bg-foreground",
+        text: "text-background",
+        to: "/play/cascade",
+      }
+    default:
+      return {
+        title: "Latihan Bebas",
+        icon: "⌨️",
+        box: "bg-primary",
+        text: "text-primary-foreground",
+        to: "/play/game",
+      }
+  }
+}
+
 /** Countdown ke tengah malam — kapan tantangan harian berganti (kenyamanan). */
 function DailyResetCountdown() {
   const [left, setLeft] = useState(() => msUntilMidnight())
@@ -251,23 +334,6 @@ function msUntilMidnight(): number {
   const midnight = new Date(now)
   midnight.setHours(24, 0, 0, 0)
   return midnight.getTime() - now.getTime()
-}
-
-function gameModeLabel(mode: string): string {
-  switch (mode) {
-    case "blitz":
-      return "⚡ Speed Blitz"
-    case "fortress":
-      return "🎯 Accuracy Fortress"
-    case "daily":
-      return "🌅 Tantangan Harian"
-    case "endurance":
-      return "🏃 Endurance Run"
-    case "cascade":
-      return "🔥 Combo Cascade"
-    default:
-      return "⌨️ Latihan Bebas"
-  }
 }
 
 function GameCard({

@@ -17,6 +17,7 @@ import {
 import type { ScoreFn, TypingGameResult } from "@/features/typing/engine/types"
 import { useFinishSession } from "@/features/typing/hooks/use-finish-session"
 import { useTypingGame } from "@/features/typing/hooks/use-typing-game"
+import { useTypingSounds } from "@/features/typing/hooks/use-typing-sounds"
 import { usePageTitle } from "@/hooks/use-page-title"
 import type { TypingContent } from "@/lib/content"
 import { getRandomContent } from "@/lib/content"
@@ -88,6 +89,26 @@ export function GameScreen({
   })
 
   const { status, position, totalChars, charStatuses, errorCount, elapsedMs } = game
+  const { playTick, playError, playDone } = useTypingSounds()
+
+  // Efek suara: deteksi kemajuan & kesalahan lewat ref (hindari bunyi saat reset)
+  const lastPosRef = useRef(0)
+  const lastErrRef = useRef(0)
+  const prevStatusRef = useRef(status)
+  useEffect(() => {
+    if (status !== "playing") return
+    if (position > lastPosRef.current) playTick()
+    lastPosRef.current = position
+  }, [position, status, playTick])
+  useEffect(() => {
+    if (status !== "playing") return
+    if (errorCount > lastErrRef.current) playError()
+    lastErrRef.current = errorCount
+  }, [errorCount, status, playError])
+  useEffect(() => {
+    if (status === "completed" && prevStatusRef.current !== "completed") playDone()
+    prevStatusRef.current = status
+  }, [status, playDone])
 
   useEffect(() => {
     if (status === "ready" || status === "playing") typingRef.current?.focus()

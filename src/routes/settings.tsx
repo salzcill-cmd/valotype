@@ -160,7 +160,9 @@ export default function SettingsRoute() {
         <div className="mt-4 flex items-center justify-between gap-4">
           <div>
             <p className="font-display text-sm font-bold">Efek suara</p>
-            <p className="font-mono text-xs text-muted">Preferensi tersimpan — audio menyusul</p>
+            <p className="font-mono text-xs text-muted">
+              Ketukan tombol & bunyi kesalahan saat mengetik
+            </p>
           </div>
           <button
             type="button"
