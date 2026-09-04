@@ -22,12 +22,20 @@ const COLOR = {
   muted: "#6B6B6B",
 }
 
+const JETBRAINS = '"JetBrains Mono Variable", monospace'
+const GROTESK = '"Space Grotesk Variable", sans-serif'
+
 export const SHARE_SIZES: Record<ShareFormat, { width: number; height: number }> = {
   square: { width: 1080, height: 1080 },
   story: { width: 1080, height: 1920 },
 }
 
-/** Teks terpusat di dalam segmen [segX, segX+segW]; menyusutkan font bila penuh. */
+/**
+ * Teks terpusat di dalam segmen [segX, segX+segW]; menyusutkan font bila penuh.
+ * Ukuran font dikelola eksplisit (tanpa parse string) + guard iterasi agar
+ * tidak pernah bisa hang — sebelumnya parseFloat membaca weight (bukan size)
+ * sehingga font baru invalid, loop tak pernah berakhir, dan halaman result mati.
+ */
 function centeredText(
   ctx: CanvasRenderingContext2D,
   text: string,
@@ -35,15 +43,20 @@ function centeredText(
   segX: number,
   segW: number,
   maxFraction: number,
+  fontPx: number,
+  weight: number,
+  family: string,
 ): void {
   ctx.save()
   ctx.textAlign = "left"
   ctx.textBaseline = "middle"
   const maxWidth = segW * maxFraction
-  while (ctx.measureText(text).width > maxWidth) {
-    const size = Number.parseFloat(ctx.font) * 0.85
-    const family = ctx.font.split(" ").slice(1).join(" ")
-    ctx.font = `${size}px ${family}`
+  let size = fontPx
+  let iterations = 0
+  while (ctx.measureText(text).width > maxWidth && iterations < 100) {
+    size = Math.max(8, Math.round(size * 0.85))
+    ctx.font = `${weight} ${size}px ${family}`
+    iterations += 1
   }
   const textWidth = ctx.measureText(text).width
   ctx.fillText(text, segX + (segW - textWidth) / 2, y)
@@ -107,16 +120,23 @@ export function drawShareCard(
   const numberY = isStory ? H * 0.33 : H * 0.37
   const numberPx = isStory ? W * 0.5 : W * 0.4
   ctx.save()
-  ctx.font = `800 ${numberPx}px "JetBrains Mono Variable", monospace`
   ctx.fillStyle = COLOR.black
-  centeredText(ctx, String(data.wpm), numberY, 0, W, 0.92)
-  ctx.font = `700 ${Math.round(W * 0.08)}px "Space Grotesk Variable", sans-serif`
+  centeredText(ctx, String(data.wpm), numberY, 0, W, 0.92, numberPx, 800, JETBRAINS)
   ctx.fillStyle = COLOR.primary
-  centeredText(ctx, "WPM", numberY + numberPx * 0.7, 0, W, 0.92)
+  centeredText(ctx, "WPM", numberY + numberPx * 0.7, 0, W, 0.92, Math.round(W * 0.08), 700, GROTESK)
   if (data.rankName) {
-    ctx.font = `700 ${Math.round(W * 0.045)}px "Space Grotesk Variable", sans-serif`
     ctx.fillStyle = COLOR.muted
-    centeredText(ctx, data.rankName, numberY + numberPx * 0.7 + W * 0.09, 0, W, 0.92)
+    centeredText(
+      ctx,
+      data.rankName,
+      numberY + numberPx * 0.7 + W * 0.09,
+      0,
+      W,
+      0.92,
+      Math.round(W * 0.045),
+      700,
+      GROTESK,
+    )
   }
   ctx.restore()
 
@@ -138,20 +158,20 @@ export function drawShareCard(
     ["Score", data.score.toLocaleString("id-ID")],
     ["Kombo Max", `x${data.maxCombo}`],
   ]
-  const labelFont = `700 ${Math.round(W * 0.042)}px "Space Grotesk Variable", sans-serif`
-  const valueFont = `800 ${Math.round(W * 0.075)}px "JetBrains Mono Variable", monospace`
+  const labelPx = Math.round(W * 0.042)
+  const valuePx = Math.round(W * 0.075)
 
   if (isStory) {
     rows.forEach(([label, value], index) => {
       const rowY = cardY + cardH * (0.36 + index * 0.28)
       ctx.save()
-      ctx.font = labelFont
       ctx.fillStyle = COLOR.black
       ctx.textAlign = "left"
       ctx.textBaseline = "middle"
+      ctx.font = `700 ${labelPx}px ${GROTESK}`
       ctx.fillText(label.toUpperCase(), cardX + cardW * 0.08, rowY)
       ctx.textAlign = "right"
-      ctx.font = valueFont
+      ctx.font = `800 ${valuePx}px ${JETBRAINS}`
       ctx.fillText(value, cardX + cardW * 0.92, rowY)
       ctx.restore()
     })
@@ -160,24 +180,50 @@ export function drawShareCard(
     rows.forEach(([label, value], index) => {
       const segX = cardX + colW * index
       ctx.save()
-      ctx.font = valueFont
       ctx.fillStyle = COLOR.black
-      centeredText(ctx, value, cardY + cardH * 0.42, segX, colW, 0.9)
-      ctx.font = labelFont
-      centeredText(ctx, label.toUpperCase(), cardY + cardH * 0.8, segX, colW, 0.9)
+      centeredText(ctx, value, cardY + cardH * 0.42, segX, colW, 0.9, valuePx, 800, JETBRAINS)
+      centeredText(
+        ctx,
+        label.toUpperCase(),
+        cardY + cardH * 0.8,
+        segX,
+        colW,
+        0.9,
+        labelPx,
+        700,
+        GROTESK,
+      )
       ctx.restore()
     })
   }
 
   // Footer: tagline + URL tantangan
   ctx.save()
-  ctx.font = `700 ${Math.round(W * 0.05)}px "Space Grotesk Variable", sans-serif`
   ctx.fillStyle = COLOR.black
-  centeredText(ctx, "Bisa ngalahin? 🔥", isStory ? H * 0.85 : H * 0.92, 0, W, 0.95)
-  ctx.font = `700 ${Math.round(W * 0.036)}px "JetBrains Mono Variable", monospace`
+  centeredText(
+    ctx,
+    "Bisa ngalahin? 🔥",
+    isStory ? H * 0.85 : H * 0.92,
+    0,
+    W,
+    0.95,
+    Math.round(W * 0.05),
+    700,
+    GROTESK,
+  )
   ctx.fillStyle = COLOR.muted
   const footerText = data.challengeUrl ?? "ValoType — game yang kebetulan membuatmu jago mengetik"
-  centeredText(ctx, footerText, isStory ? H * 0.92 : H * 0.965, 0, W, 0.95)
+  centeredText(
+    ctx,
+    footerText,
+    isStory ? H * 0.92 : H * 0.965,
+    0,
+    W,
+    0.95,
+    Math.round(W * 0.036),
+    700,
+    JETBRAINS,
+  )
   ctx.restore()
 }
 

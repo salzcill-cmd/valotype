@@ -233,7 +233,8 @@ export const typingRouter = router({
         rawWpm: Math.round(rawWpm),
         score,
         maxCombo: input.maxCombo,
-        durationMs: input.durationMs,
+        // Kolom duration_ms adalah integer — client mengirim float (performance.now)
+        durationMs: Math.round(input.durationMs),
         isVerified: true,
         isPractice: false,
         difficulty: String(difficulty),
