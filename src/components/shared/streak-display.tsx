@@ -28,9 +28,10 @@ export function StreakDisplay({ streak, size = "md", className }: StreakDisplayP
         className={cn(
           "flex items-center justify-center border-2 border-foreground bg-surface shadow-sm",
           size === "sm" ? "h-10 w-10 text-xl" : "h-14 w-14 text-3xl",
+          streak > 0 && "anim-glow-pulse",
         )}
       >
-        🔥
+        <span className={streak > 0 ? "anim-float" : ""}>🔥</span>
       </span>
       <div>
         <p

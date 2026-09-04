@@ -22,12 +22,25 @@ function charClassName(status: CharVisualStatus, isCurrent: boolean): string {
   )
 }
 
+/** Scroll halus ke karakter aktif — hormati prefers-reduced-motion. */
+function smoothScrollTo(el: HTMLElement) {
+  const prefersReduced =
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  el.scrollIntoView({
+    block: "nearest",
+    inline: "nearest",
+    behavior: prefersReduced ? "auto" : "smooth",
+  })
+}
+
 /**
  * Area teks yang harus diketik (DESAIN.md §15).
  * - Belum diketik: abu-abu
  * - Benar: hijau + highlight tipis
  * - Salah: merah + shake (harus diperbaiki)
  * - Sedang diketik: kursor berkedip (border kiri merah)
+ * - Auto-scroll halus mengikuti kursor di teks panjang
  */
 export function TypingArea({
   text,
@@ -63,7 +76,18 @@ export function TypingArea({
         const isCurrent = index === currentIndex && status !== "error"
         return (
           // biome-ignore lint/suspicious/noArrayIndexKey: daftar karakter statis, index = posisi unik
-          <span key={index} className={charClassName(status, isCurrent)} aria-hidden="true">
+          <span
+            key={index}
+            ref={
+              isCurrent
+                ? (el) => {
+                    if (el) smoothScrollTo(el)
+                  }
+                : undefined
+            }
+            className={charClassName(status, isCurrent)}
+            aria-hidden="true"
+          >
             {char}
           </span>
         )

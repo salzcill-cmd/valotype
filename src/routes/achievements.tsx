@@ -3,6 +3,7 @@ import { useState } from "react"
 import { Link } from "react-router"
 import { AchievementCard } from "@/components/shared/achievement-card"
 import { Reveal } from "@/components/shared/reveal"
+import { Skeleton } from "@/components/shared/skeleton"
 import { useAuth } from "@/features/auth/hooks/use-auth"
 import { usePageTitle } from "@/hooks/use-page-title"
 import { useTRPC } from "@/lib/trpc"
@@ -95,7 +96,23 @@ export default function AchievementsRoute() {
         ))}
       </ul>
       {query.isLoading && (
-        <p className="mt-6 text-center font-mono text-sm text-muted">Memuat lencana…</p>
+        <div
+          className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          aria-hidden="true"
+        >
+          {Array.from({ length: 6 }, (_, index) => (
+            <div key={index} className="flex h-40 flex-col gap-2 p-4">
+              <div className="flex items-start justify-between gap-2">
+                <Skeleton className="h-12 w-12" />
+                <Skeleton className="h-5 w-16" />
+              </div>
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-3 w-full" />
+              <Skeleton className="h-3 w-2/3" />
+              <Skeleton className="mt-auto h-4 w-24" />
+            </div>
+          ))}
+        </div>
       )}
       <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {visible.map((achievement, index) => (

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
+import { useEffect, useState } from "react"
 import { Link } from "react-router"
 import { Sidebar } from "@/components/layout/sidebar"
 import { RankBadge } from "@/components/shared/rank-badge"
@@ -145,6 +146,7 @@ export default function PlayRoute() {
                         ? `Selesai ✓ best ${daily.bestWpm} WPM — coba pecahkan!`
                         : `Kesulitan ${daily.content.difficulty}/5 · bonus +${daily.bonusXp} XP untuk skor terbaik`}
                     </p>
+                    <DailyResetCountdown />
                   </>
                 ) : (
                   <p className="mt-1 font-mono text-sm text-foreground/80">
@@ -225,6 +227,32 @@ export default function PlayRoute() {
 }
 
 /** Label ringkas tiap mode untuk Aktivitas Terakhir. */
+/** Countdown ke tengah malam — kapan tantangan harian berganti (kenyamanan). */
+function DailyResetCountdown() {
+  const [left, setLeft] = useState(() => msUntilMidnight())
+
+  useEffect(() => {
+    const timer = setInterval(() => setLeft(msUntilMidnight()), 30_000)
+    return () => clearInterval(timer)
+  }, [])
+
+  if (left <= 0) return null
+  const hours = Math.floor(left / 3_600_000)
+  const minutes = Math.floor((left % 3_600_000) / 60_000)
+  return (
+    <p className="mt-1 font-mono text-xs font-bold text-foreground/60">
+      ⏳ Tantangan baru dalam {hours} jam {minutes} menit
+    </p>
+  )
+}
+
+function msUntilMidnight(): number {
+  const now = new Date()
+  const midnight = new Date(now)
+  midnight.setHours(24, 0, 0, 0)
+  return midnight.getTime() - now.getTime()
+}
+
 function gameModeLabel(mode: string): string {
   switch (mode) {
     case "blitz":

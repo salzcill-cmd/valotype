@@ -3,6 +3,7 @@ import { useState } from "react"
 import { Link } from "react-router"
 import { LeaderboardRow } from "@/components/shared/leaderboard-row"
 import { Reveal } from "@/components/shared/reveal"
+import { Skeleton } from "@/components/shared/skeleton"
 import { useAuth } from "@/features/auth/hooks/use-auth"
 import type { RankId } from "@/features/progress/ranks"
 import { usePageTitle } from "@/hooks/use-page-title"
@@ -153,7 +154,19 @@ export default function LeaderboardRoute() {
         ))}
       </ol>
 
-      {loading && <p className="mt-6 text-center font-mono text-sm text-muted">Memuat…</p>}
+      {loading && (
+        <ol className="mt-4 flex flex-col gap-2" aria-hidden="true">
+          {Array.from({ length: 8 }, (_, index) => (
+            <li key={index} className="flex items-center gap-3 px-3 py-2 sm:gap-4 sm:px-4">
+              <Skeleton className="h-8 w-8" />
+              <Skeleton className="h-4 w-8" />
+              <Skeleton className="h-4 flex-1" />
+              <Skeleton className="hidden h-4 w-14 sm:block" />
+              <Skeleton className="h-6 w-16" />
+            </li>
+          ))}
+        </ol>
+      )}
 
       {empty && (
         <div className="mt-6 border-2 border-dashed border-foreground/40 p-8 text-center">
