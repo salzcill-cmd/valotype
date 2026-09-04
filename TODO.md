@@ -725,70 +725,70 @@
 > **Tujuan:** Landing page + responsive + dark mode + maskot.
 > **Output:** Website lengkap yang beautiful.
 
-### 6.1 Landing Page
+### 6.1 Landing Page ✅
 
-- [ ] Buat `src/routes/index.tsx` — Landing page
-  - [ ] Hero section dengan interactive demo
-  - [ ] "Cara Kerja" 3 langkah section
-  - [ ] Mini-games preview
-  - [ ] Leaderboard preview
-  - [ ] Progression preview
-  - [ ] Mission section (Indonesia Emas 2045)
-  - [ ] FAQ section
-  - [ ] Footer
-  - [ ] Style sesuai DESAIN.md §13
+- [x] Buat `src/routes/index.tsx` — Landing page
+  - [x] Hero section dengan interactive demo
+  - [x] "Cara Kerja" 3 langkah section
+  - [x] Mini-games preview
+  - [x] Leaderboard preview
+  - [x] Progression preview
+  - [x] Mission section (Indonesia Emas 2045)
+  - [x] FAQ section
+  - [x] Footer
+  - [x] Style sesuai DESAIN.md §13
 
-- [ ] Buat `src/components/landing/hero.tsx`
-  - [ ] Split layout (text + demo)
-  - [ ] Interactive typing demo
-  - [ ] CTA: "MULAI MAIN"
-  - [ ] Social proof: "50K+ pemain"
-  - [ ] Style sesuai DESAIN.md §25
+- [x] Buat `src/components/landing/hero.tsx`
+  - [x] Split layout (text + demo)
+  - [x] Interactive typing demo
+  - [x] CTA: "MULAI MAIN"
+  - [x] Social proof: "50K+ pemain"
+  - [x] Style sesuai DESAIN.md §25
 
-- [ ] Buat `src/components/landing/hero-demo.tsx`
-  - [ ] Auto-typing animation mode
-  - [ ] Interactive typing mode
-  - [ ] Real-time WPM/accuracy
-  - [ ] Lightweight (no game engine)
+- [x] Buat `src/components/landing/hero-demo.tsx`
+  - [x] Auto-typing animation mode
+  - [x] Interactive typing mode
+  - [x] Real-time WPM/accuracy
+  - [x] Lightweight (no game engine)
 
-- [ ] Buat `src/components/landing/how-it-works.tsx`
-  - [ ] 3 step cards
-  - [ ] Icons + text
-  - [ ] Geometric style
+- [x] Buat `src/components/landing/how-it-works.tsx`
+  - [x] 3 step cards
+  - [x] Icons + text
+  - [x] Geometric style
 
-- [ ] Buat `src/components/landing/game-preview.tsx`
-  - [ ] 4 mini-game cards
-  - [ ] Icons + names
-  - [ ] Hover effects
+- [x] Buat `src/components/landing/game-preview.tsx`
+  - [x] 4 mini-game cards
+  - [x] Icons + names
+  - [x] Hover effects
 
-- [ ] Buat `src/components/landing/leaderboard-preview.tsx`
-  - [ ] Top 5 players
-  - [ ] "Lihat Semua →" link
+- [x] Buat `src/components/landing/leaderboard-preview.tsx`
+  - [x] Top 5 players (live dari API + fallback)
+  - [x] "Lihat Semua →" link
 
-- [ ] Buat `src/components/landing/progression-preview.tsx`
-  - [ ] Rank progression visual
-  - [ ] Iron → Valor
+- [x] Buat `src/components/landing/progression-preview.tsx`
+  - [x] Rank progression visual
+  - [x] Iron → Valor
 
-- [ ] Buat `src/components/landing/faq.tsx`
-  - [ ] Accordion FAQ
-  - [ ] 5-7 common questions
+- [x] Buat `src/components/landing/faq.tsx`
+  - [x] Accordion FAQ
+  - [x] 5-7 common questions
 
-- [ ] Buat `src/components/landing/footer.tsx`
-  - [ ] Logo + copyright
-  - [ ] Links: Tentang, Privasi, Syarat
-  - [ ] Social links
+- [x] Buat `src/components/landing/footer.tsx`
+  - [x] Logo + copyright
+  - [x] Links: Tentang, Privasi, Syarat
+  - [x] Social links
 
 ### 6.2 Maskot Valo
 
-- [ ] Buat `src/components/shared/valo-mascot.tsx`
-  - [ ] Geometric character (V shape + body)
-  - [ ] Multiple poses: happy, confused, excited, typing, sitting
-  - [ ] Size variants: 24px, 32px, 64px, 80px, 120px
-  - [ ] Border + shadow sesuai DESAIN.md §10
-  - [ ] CSS/SVG based (not image)
+- [x] Buat `src/components/shared/valo-mascot.tsx`
+  - [x] Geometric character (V shape + body)
+  - [x] Multiple poses: happy, confused, excited, typing, sitting
+  - [x] Size variants: 24px, 32px, 64px, 80px, 120px
+  - [x] Border + shadow sesuai DESAIN.md §10
+  - [x] CSS/SVG based (not image)
 
 - [ ] Integrate Valo ke:
-  - [ ] Landing page hero
+  - [x] Landing page hero (pose typing) + mission section (pose happy)
   - [ ] Error states
   - [ ] Empty states
   - [ ] Loading states

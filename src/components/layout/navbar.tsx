@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router"
+import { Link, NavLink, useLocation } from "react-router"
 
 import { useAuth } from "@/features/auth/hooks/use-auth"
 import { cn } from "@/lib/utils"
@@ -18,6 +18,8 @@ export function Navbar() {
   const theme = usePreferencesStore((s) => s.theme)
   const setTheme = usePreferencesStore((s) => s.setTheme)
   const { user, isAuthed, isAuthLoading } = useAuth()
+  const { pathname } = useLocation()
+  const isLanding = pathname === "/"
 
   const cycleTheme = () => {
     const currentDark =
@@ -39,6 +41,16 @@ export function Navbar() {
         </Link>
 
         <nav aria-label="Navigasi utama" className="hidden items-center gap-1 md:flex">
+          {isLanding && (
+            <>
+              <a href="#fitur" className={navLinkClass({ isActive: false })}>
+                Fitur
+              </a>
+              <a href="#cara-kerja" className={navLinkClass({ isActive: false })}>
+                Cara Main
+              </a>
+            </>
+          )}
           <NavLink to="/play" className={navLinkClass} end>
             Main
           </NavLink>
