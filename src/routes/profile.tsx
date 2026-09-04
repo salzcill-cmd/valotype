@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { Link } from "react-router"
 import { LevelBadge } from "@/components/shared/level-badge"
 import { RankBadge } from "@/components/shared/rank-badge"
@@ -187,10 +188,21 @@ function ProfileStats({ view }: { view: ReturnType<typeof useProfileView> }) {
       </section>
 
       <section className="mt-4 border-2 border-foreground bg-surface p-4 shadow-sm">
-        <h2 className="font-display text-base font-bold">Aktivitas Terakhir</h2>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 className="font-display text-base font-bold">Aktivitas 7 Hari Terakhir</h2>
+            <p className="font-mono text-xs text-muted">Sesi selesai per hari (perangkat ini)</p>
+          </div>
+          {view.currentStreak > 0 && (
+            <span className="anim-glow-pulse border-2 border-foreground bg-accent px-2.5 py-1 font-display text-xs font-bold tracking-widest uppercase shadow-sm">
+              🔥 Streak {view.currentStreak} hari
+            </span>
+          )}
+        </div>
+        <ActivityStrip recentSessions={view.recentSessions} />
         {view.lastSession ? (
-          <p className="mt-1 font-mono text-sm text-muted">
-            {view.lastSession.wpm} WPM · {view.lastSession.accuracy}% akurasi · +
+          <p className="mt-3 border-t-2 border-dashed border-foreground/15 pt-3 font-mono text-xs text-muted">
+            Terakhir · {view.lastSession.wpm} WPM · {view.lastSession.accuracy}% akurasi · +
             {view.lastSession.xpEarned} XP —{" "}
             {new Date(view.lastSession.timestamp).toLocaleString("id-ID", {
               dateStyle: "medium",
@@ -198,11 +210,79 @@ function ProfileStats({ view }: { view: ReturnType<typeof useProfileView> }) {
             })}
           </p>
         ) : (
-          <p className="mt-1 font-mono text-sm text-muted">
-            Belum ada sesi. Selesaikan satu latihan untuk memulai.
+          <p className="mt-3 border-t-2 border-dashed border-foreground/15 pt-3 font-mono text-xs text-muted">
+            Belum ada sesi — selesaikan satu latihan untuk mengisi peta aktivitasmu.
           </p>
         )}
       </section>
     </>
+  )
+}
+
+/**
+ * Peta aktivitas 7 hari terakhir: tinggi bar proporsional jumlah sesi/hari.
+ * Dipakai di kartu "Aktivitas 7 Hari Terakhir" (visual + motivasi singkat).
+ */
+function ActivityStrip({
+  recentSessions,
+}: {
+  recentSessions: ReadonlyArray<{ timestamp: number }>
+}) {
+  const { days, max } = useMemo(() => {
+    const now = new Date()
+    const list = Array.from({ length: 7 }, (_, offset) => {
+      const date = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (6 - offset))
+      return {
+        key: `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`,
+        label: date.toLocaleDateString("id-ID", { weekday: "short" }),
+        isToday: offset === 6,
+        count: 0,
+      }
+    })
+    for (const session of recentSessions) {
+      const date = new Date(session.timestamp)
+      const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+      const day = list.find((item) => item.key === key)
+      if (day) day.count += 1
+    }
+    return { days: list, max: Math.max(1, ...list.map((item) => item.count)) }
+  }, [recentSessions])
+
+  return (
+    <div className="mt-3 grid grid-cols-7 gap-1.5 sm:gap-2">
+      {days.map((day) => {
+        const height = day.count === 0 ? 0 : Math.max(18, Math.round((day.count / max) * 100))
+        return (
+          <div
+            key={day.key}
+            role="img"
+            aria-label={`${day.label}: ${day.count} sesi`}
+            className="flex flex-col items-center gap-1"
+          >
+            <span className="font-mono text-[0.625rem] font-bold text-muted tabular-nums">
+              {day.count > 0 ? day.count : "·"}
+            </span>
+            <div
+              aria-hidden="true"
+              className="flex h-14 w-full items-end overflow-hidden border-2 border-foreground bg-background p-0.5"
+            >
+              <div
+                className={`w-full transition-[height] duration-300 ${
+                  day.isToday ? "bg-primary" : "bg-accent"
+                }`}
+                style={{ height: `${height}%` }}
+              />
+            </div>
+            <span
+              className={`font-mono text-[0.625rem] font-bold uppercase ${
+                day.isToday ? "text-primary" : "text-muted"
+              }`}
+            >
+              {day.label}
+            </span>
+          </div>
+        )
+      })}
+    </div>
   )
 }

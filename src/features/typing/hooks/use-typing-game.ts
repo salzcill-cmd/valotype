@@ -223,8 +223,10 @@ export function useTypingGame(initialContent: TypingContent, options: TypingGame
       if (parsed.kind === "ignored") return
       if (shouldPreventDefault(parsed)) event.preventDefault()
       if (parsed.kind === "escape") {
-        if (statusRef.current === "playing") pause()
-        else if (statusRef.current === "paused") resume()
+        // Esc ditangani GameScreen lewat listener native window (bukan sintetik
+        // React). Handle di sini membuat efek pause/resume terpasang di tengah
+        // dispatch event yang sama → event Escape itu sendiri memicu kebalikannya
+        // (race). Diabaikan agar jeda/lanjut selalu lewat jalur native.
         return
       }
       if (parsed.kind === "backspace") {
@@ -275,7 +277,7 @@ export function useTypingGame(initialContent: TypingContent, options: TypingGame
         finishRef.current(false, true)
       }
     },
-    [content.text, pause, resume, setStatusAll, startSegment, totalChars, pushMetrics],
+    [content.text, setStatusAll, startSegment, totalChars, pushMetrics],
   )
 
   const charStatuses = useMemo<CharVisualStatus[]>(() => {

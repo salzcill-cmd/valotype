@@ -112,11 +112,22 @@ export function GameScreen({
     const onVisibility = () => {
       if (document.hidden) game.pause()
     }
+    const onKeyDown = (event: KeyboardEvent) => {
+      // Kemudahan: Esc = jeda kapan pun saat bermain. Listener native (bukan
+      // sintetik React) supaya setState-nya tidak di-flush sinkron di tengah
+      // dispatch — menghindari race resume oleh event Escape yang sama.
+      if (event.key === "Escape") {
+        event.preventDefault()
+        game.pause()
+      }
+    }
     window.addEventListener("blur", onBlur)
     document.addEventListener("visibilitychange", onVisibility)
+    window.addEventListener("keydown", onKeyDown)
     return () => {
       window.removeEventListener("blur", onBlur)
       document.removeEventListener("visibilitychange", onVisibility)
+      window.removeEventListener("keydown", onKeyDown)
     }
   }, [status, game])
 
@@ -201,22 +212,51 @@ export function GameScreen({
             status === "playing" ? "scale-x-100" : "scale-x-0",
           )}
         />
-        <p
-          className={cn(
-            "flex items-center gap-2 font-mono text-xs font-bold tracking-widest uppercase",
-            "text-muted",
+        <div className="flex items-start justify-between gap-3">
+          <p
+            className={cn(
+              "flex min-w-0 flex-1 items-center gap-2 font-mono text-xs font-bold tracking-widest uppercase",
+              "text-muted",
+            )}
+          >
+            <span
+              aria-hidden="true"
+              className={cn(
+                "inline-block h-2.5 w-2.5 shrink-0 border-2 border-foreground",
+                MODE_ACCENT[mode],
+              )}
+            />
+            <span className="truncate">
+              {mode === "blitz" && "30 detik — secepat mungkin!"}
+              {mode === "fortress" && "Jangan salah ketik — setiap error merusak benteng!"}
+              {mode === "endurance" && `Kecepatan naik tiap 20 detik — butuh ≥ ${requiredWpm} WPM`}
+              {mode === "daily" && `Tantangan harian · Kesulitan ${game.content.difficulty}`}
+              {mode === "free" && `${game.content.category} · Kesulitan ${game.content.difficulty}`}
+            </span>
+          </p>
+          {status === "playing" && (
+            <button
+              type="button"
+              onClick={() => game.pause()}
+              aria-label="Jeda permainan (Esc)"
+              className="flex shrink-0 cursor-pointer items-center gap-1.5 border-2 border-foreground bg-surface px-2.5 py-1.5 font-mono text-xs font-bold shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+            >
+              <span aria-hidden="true" className="tracking-tighter">
+                ❚❚
+              </span>
+              <span className="hidden sm:inline">Jeda</span>
+            </button>
           )}
-        >
-          <span
-            aria-hidden="true"
-            className={cn("inline-block h-2.5 w-2.5 border-2 border-foreground", MODE_ACCENT[mode])}
-          />
-          {mode === "blitz" && "30 detik — secepat mungkin!"}
-          {mode === "fortress" && "Jangan salah ketik — setiap error merusak benteng!"}
-          {mode === "endurance" && `Kecepatan naik tiap 20 detik — butuh ≥ ${requiredWpm} WPM`}
-          {mode === "daily" && `Tantangan harian · Kesulitan ${game.content.difficulty}`}
-          {mode === "free" && `${game.content.category} · Kesulitan ${game.content.difficulty}`}
-        </p>
+        </div>
+
+        {status === "ready" && (
+          <p className="anim-soft-pulse flex items-center gap-2 border-2 border-dashed border-foreground/30 bg-background px-3 py-2 font-mono text-xs font-bold text-foreground">
+            <span aria-hidden="true" className="text-sm">
+              ⌨️
+            </span>
+            Ketik huruf pertama untuk mulai — waktu berjalan otomatis
+          </p>
+        )}
 
         <TypingArea
           text={game.content.text}

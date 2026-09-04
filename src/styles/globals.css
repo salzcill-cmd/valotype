@@ -751,6 +751,11 @@ body::after {
     animation: premium-glow-pulse 2.4s ease-in-out infinite;
   }
 
+  /* Kedip halus ajakan (hint mulai / elemen instruksi) */
+  .anim-soft-pulse {
+    animation: premium-soft-pulse 2s ease-in-out infinite;
+  }
+
   /* Kilau pelan berjalan (XP bar, kartu aktif, separator) */
   .anim-shimmer {
     animation: premium-shimmer 3s linear infinite;
@@ -829,6 +834,16 @@ body::after {
   }
   50% {
     box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 0%, transparent);
+  }
+}
+
+@keyframes premium-soft-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
   }
 }
 
