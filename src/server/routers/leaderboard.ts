@@ -32,6 +32,94 @@ const pageSchema = z.object({
   offset: z.number().int().min(0).default(0),
 })
 
+/** Jendela periode papan peringkat (prd.md §19/§31). */
+export const LEADERBOARD_PERIODS = ["day", "week", "month"] as const
+export type LeaderboardPeriod = (typeof LEADERBOARD_PERIODS)[number]
+
+/** Awal jendela periode UTC: hari ini / Senin minggu ini / awal bulan. */
+function startOfPeriod(period: LeaderboardPeriod, date = new Date()): Date {
+  if (period === "day") {
+    return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()))
+  }
+  if (period === "month") {
+    return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1))
+  }
+  return startOfWeek(date)
+}
+
+/**
+ * Papan periode (hari/minggu/bulan): WPM terbaik per pemain sejak awal
+ * jendela. Dipakai getWeekly (kompat) dan getPeriod (tabs UI).
+ */
+async function fetchPeriodEntries(input: {
+  period: LeaderboardPeriod
+  limit: number
+  offset: number
+  currentUserId: string | null
+}): Promise<{ entries: LeaderboardEntry[]; startKey: string }> {
+  const { period, limit, offset, currentUserId } = input
+  const start = startOfPeriod(period)
+  const maxWpm = max(typingSessions.wpm)
+
+  const agg = await db
+    .select({ userId: typingSessions.userId, bestPeriodWpm: maxWpm })
+    .from(typingSessions)
+    .where(
+      and(
+        isNotNull(typingSessions.userId),
+        eq(typingSessions.isVerified, true),
+        gte(typingSessions.createdAt, start),
+      ),
+    )
+    .groupBy(typingSessions.userId)
+    .orderBy(desc(maxWpm))
+    .limit(limit)
+    .offset(offset)
+
+  const userIds = agg.flatMap((row) => (row.userId ? [row.userId] : []))
+  const entries: LeaderboardEntry[] = []
+
+  if (userIds.length > 0) {
+    const [userRows, profileRows] = await Promise.all([
+      db
+        .select({ id: users.id, username: users.username })
+        .from(users)
+        .where(inArray(users.id, userIds)),
+      db
+        .select({
+          userId: profiles.userId,
+          bestWpm: profiles.bestWpm,
+          bestAccuracy: profiles.bestAccuracy,
+        })
+        .from(profiles)
+        .where(inArray(profiles.userId, userIds)),
+    ])
+
+    const usernameById = new Map(userRows.map((row) => [row.id, row.username]))
+    const bestByUser = new Map(
+      profileRows.map((row) => [row.userId, { wpm: row.bestWpm, acc: row.bestAccuracy }]),
+    )
+
+    agg.forEach((row, index) => {
+      if (!row.userId) return
+      const username = usernameById.get(row.userId) ?? "pemain"
+      const best = bestByUser.get(row.userId)
+      const periodWpm = row.bestPeriodWpm ?? 0
+      entries.push({
+        position: offset + index + 1,
+        userId: row.userId,
+        username,
+        wpm: periodWpm,
+        accuracy: best?.acc ?? 0,
+        rank: calculateRank(best?.wpm ?? 0, best?.acc ?? 0),
+        isCurrentUser: currentUserId === row.userId,
+      })
+    })
+  }
+
+  return { entries, startKey: start.toISOString().slice(0, 10) }
+}
+
 export const leaderboardRouter = router({
   /**
    * Papan peringkat global (prd.md §19): diurutkan skor skill
@@ -77,75 +165,38 @@ export const leaderboardRouter = router({
 
   /**
    * Papan minggu ini (prd.md §19/§31): WPM terbaik per pemain sejak Senin.
-   * Peringkat otomatis "reset" tiap minggu karena jendela bergeser.
+   * Kompatibel: memakai helper periode yang sama dengan getPeriod.
    */
   getWeekly: publicProcedure.input(pageSchema).query(async ({ input, ctx }) => {
-    const currentUserId = ctx.user?.id ?? null
-    const weekStart = startOfWeek()
-    const maxWpm = max(typingSessions.wpm)
-
-    const agg = await db
-      .select({ userId: typingSessions.userId, bestWeeklyWpm: maxWpm })
-      .from(typingSessions)
-      .where(
-        and(
-          isNotNull(typingSessions.userId),
-          eq(typingSessions.isVerified, true),
-          gte(typingSessions.createdAt, weekStart),
-        ),
-      )
-      .groupBy(typingSessions.userId)
-      .orderBy(desc(maxWpm))
-      .limit(input.limit)
-      .offset(input.offset)
-
-    const userIds = agg.flatMap((row) => (row.userId ? [row.userId] : []))
-    const entries: LeaderboardEntry[] = []
-
-    if (userIds.length > 0) {
-      const [userRows, profileRows] = await Promise.all([
-        db
-          .select({ id: users.id, username: users.username })
-          .from(users)
-          .where(inArray(users.id, userIds)),
-        db
-          .select({
-            userId: profiles.userId,
-            bestWpm: profiles.bestWpm,
-            bestAccuracy: profiles.bestAccuracy,
-          })
-          .from(profiles)
-          .where(inArray(profiles.userId, userIds)),
-      ])
-
-      const usernameById = new Map(userRows.map((row) => [row.id, row.username]))
-      const bestByUser = new Map(
-        profileRows.map((row) => [row.userId, { wpm: row.bestWpm, acc: row.bestAccuracy }]),
-      )
-
-      agg.forEach((row, index) => {
-        if (!row.userId) return
-        const username = usernameById.get(row.userId) ?? "pemain"
-        const best = bestByUser.get(row.userId)
-        const weeklyWpm = row.bestWeeklyWpm ?? 0
-        entries.push({
-          position: input.offset + index + 1,
-          userId: row.userId,
-          username,
-          wpm: weeklyWpm,
-          accuracy: best?.acc ?? 0,
-          rank: calculateRank(best?.wpm ?? 0, best?.acc ?? 0),
-          isCurrentUser: currentUserId === row.userId,
-        })
-      })
-    }
-
+    const { entries, startKey } = await fetchPeriodEntries({
+      period: "week",
+      limit: input.limit,
+      offset: input.offset,
+      currentUserId: ctx.user?.id ?? null,
+    })
     return {
       entries,
-      weekStart: weekStart.toISOString().slice(0, 10),
+      weekStart: startKey,
       hasMore: entries.length === input.limit,
     }
   }),
+
+  /** Papan per periode (hari/minggu/bulan) — tabs UI leaderboard. */
+  getPeriod: publicProcedure
+    .input(pageSchema.extend({ period: z.enum(LEADERBOARD_PERIODS).default("week") }))
+    .query(async ({ input, ctx }) => {
+      const { entries, startKey } = await fetchPeriodEntries({
+        period: input.period,
+        limit: input.limit,
+        offset: input.offset,
+        currentUserId: ctx.user?.id ?? null,
+      })
+      return {
+        entries,
+        periodStart: startKey,
+        hasMore: entries.length === input.limit,
+      }
+    }),
 
   /** Posisi user saat ini + persentase pemain yang lebih lambat (prd.md §17). */
   getPercentile: publicProcedure.query(async ({ ctx }) => {

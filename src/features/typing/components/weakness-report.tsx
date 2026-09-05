@@ -113,12 +113,20 @@ export function WeaknessReport({ expectedText, typedChars, errorCharCounts }: We
         </p>
       )}
 
-      <Link
-        to="/play/fortress"
-        className="mt-3 inline-block border-2 border-foreground bg-primary px-4 py-2 font-display text-xs font-bold tracking-widest text-primary-foreground uppercase shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
-      >
-        🎯 Latihan Akurasi
-      </Link>
+      <div className="mt-3 flex flex-wrap gap-2">
+        <Link
+          to={`/play/focus?keys=${encodeURIComponent(report.weakKeys.map((key) => key.char).join(""))}`}
+          className="inline-block border-2 border-foreground bg-primary px-4 py-2 font-display text-xs font-bold tracking-widest text-primary-foreground uppercase shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+        >
+          ⚡ Latih Huruf Ini
+        </Link>
+        <Link
+          to="/play/fortress"
+          className="inline-block border-2 border-foreground bg-surface px-4 py-2 font-display text-xs font-bold tracking-widest uppercase shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+        >
+          🎯 Latihan Akurasi
+        </Link>
+      </div>
     </div>
   )
 }

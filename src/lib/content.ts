@@ -78,3 +78,52 @@ export function getRandomContent(excludeId?: string, difficulty?: number): Typin
   if (!item) throw new Error("Tidak ada konten mengetik tersedia")
   return item
 }
+
+/**
+ * Konten latihan fokus huruf lemah (TODO 5.3): kumpulkan kalimat dari
+ * seluruh library yang paling sering memuat huruf target, hingga ±320
+ * karakter. Fallback ke teks acak bila tidak ada kalimat cocok.
+ */
+export function buildFocusContent(keys: string[]): TypingContent {
+  const target = [
+    ...new Set(
+      keys
+        .map((key) => key.toLowerCase())
+        .filter((key) => key.length === 1 && /[a-z0-9]/.test(key)),
+    ),
+  ]
+
+  const scored: Array<{ text: string; score: number }> = []
+  for (const item of TYPING_CONTENT) {
+    for (const raw of item.text.split(/(?<=[.!?])\s+/) as string[]) {
+      const sentence = raw.trim()
+      if (sentence.length < 8) continue
+      let score = 0
+      for (const key of target) {
+        const count = sentence.split(key).length - 1
+        if (count > 0) score += count * 2
+      }
+      if (score > 0) scored.push({ text: sentence, score })
+    }
+  }
+  scored.sort((a, b) => b.score - a.score)
+
+  const parts: string[] = []
+  let length = 0
+  for (const sentence of scored) {
+    if (length >= 320) break
+    parts.push(sentence.text)
+    length += sentence.text.length
+  }
+
+  if (parts.length === 0) return getRandomContent()
+
+  return {
+    id: `focus-${target.join("") || "random"}`,
+    text: parts.join(" "),
+    category: "school",
+    difficulty: 1,
+    language: "id-ID",
+    targetKeys: target.length > 0 ? target : undefined,
+  }
+}

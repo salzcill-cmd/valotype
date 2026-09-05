@@ -10,7 +10,13 @@ import { usePageTitle } from "@/hooks/use-page-title"
 import { useTRPC } from "@/lib/trpc"
 import { cn } from "@/lib/utils"
 
-type Tab = "global" | "weekly"
+type Tab = "global" | "day" | "week" | "month"
+
+const PERIOD_TABS = [
+  { id: "day", label: "⚡ Hari Ini", desc: "WPM terbaik setiap pemain hari ini" },
+  { id: "week", label: "📅 Minggu Ini", desc: "WPM terbaik setiap pemain sejak Senin" },
+  { id: "month", label: "🗓 Bulan Ini", desc: "WPM terbaik setiap pemain sejak awal bulan" },
+] as const satisfies ReadonlyArray<{ id: Tab; label: string; desc: string }>
 
 const PAGE_SIZE = 20
 
@@ -31,23 +37,41 @@ export default function LeaderboardRoute() {
   const { isAuthed, isAuthLoading } = useAuth()
   const trpc = useTRPC()
 
-  const globalQuery = useQuery(trpc.leaderboard.getGlobal.queryOptions({ limit: count, offset: 0 }))
-  const weeklyQuery = useQuery(trpc.leaderboard.getWeekly.queryOptions({ limit: count, offset: 0 }))
-  const percentileQuery = useQuery(trpc.leaderboard.getPercentile.queryOptions())
-
   const isGlobal = tab === "global"
-  const query = isGlobal ? globalQuery : weeklyQuery
+  const globalQuery = useQuery({
+    ...trpc.leaderboard.getGlobal.queryOptions({ limit: count, offset: 0 }),
+    enabled: isGlobal,
+  })
+  const periodQuery = useQuery({
+    ...trpc.leaderboard.getPeriod.queryOptions({
+      period: isGlobal ? "week" : tab,
+      limit: count,
+      offset: 0,
+    }),
+    enabled: !isGlobal,
+  })
+  const percentileQuery = useQuery({
+    ...trpc.leaderboard.getPercentile.queryOptions(),
+    enabled: isGlobal,
+  })
+
+  const query = isGlobal ? globalQuery : periodQuery
   const rows: RowData[] = query.data?.entries ?? []
   const hasMore = query.data?.hasMore ?? false
   const loading = query.isLoading || query.isFetching
   const empty = !loading && rows.length === 0
+  const periodDesc = PERIOD_TABS.find((item) => item.id === tab)?.desc ?? ""
 
   const headline =
     isGlobal && percentileQuery.data?.position != null
       ? `Kamu di #${percentileQuery.data.position} dari ${percentileQuery.data.total} pemain`
       : isGlobal
         ? "Papan peringkat global"
-        : "Peringkat minggu ini — reset tiap Senin"
+        : tab === "day"
+          ? "Peringkat hari ini — reset tengah malam"
+          : tab === "week"
+            ? "Peringkat minggu ini — reset tiap Senin"
+            : "Peringkat bulan ini — reset tiap awal bulan"
 
   const percentile = percentileQuery.data?.percentile
   const subline =
@@ -55,7 +79,7 @@ export default function LeaderboardRoute() {
       ? `Kamu lebih cepat dari ${percentile}% pemain!`
       : isGlobal
         ? "Diurutkan dari skor terbaik: WPM × akurasi"
-        : "WPM terbaik setiap pemain sejak Senin"
+        : periodDesc
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 lg:py-8">
@@ -99,16 +123,16 @@ export default function LeaderboardRoute() {
         </section>
       )}
 
-      {/* Tab Global / Minggu Ini (DESAIN.md §17) */}
+      {/* Tab Global / Hari Ini / Minggu Ini / Bulan Ini (DESAIN.md §17) */}
       <div
         role="tablist"
         aria-label="Jenis peringkat"
-        className="mt-4 flex border-2 border-foreground shadow-sm"
+        className="mt-4 grid grid-cols-2 border-2 border-foreground shadow-sm sm:grid-cols-4"
       >
         {(
           [
             { id: "global", label: "🌍 Global" },
-            { id: "weekly", label: "📅 Minggu Ini" },
+            ...PERIOD_TABS.map(({ id, label }) => ({ id, label })),
           ] as const
         ).map((item) => (
           <button
@@ -121,9 +145,9 @@ export default function LeaderboardRoute() {
               setCount(PAGE_SIZE)
             }}
             className={cn(
-              "flex-1 px-4 py-3 font-display text-sm font-bold tracking-widest uppercase transition-colors",
+              "px-3 py-3 font-display text-xs font-bold tracking-widest uppercase transition-all sm:px-4 sm:text-sm",
               tab === item.id
-                ? "bg-primary text-primary-foreground"
+                ? "bg-primary text-primary-foreground shadow-inner"
                 : "bg-surface hover:bg-background",
             )}
           >
@@ -172,12 +196,18 @@ export default function LeaderboardRoute() {
       {empty && (
         <div className="mt-6 border-2 border-dashed border-foreground/40 p-8 text-center">
           <p className="font-display text-lg font-bold">
-            {isGlobal ? "Belum ada pemain 😶" : "Belum ada sesi minggu ini"}
+            {isGlobal
+              ? "Belum ada pemain 😶"
+              : tab === "day"
+                ? "Belum ada sesi hari ini"
+                : tab === "month"
+                  ? "Belum ada sesi bulan ini"
+                  : "Belum ada sesi minggu ini"}
           </p>
           <p className="mt-1 font-mono text-sm text-muted">
             {isGlobal
               ? "Selesaikan satu latihan untuk masuk papan!"
-              : "Selesaikan satu latihan dan taklukkan minggu ini!"}
+              : "Selesaikan satu latihan dan taklukkan periode ini!"}
           </p>
           <Link
             to="/play/game"

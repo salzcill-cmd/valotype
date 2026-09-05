@@ -65,6 +65,21 @@ export default function SettingsRoute() {
     }
   }
 
+  const handleResetAppearance = () => {
+    // Kembalikan semua preferensi ke bawaan + hapus sisa kunci lama.
+    if (reducedMotion) toggleReducedMotion()
+    if (!soundEnabled) toggleSound()
+    setTheme("system")
+    setAccentTheme("neo")
+    try {
+      localStorage.removeItem("valotype-preferences")
+      localStorage.removeItem("valotype-theme")
+    } catch {
+      // storage tidak tersedia — abaikan
+    }
+    setNotice("⚡ Tampilan di-reset ke bawaan: tema sistem + animasi aktif.")
+  }
+
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 lg:py-8">
       <header className="flex items-center gap-3">
@@ -175,6 +190,28 @@ export default function SettingsRoute() {
             <span className={knobClass(soundEnabled)} aria-hidden="true" />
           </button>
         </div>
+      </section>
+
+      {/* Reset tampilan — solusi cepat tampilan "berubah sendiri" (preferensi lama tersimpan) */}
+      <section className={cn(sectionClass, "mt-4")}>
+        <div className="flex items-center gap-2">
+          <span
+            aria-hidden="true"
+            className="h-4 w-1.5 border-2 border-foreground bg-warning shadow-sm"
+          />
+          <h2 className="font-display text-base font-bold">Reset Tampilan</h2>
+        </div>
+        <p className="mt-0.5 font-mono text-xs text-muted">
+          Tampilan beda dari biasanya? Preferensi lama bisa tersimpan di perangkat — kembalikan
+          semua ke bawaan (tema sistem, animasi aktif, aksen neo) dalam satu klik.
+        </p>
+        <button
+          type="button"
+          onClick={handleResetAppearance}
+          className="mt-3 inline-flex items-center gap-2 border-2 border-foreground bg-warning px-4 py-2.5 font-display text-sm font-bold tracking-widest text-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+        >
+          ⚡ Reset Tampilan
+        </button>
       </section>
 
       {/* Akun */}

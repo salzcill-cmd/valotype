@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server"
-import { eq } from "drizzle-orm"
+import { desc, eq } from "drizzle-orm"
 import { z } from "zod"
 
 import type { AchievementDef } from "../../features/achievements/catalog.ts"
@@ -11,7 +11,7 @@ import { getContentById } from "../../lib/content.ts"
 import { checkAndAwardAchievements, ensureAchievementsSeeded } from "../achievements.ts"
 import { db } from "../db/index.ts"
 import { dailyChallengeCompletions, type Profile, profiles, typingSessions } from "../db/schema.ts"
-import { publicProcedure, router } from "../trpc/init.ts"
+import { protectedProcedure, publicProcedure, router } from "../trpc/init.ts"
 import { DAILY_BONUS_XP, todayKey } from "./daily-challenge.ts"
 
 const GAME_MODES = ["free", "blitz", "fortress", "daily", "endurance", "cascade"] as const
@@ -312,4 +312,45 @@ export const typingRouter = router({
       })
     }
   }),
+
+  /**
+   * Riwayat sesi user (login): 15 terakhir untuk halaman profil.
+   * Hanya kolom ringan — teks lengkap tidak dikirim (privasi + ukuran).
+   */
+  getHistory: protectedProcedure
+    .input(z.object({ limit: z.number().int().min(1).max(50).default(15) }))
+    .query(async ({ input, ctx }) => {
+      const rows = await db
+        .select({
+          id: typingSessions.id,
+          gameMode: typingSessions.gameMode,
+          wpm: typingSessions.wpm,
+          accuracy: typingSessions.accuracy,
+          score: typingSessions.score,
+          errorCount: typingSessions.errorCount,
+          maxCombo: typingSessions.maxCombo,
+          durationMs: typingSessions.durationMs,
+          isVerified: typingSessions.isVerified,
+          isPractice: typingSessions.isPractice,
+          createdAt: typingSessions.createdAt,
+        })
+        .from(typingSessions)
+        .where(eq(typingSessions.userId, ctx.user.id))
+        .orderBy(desc(typingSessions.createdAt))
+        .limit(input.limit)
+
+      return rows.map((row) => ({
+        id: row.id,
+        gameMode: row.gameMode,
+        wpm: row.wpm,
+        accuracy: Math.round(row.accuracy),
+        score: row.score,
+        errorCount: row.errorCount,
+        maxCombo: row.maxCombo,
+        durationMs: row.durationMs,
+        isVerified: row.isVerified,
+        isPractice: row.isPractice,
+        createdAt: row.createdAt.toISOString(),
+      }))
+    }),
 })
