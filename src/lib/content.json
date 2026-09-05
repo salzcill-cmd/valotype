@@ -1,1127 +1,958 @@
 {
- "version": 1,
- "generatedAt": "2026-09-04T05:47:01.110327+00:00",
- "entries": [
-  {
-   "id": "school-001",
-   "text": "aku suka belajar di sekolah",
-   "category": "school",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-002",
-   "text": "buku dan pensil ada di tas",
-   "category": "school",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-003",
-   "text": "hari ini kita belajar bahasa indonesia",
-   "category": "school",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "culture-001",
-   "text": "indonesia punya banyak budaya",
-   "category": "culture",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "science-001",
-   "text": "air mendidih pada suhu seratus derajat",
-   "category": "science",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-004",
-   "text": "guru menjelaskan pelajaran dengan sabar di depan kelas",
-   "category": "school",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "technology-001",
-   "text": "komputer adalah alat yang membantu pekerjaan manusia",
-   "category": "technology",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "technology-002",
-   "text": "internet membuat kita bisa terhubung dengan dunia luar",
-   "category": "technology",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "sport-001",
-   "text": "berlari setiap pagi membuat tubuh kita menjadi sehat",
-   "category": "sport",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "environment-001",
-   "text": "membuang sampah pada tempatnya menjaga lingkungan bersih",
-   "category": "environment",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "culture-002",
-   "text": "batik adalah warisan budaya indonesia yang mendunia",
-   "category": "culture",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "aspiration-001",
-   "text": "aku ingin menjadi dokter agar bisa menolong banyak orang",
-   "category": "aspiration",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-005",
-   "text": "sebelum ulangan, aku membaca buku dan mencatat materi penting",
-   "category": "school",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "technology-003",
-   "text": "belajar mengetik dengan sepuluh jari membuat kerjamu lebih cepat",
-   "category": "technology",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "science-002",
-   "text": "fotosintesis adalah proses tumbuhan membuat makanannya sendiri",
-   "category": "science",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "science-003",
-   "text": "planet terdekat dengan matahari adalah merkurius dan venus",
-   "category": "science",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "sport-002",
-   "text": "tim sepak bola indonesia berlatih keras untuk turnamen asia",
-   "category": "sport",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "environment-002",
-   "text": "menanam pohon di lingkungan rumah membantu udara tetap segar",
-   "category": "environment",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "culture-003",
-   "text": "tari saman dari aceh terkenal dengan gerakannya yang kompak",
-   "category": "culture",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-006",
-   "text": "disiplin dan tekun belajar adalah kunci meraih prestasi terbaik di sekolah",
-   "category": "school",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "technology-004",
-   "text": "teknologi terus berkembang, maka kita harus rajin belajar hal yang baru",
-   "category": "technology",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "science-004",
-   "text": "gaya gravitasi bumi menarik semua benda ke arah pusat planet kita",
-   "category": "science",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "environment-003",
-   "text": "perubahan iklim mempengaruhi cuaca dan hasil panen para petani di desa",
-   "category": "environment",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "aspiration-002",
-   "text": "dengan semangat belajar yang tinggi, cita cita setinggi langit bisa kita raih",
-   "category": "aspiration",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "technology-005",
-   "text": "di era digital ini, kemampuan mengetik menjadi bekal penting untuk masa depan",
-   "category": "technology",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "culture-004",
-   "text": "dari sabang sampai merauke, indonesia kaya akan bahasa dan tradisi yang unik",
-   "category": "culture",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "science-005",
-   "text": "para ilmuwan meyakini bahwa kebiasaan membaca dan menulis melatih otak manusia",
-   "category": "science",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "aspiration-003",
-   "text": "generasi muda indonesia berlatih keterampilan digital demi indonesia emas dua ribu empat puluh lima",
-   "category": "aspiration",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "environment-004",
-   "text": "lautan adalah rumah bagi ribuan makhluk hidup, maka kita wajib menjaganya tetap bersih",
-   "category": "environment",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-007",
-   "text": "sebelum ujian, sebaiknya kita belajar dengan tekun",
-   "category": "school",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-008",
-   "text": "teman sekelas saling membantu mengerjakan tugas kelompok",
-   "category": "school",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-009",
-   "text": "perpustakaan sekolah memiliki koleksi buku yang lengkap",
-   "category": "school",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-010",
-   "text": "guru menjelaskan materi pelajaran dengan sabar dan jelas",
-   "category": "school",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-011",
-   "text": "sekolah mengadakan lomba cerdas cermat antar kelas setiap tahun",
-   "category": "school",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-012",
-   "text": "pendidikan adalah investasi paling berharga untuk masa depan bangsa",
-   "category": "school",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-013",
-   "text": "dengan membaca buku setiap hari, wawasan kita akan semakin luas dan terbuka",
-   "category": "school",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-014",
-   "text": "kedisiplinan dalam belajar sejak dini akan membentuk karakter yang tangguh",
-   "category": "school",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "technology-006",
-   "text": "telepon pintar memudahkan kita berkomunikasi",
-   "category": "technology",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "technology-007",
-   "text": "komputer membantu pekerjaan menjadi lebih cepat",
-   "category": "technology",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "technology-008",
-   "text": "internet menghubungkan orang di seluruh dunia",
-   "category": "technology",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "technology-009",
-   "text": "kecerdasan buatan kini digunakan di berbagai bidang pekerjaan",
-   "category": "technology",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "technology-010",
-   "text": "data pribadi harus dilindungi dengan kata sandi yang kuat",
-   "category": "technology",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "technology-011",
-   "text": "teknologi blockchain menjanjikan transaksi yang transparan dan aman",
-   "category": "technology",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "science-006",
-   "text": "matahari terbit dari timur setiap pagi",
-   "category": "science",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "science-007",
-   "text": "air menguap ketika dipanaskan dengan api",
-   "category": "science",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "science-008",
-   "text": "planet beredar mengelilingi matahari karena gravitasi",
-   "category": "science",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "science-009",
-   "text": "fotosintesis mengubah cahaya menjadi energi bagi tumbuhan",
-   "category": "science",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "science-010",
-   "text": "penelitian ilmiah membutuhkan metode yang sistematis dan dapat diuji ulang",
-   "category": "science",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "sport-003",
-   "text": "berlari setiap pagi menyehatkan badan",
-   "category": "sport",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "sport-004",
-   "text": "tim kami berhasil memenangkan pertandingan sepak bola",
-   "category": "sport",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "sport-005",
-   "text": "atlet bulu tangkis indonesia berlatih keras setiap hari",
-   "category": "sport",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "sport-006",
-   "text": "olahraga teratur meningkatkan stamina dan menjaga kebugaran tubuh",
-   "category": "sport",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "sport-007",
-   "text": "semangat sportivitas lebih penting daripada sekadar memenangkan medali emas",
-   "category": "sport",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "culture-005",
-   "text": "wayang adalah salah satu warisan budaya indonesia",
-   "category": "culture",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "culture-006",
-   "text": "batik indonesia diakui dunia sebagai warisan budaya",
-   "category": "culture",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "culture-007",
-   "text": "setiap daerah memiliki tarian tradisional dengan keunikan masing-masing",
-   "category": "culture",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "culture-008",
-   "text": "melestarikan bahasa daerah berarti menjaga identitas bangsa di tengah zaman",
-   "category": "culture",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "environment-005",
-   "text": "membuang sampah pada tempatnya menjaga kebersihan",
-   "category": "environment",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "environment-006",
-   "text": "menanam pohon membantu udara tetap segar",
-   "category": "environment",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "environment-007",
-   "text": "daur ulang sampah plastik mengurangi pencemaran lingkungan",
-   "category": "environment",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "environment-008",
-   "text": "energi matahari dan angin adalah sumber energi terbarukan",
-   "category": "environment",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "environment-009",
-   "text": "perubahan iklim menuntut kita beralih ke gaya hidup yang ramah lingkungan",
-   "category": "environment",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "aspiration-004",
-   "text": "aku ingin menjadi dokter yang membantu banyak orang",
-   "category": "aspiration",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "aspiration-005",
-   "text": "bermimpi besar adalah langkah pertama menuju kesuksesan",
-   "category": "aspiration",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "aspiration-006",
-   "text": "dengan kerja keras dan doa, cita cita pasti tercapai",
-   "category": "aspiration",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "aspiration-007",
-   "text": "setiap anak indonesia berhak meraih impian setinggi langit",
-   "category": "aspiration",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "school-015",
-   "text": "membaca adalah jendela dunia yang tidak pernah tertutup",
-   "category": "school",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": [
-    "m",
-    "b",
-    "d"
-   ]
-  },
-  {
-   "id": "school-016",
-   "text": "tugas sekolah harus dikerjakan tepat waktu setiap hari",
-   "category": "school",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": [
-    "t",
-    "w",
-    "s"
-   ]
-  },
-  {
-   "id": "school-017",
-   "text": "belajar kelompok membuat materi terasa lebih mudah dipahami",
-   "category": "school",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": [
-    "k",
-    "p"
-   ]
-  },
-  {
-   "id": "school-018",
-   "text": "rapor adalah cermin usaha kita selama satu semester",
-   "category": "school",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": [
-    "r",
-    "s"
-   ]
-  },
-  {
-   "id": "school-019",
-   "text": "matematika melatih logika dan cara berpikir yang sistematis",
-   "category": "school",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": [
-    "m",
-    "k",
-    "i"
-   ]
-  },
-  {
-   "id": "school-020",
-   "text": "guru adalah pahlawan tanpa tanda jasa yang mencerdaskan bangsa",
-   "category": "school",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": [
-    "g",
-    "j",
-    "b"
-   ]
-  },
-  {
-   "id": "school-021",
-   "text": "kesuksesan ujian nasional diraih dengan persiapan matang dan doa",
-   "category": "school",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": [
-    "s",
-    "d",
-    "p"
-   ]
-  },
-  {
-   "id": "technology-012",
-   "text": "aplikasi peta membantu kita menemukan jalan",
-   "category": "technology",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": [
-    "a",
-    "j"
-   ]
-  },
-  {
-   "id": "technology-013",
-   "text": "media sosial menghubungkan teman lama kita",
-   "category": "technology",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": [
-    "m",
-    "s",
-    "k"
-   ]
-  },
-  {
-   "id": "technology-014",
-   "text": "robot dapat mengerjakan tugas berulang dengan teliti",
-   "category": "technology",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": [
-    "r",
-    "t"
-   ]
-  },
-  {
-   "id": "technology-015",
-   "text": "programmer menulis kode untuk membangun aplikasi",
-   "category": "technology",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": [
-    "p",
-    "k",
-    "m"
-   ]
-  },
-  {
-   "id": "technology-016",
-   "text": "kamera digital menyimpan ribuan foto dalam satu kartu",
-   "category": "technology",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": [
-    "k",
-    "f",
-    "d"
-   ]
-  },
-  {
-   "id": "technology-017",
-   "text": "kecerdasan buatan belajar dari jutaan data setiap hari",
-   "category": "technology",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": [
-    "k",
-    "d",
-    "j"
-   ]
-  },
-  {
-   "id": "technology-018",
-   "text": "komputasi awan memungkinkan data diakses dari mana saja",
-   "category": "technology",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": [
-    "k",
-    "a",
-    "m"
-   ]
-  },
-  {
-   "id": "technology-019",
-   "text": "keamanan siber menjadi profesi penting di era digital",
-   "category": "technology",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": [
-    "k",
-    "s",
-    "p",
-    "d"
-   ]
-  },
-  {
-   "id": "science-011",
-   "text": "langit malam penuh dengan bintang",
-   "category": "science",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": [
-    "l",
-    "b",
-    "n"
-   ]
-  },
-  {
-   "id": "science-012",
-   "text": "tubuh manusia membutuhkan makanan bergizi",
-   "category": "science",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": [
-    "t",
-    "m",
-    "g"
-   ]
-  },
-  {
-   "id": "science-013",
-   "text": "gunung berapi terbentuk dari tekanan magma",
-   "category": "science",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": [
-    "g",
-    "v",
-    "m"
-   ]
-  },
-  {
-   "id": "science-014",
-   "text": "antibiotik hanya efektif melawan bakteri bukan virus",
-   "category": "science",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": [
-    "a",
-    "b",
-    "v"
-   ]
-  },
-  {
-   "id": "science-015",
-   "text": "teori relativitas mengubah cara kita memahami alam semesta",
-   "category": "science",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": [
-    "t",
-    "r",
-    "a",
-    "s"
-   ]
-  },
-  {
-   "id": "sport-008",
-   "text": "renang membuat badan terasa segar",
-   "category": "sport",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": [
-    "r",
-    "s",
-    "g"
-   ]
-  },
-  {
-   "id": "sport-009",
-   "text": "sepak bola dimainkan oleh sebelas pemain",
-   "category": "sport",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": [
-    "s",
-    "p",
-    "l"
-   ]
-  },
-  {
-   "id": "sport-010",
-   "text": "voli pantai membutuhkan kerja sama tim yang kuat",
-   "category": "sport",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": [
-    "v",
-    "k",
-    "t"
-   ]
-  },
-  {
-   "id": "sport-011",
-   "text": "lari maraton menempuh jarak empat puluh dua kilometer",
-   "category": "sport",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": [
-    "l",
-    "m",
-    "j",
-    "k"
-   ]
-  },
-  {
-   "id": "sport-012",
-   "text": "juara sejati lahir dari latihan keras dan mental baja",
-   "category": "sport",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": [
-    "j",
-    "l",
-    "m",
-    "b"
-   ]
-  },
-  {
-   "id": "culture-009",
-   "text": "rumah adat menunjukkan kekayaan budaya daerah",
-   "category": "culture",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": [
-    "r",
-    "k",
-    "d"
-   ]
-  },
-  {
-   "id": "culture-010",
-   "text": "gamelan mengiringi pertunjukan wayang kulit",
-   "category": "culture",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": [
-    "g",
-    "w",
-    "k"
-   ]
-  },
-  {
-   "id": "culture-011",
-   "text": "upacara adat menjaga hubungan manusia dengan leluhur",
-   "category": "culture",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": [
-    "u",
-    "a",
-    "l"
-   ]
-  },
-  {
-   "id": "culture-012",
-   "text": "kuliner nusantara memikat wisatawan dari berbagai negara",
-   "category": "culture",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": [
-    "k",
-    "n",
-    "w",
-    "b"
-   ]
-  },
-  {
-   "id": "environment-010",
-   "text": "udara bersih membuat napas terasa lega",
-   "category": "environment",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": [
-    "u",
-    "n",
-    "l"
-   ]
-  },
-  {
-   "id": "environment-011",
-   "text": "sampah organik bisa diolah menjadi kompos",
-   "category": "environment",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": [
-    "s",
-    "o",
-    "k"
-   ]
-  },
-  {
-   "id": "environment-012",
-   "text": "hutan bakau melindungi pantai dari abrasi",
-   "category": "environment",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": [
-    "h",
-    "b",
-    "a"
-   ]
-  },
-  {
-   "id": "environment-013",
-   "text": "kendaraan listrik mengurangi polusi udara kota",
-   "category": "environment",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": [
-    "k",
-    "l",
-    "p",
-    "u"
-   ]
-  },
-  {
-   "id": "environment-014",
-   "text": "keberlanjutan bumi bergantung pada pilihan kita hari ini",
-   "category": "environment",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": [
-    "k",
-    "b",
-    "p",
-    "h"
-   ]
-  },
-  {
-   "id": "aspiration-008",
-   "text": "aku bercita cita menjadi guru yang menginspirasi",
-   "category": "aspiration",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": [
-    "a",
-    "g",
-    "i"
-   ]
-  },
-  {
-   "id": "aspiration-009",
-   "text": "setiap usaha kecil membawa kita mendekati impian",
-   "category": "aspiration",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": [
-    "s",
-    "u",
-    "i"
-   ]
-  },
-  {
-   "id": "aspiration-010",
-   "text": "disiplin adalah jembatan antara cita cita dan kenyataan",
-   "category": "aspiration",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": [
-    "d",
-    "j",
-    "c",
-    "k"
-   ]
-  },
-  {
-   "id": "aspiration-011",
-   "text": "pemuda indonesia berani bermimpi dan pantang menyerah",
-   "category": "aspiration",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": [
-    "p",
-    "b",
-    "m"
-   ]
-  },
-  {
-   "id": "aspiration-012",
-   "text": "masa depan cerah milik mereka yang berani memulai hari ini",
-   "category": "aspiration",
-   "difficulty": 5,
-   "language": "id-ID",
-   "targetKeys": [
-    "m",
-    "c",
-    "b",
-    "h"
-   ]
-  },
-  {
-   "id": "school-022",
-   "text": "rajin membaca membuat pengetahuan semakin luas setiap hari",
-   "category": "school",
-   "difficulty": 1,
-   "language": "id-ID",
-   "targetKeys": [
-    "q"
-   ]
-  },
-  {
-   "id": "school-023",
-   "text": "matematika mengajarkan cara berpikir logis dan teliti dalam memecahkan masalah",
-   "category": "school",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "technology-020",
-   "text": "kecerdasan buatan kini membantu dokter mendiagnosis penyakit lebih cepat",
-   "category": "technology",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": [
-    "z"
-   ]
-  },
-  {
-   "id": "technology-021",
-   "text": "aplikasi pengolah kata memudahkan kita menulis dan mengatur dokumen",
-   "category": "technology",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "science-016",
-   "text": "oksigen yang kita hirup dihasilkan tumbuhan melalui proses fotosintesis",
-   "category": "science",
-   "difficulty": 4,
-   "language": "id-ID",
-   "targetKeys": [
-    "x"
-   ]
-  },
-  {
-   "id": "science-017",
-   "text": "gaya gravitasi membuat semua benda jatuh ke arah pusat bumi",
-   "category": "science",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "environment-015",
-   "text": "daur ulang sampah plastik mengurangi pencemaran laut dan daratan",
-   "category": "environment",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "environment-016",
-   "text": "menanam satu pohon berarti menyediakan rumah bagi ratusan makhluk hidup",
-   "category": "environment",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "sport-013",
-   "text": "latihan rutin pagi hari meningkatkan stamina dan kekuatan otot",
-   "category": "sport",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "sport-014",
-   "text": "strategi tim yang solid lebih penting daripada bakat individu di lapangan",
-   "category": "sport",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "culture-013",
-   "text": "batik indonesia diakui dunia sebagai warisan budaya yang tak ternilai",
-   "category": "culture",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": [
-    "x"
-   ]
-  },
-  {
-   "id": "culture-014",
-   "text": "gamelan menghasilkan irama yang menenangkan hati para pendengarnya",
-   "category": "culture",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "aspiration-013",
-   "text": "konsistensi kecil setiap hari melahirkan hasil besar di masa depan",
-   "category": "aspiration",
-   "difficulty": 3,
-   "language": "id-ID",
-   "targetKeys": []
-  },
-  {
-   "id": "aspiration-014",
-   "text": "bermimpi setinggi langit tetapi melangkah selangkah demi selangkah",
-   "category": "aspiration",
-   "difficulty": 2,
-   "language": "id-ID",
-   "targetKeys": []
-  }
- ]
+  "version": 1,
+  "generatedAt": "2026-09-04T05:47:01.110327+00:00",
+  "entries": [
+    {
+      "id": "school-001",
+      "text": "aku suka belajar di sekolah",
+      "category": "school",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-002",
+      "text": "buku dan pensil ada di tas",
+      "category": "school",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-003",
+      "text": "hari ini kita belajar bahasa indonesia",
+      "category": "school",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "culture-001",
+      "text": "indonesia punya banyak budaya",
+      "category": "culture",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "science-001",
+      "text": "air mendidih pada suhu seratus derajat",
+      "category": "science",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-004",
+      "text": "guru menjelaskan pelajaran dengan sabar di depan kelas",
+      "category": "school",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "technology-001",
+      "text": "komputer adalah alat yang membantu pekerjaan manusia",
+      "category": "technology",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "technology-002",
+      "text": "internet membuat kita bisa terhubung dengan dunia luar",
+      "category": "technology",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "sport-001",
+      "text": "berlari setiap pagi membuat tubuh kita menjadi sehat",
+      "category": "sport",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "environment-001",
+      "text": "membuang sampah pada tempatnya menjaga lingkungan bersih",
+      "category": "environment",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "culture-002",
+      "text": "batik adalah warisan budaya indonesia yang mendunia",
+      "category": "culture",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "aspiration-001",
+      "text": "aku ingin menjadi dokter agar bisa menolong banyak orang",
+      "category": "aspiration",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-005",
+      "text": "sebelum ulangan, aku membaca buku dan mencatat materi penting",
+      "category": "school",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "technology-003",
+      "text": "belajar mengetik dengan sepuluh jari membuat kerjamu lebih cepat",
+      "category": "technology",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "science-002",
+      "text": "fotosintesis adalah proses tumbuhan membuat makanannya sendiri",
+      "category": "science",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "science-003",
+      "text": "planet terdekat dengan matahari adalah merkurius dan venus",
+      "category": "science",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "sport-002",
+      "text": "tim sepak bola indonesia berlatih keras untuk turnamen asia",
+      "category": "sport",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "environment-002",
+      "text": "menanam pohon di lingkungan rumah membantu udara tetap segar",
+      "category": "environment",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "culture-003",
+      "text": "tari saman dari aceh terkenal dengan gerakannya yang kompak",
+      "category": "culture",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-006",
+      "text": "disiplin dan tekun belajar adalah kunci meraih prestasi terbaik di sekolah",
+      "category": "school",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "technology-004",
+      "text": "teknologi terus berkembang, maka kita harus rajin belajar hal yang baru",
+      "category": "technology",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "science-004",
+      "text": "gaya gravitasi bumi menarik semua benda ke arah pusat planet kita",
+      "category": "science",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "environment-003",
+      "text": "perubahan iklim mempengaruhi cuaca dan hasil panen para petani di desa",
+      "category": "environment",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "aspiration-002",
+      "text": "dengan semangat belajar yang tinggi, cita cita setinggi langit bisa kita raih",
+      "category": "aspiration",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "technology-005",
+      "text": "di era digital ini, kemampuan mengetik menjadi bekal penting untuk masa depan",
+      "category": "technology",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "culture-004",
+      "text": "dari sabang sampai merauke, indonesia kaya akan bahasa dan tradisi yang unik",
+      "category": "culture",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "science-005",
+      "text": "para ilmuwan meyakini bahwa kebiasaan membaca dan menulis melatih otak manusia",
+      "category": "science",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "aspiration-003",
+      "text": "generasi muda indonesia berlatih keterampilan digital demi indonesia emas dua ribu empat puluh lima",
+      "category": "aspiration",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "environment-004",
+      "text": "lautan adalah rumah bagi ribuan makhluk hidup, maka kita wajib menjaganya tetap bersih",
+      "category": "environment",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-007",
+      "text": "sebelum ujian, sebaiknya kita belajar dengan tekun",
+      "category": "school",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-008",
+      "text": "teman sekelas saling membantu mengerjakan tugas kelompok",
+      "category": "school",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-009",
+      "text": "perpustakaan sekolah memiliki koleksi buku yang lengkap",
+      "category": "school",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-010",
+      "text": "guru menjelaskan materi pelajaran dengan sabar dan jelas",
+      "category": "school",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-011",
+      "text": "sekolah mengadakan lomba cerdas cermat antar kelas setiap tahun",
+      "category": "school",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-012",
+      "text": "pendidikan adalah investasi paling berharga untuk masa depan bangsa",
+      "category": "school",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-013",
+      "text": "dengan membaca buku setiap hari, wawasan kita akan semakin luas dan terbuka",
+      "category": "school",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-014",
+      "text": "kedisiplinan dalam belajar sejak dini akan membentuk karakter yang tangguh",
+      "category": "school",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "technology-006",
+      "text": "telepon pintar memudahkan kita berkomunikasi",
+      "category": "technology",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "technology-007",
+      "text": "komputer membantu pekerjaan menjadi lebih cepat",
+      "category": "technology",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "technology-008",
+      "text": "internet menghubungkan orang di seluruh dunia",
+      "category": "technology",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "technology-009",
+      "text": "kecerdasan buatan kini digunakan di berbagai bidang pekerjaan",
+      "category": "technology",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "technology-010",
+      "text": "data pribadi harus dilindungi dengan kata sandi yang kuat",
+      "category": "technology",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "technology-011",
+      "text": "teknologi blockchain menjanjikan transaksi yang transparan dan aman",
+      "category": "technology",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "science-006",
+      "text": "matahari terbit dari timur setiap pagi",
+      "category": "science",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "science-007",
+      "text": "air menguap ketika dipanaskan dengan api",
+      "category": "science",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "science-008",
+      "text": "planet beredar mengelilingi matahari karena gravitasi",
+      "category": "science",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "science-009",
+      "text": "fotosintesis mengubah cahaya menjadi energi bagi tumbuhan",
+      "category": "science",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "science-010",
+      "text": "penelitian ilmiah membutuhkan metode yang sistematis dan dapat diuji ulang",
+      "category": "science",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "sport-003",
+      "text": "berlari setiap pagi menyehatkan badan",
+      "category": "sport",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "sport-004",
+      "text": "tim kami berhasil memenangkan pertandingan sepak bola",
+      "category": "sport",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "sport-005",
+      "text": "atlet bulu tangkis indonesia berlatih keras setiap hari",
+      "category": "sport",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "sport-006",
+      "text": "olahraga teratur meningkatkan stamina dan menjaga kebugaran tubuh",
+      "category": "sport",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "sport-007",
+      "text": "semangat sportivitas lebih penting daripada sekadar memenangkan medali emas",
+      "category": "sport",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "culture-005",
+      "text": "wayang adalah salah satu warisan budaya indonesia",
+      "category": "culture",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "culture-006",
+      "text": "batik indonesia diakui dunia sebagai warisan budaya",
+      "category": "culture",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "culture-007",
+      "text": "setiap daerah memiliki tarian tradisional dengan keunikan masing-masing",
+      "category": "culture",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "culture-008",
+      "text": "melestarikan bahasa daerah berarti menjaga identitas bangsa di tengah zaman",
+      "category": "culture",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "environment-005",
+      "text": "membuang sampah pada tempatnya menjaga kebersihan",
+      "category": "environment",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "environment-006",
+      "text": "menanam pohon membantu udara tetap segar",
+      "category": "environment",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "environment-007",
+      "text": "daur ulang sampah plastik mengurangi pencemaran lingkungan",
+      "category": "environment",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "environment-008",
+      "text": "energi matahari dan angin adalah sumber energi terbarukan",
+      "category": "environment",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "environment-009",
+      "text": "perubahan iklim menuntut kita beralih ke gaya hidup yang ramah lingkungan",
+      "category": "environment",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "aspiration-004",
+      "text": "aku ingin menjadi dokter yang membantu banyak orang",
+      "category": "aspiration",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "aspiration-005",
+      "text": "bermimpi besar adalah langkah pertama menuju kesuksesan",
+      "category": "aspiration",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "aspiration-006",
+      "text": "dengan kerja keras dan doa, cita cita pasti tercapai",
+      "category": "aspiration",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "aspiration-007",
+      "text": "setiap anak indonesia berhak meraih impian setinggi langit",
+      "category": "aspiration",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-015",
+      "text": "membaca adalah jendela dunia yang tidak pernah tertutup",
+      "category": "school",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": ["m", "b", "d"]
+    },
+    {
+      "id": "school-016",
+      "text": "tugas sekolah harus dikerjakan tepat waktu setiap hari",
+      "category": "school",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": ["t", "w", "s"]
+    },
+    {
+      "id": "school-017",
+      "text": "belajar kelompok membuat materi terasa lebih mudah dipahami",
+      "category": "school",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": ["k", "p"]
+    },
+    {
+      "id": "school-018",
+      "text": "rapor adalah cermin usaha kita selama satu semester",
+      "category": "school",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": ["r", "s"]
+    },
+    {
+      "id": "school-019",
+      "text": "matematika melatih logika dan cara berpikir yang sistematis",
+      "category": "school",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["m", "k", "i"]
+    },
+    {
+      "id": "school-020",
+      "text": "guru adalah pahlawan tanpa tanda jasa yang mencerdaskan bangsa",
+      "category": "school",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["g", "j", "b"]
+    },
+    {
+      "id": "school-021",
+      "text": "kesuksesan ujian nasional diraih dengan persiapan matang dan doa",
+      "category": "school",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": ["s", "d", "p"]
+    },
+    {
+      "id": "technology-012",
+      "text": "aplikasi peta membantu kita menemukan jalan",
+      "category": "technology",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": ["a", "j"]
+    },
+    {
+      "id": "technology-013",
+      "text": "media sosial menghubungkan teman lama kita",
+      "category": "technology",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": ["m", "s", "k"]
+    },
+    {
+      "id": "technology-014",
+      "text": "robot dapat mengerjakan tugas berulang dengan teliti",
+      "category": "technology",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": ["r", "t"]
+    },
+    {
+      "id": "technology-015",
+      "text": "programmer menulis kode untuk membangun aplikasi",
+      "category": "technology",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": ["p", "k", "m"]
+    },
+    {
+      "id": "technology-016",
+      "text": "kamera digital menyimpan ribuan foto dalam satu kartu",
+      "category": "technology",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": ["k", "f", "d"]
+    },
+    {
+      "id": "technology-017",
+      "text": "kecerdasan buatan belajar dari jutaan data setiap hari",
+      "category": "technology",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["k", "d", "j"]
+    },
+    {
+      "id": "technology-018",
+      "text": "komputasi awan memungkinkan data diakses dari mana saja",
+      "category": "technology",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["k", "a", "m"]
+    },
+    {
+      "id": "technology-019",
+      "text": "keamanan siber menjadi profesi penting di era digital",
+      "category": "technology",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": ["k", "s", "p", "d"]
+    },
+    {
+      "id": "science-011",
+      "text": "langit malam penuh dengan bintang",
+      "category": "science",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": ["l", "b", "n"]
+    },
+    {
+      "id": "science-012",
+      "text": "tubuh manusia membutuhkan makanan bergizi",
+      "category": "science",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": ["t", "m", "g"]
+    },
+    {
+      "id": "science-013",
+      "text": "gunung berapi terbentuk dari tekanan magma",
+      "category": "science",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": ["g", "v", "m"]
+    },
+    {
+      "id": "science-014",
+      "text": "antibiotik hanya efektif melawan bakteri bukan virus",
+      "category": "science",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["a", "b", "v"]
+    },
+    {
+      "id": "science-015",
+      "text": "teori relativitas mengubah cara kita memahami alam semesta",
+      "category": "science",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": ["t", "r", "a", "s"]
+    },
+    {
+      "id": "sport-008",
+      "text": "renang membuat badan terasa segar",
+      "category": "sport",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": ["r", "s", "g"]
+    },
+    {
+      "id": "sport-009",
+      "text": "sepak bola dimainkan oleh sebelas pemain",
+      "category": "sport",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": ["s", "p", "l"]
+    },
+    {
+      "id": "sport-010",
+      "text": "voli pantai membutuhkan kerja sama tim yang kuat",
+      "category": "sport",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": ["v", "k", "t"]
+    },
+    {
+      "id": "sport-011",
+      "text": "lari maraton menempuh jarak empat puluh dua kilometer",
+      "category": "sport",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["l", "m", "j", "k"]
+    },
+    {
+      "id": "sport-012",
+      "text": "juara sejati lahir dari latihan keras dan mental baja",
+      "category": "sport",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["j", "l", "m", "b"]
+    },
+    {
+      "id": "culture-009",
+      "text": "rumah adat menunjukkan kekayaan budaya daerah",
+      "category": "culture",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": ["r", "k", "d"]
+    },
+    {
+      "id": "culture-010",
+      "text": "gamelan mengiringi pertunjukan wayang kulit",
+      "category": "culture",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": ["g", "w", "k"]
+    },
+    {
+      "id": "culture-011",
+      "text": "upacara adat menjaga hubungan manusia dengan leluhur",
+      "category": "culture",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["u", "a", "l"]
+    },
+    {
+      "id": "culture-012",
+      "text": "kuliner nusantara memikat wisatawan dari berbagai negara",
+      "category": "culture",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["k", "n", "w", "b"]
+    },
+    {
+      "id": "environment-010",
+      "text": "udara bersih membuat napas terasa lega",
+      "category": "environment",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": ["u", "n", "l"]
+    },
+    {
+      "id": "environment-011",
+      "text": "sampah organik bisa diolah menjadi kompos",
+      "category": "environment",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": ["s", "o", "k"]
+    },
+    {
+      "id": "environment-012",
+      "text": "hutan bakau melindungi pantai dari abrasi",
+      "category": "environment",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": ["h", "b", "a"]
+    },
+    {
+      "id": "environment-013",
+      "text": "kendaraan listrik mengurangi polusi udara kota",
+      "category": "environment",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["k", "l", "p", "u"]
+    },
+    {
+      "id": "environment-014",
+      "text": "keberlanjutan bumi bergantung pada pilihan kita hari ini",
+      "category": "environment",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": ["k", "b", "p", "h"]
+    },
+    {
+      "id": "aspiration-008",
+      "text": "aku bercita cita menjadi guru yang menginspirasi",
+      "category": "aspiration",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": ["a", "g", "i"]
+    },
+    {
+      "id": "aspiration-009",
+      "text": "setiap usaha kecil membawa kita mendekati impian",
+      "category": "aspiration",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": ["s", "u", "i"]
+    },
+    {
+      "id": "aspiration-010",
+      "text": "disiplin adalah jembatan antara cita cita dan kenyataan",
+      "category": "aspiration",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": ["d", "j", "c", "k"]
+    },
+    {
+      "id": "aspiration-011",
+      "text": "pemuda indonesia berani bermimpi dan pantang menyerah",
+      "category": "aspiration",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["p", "b", "m"]
+    },
+    {
+      "id": "aspiration-012",
+      "text": "masa depan cerah milik mereka yang berani memulai hari ini",
+      "category": "aspiration",
+      "difficulty": 5,
+      "language": "id-ID",
+      "targetKeys": ["m", "c", "b", "h"]
+    },
+    {
+      "id": "school-022",
+      "text": "rajin membaca membuat pengetahuan semakin luas setiap hari",
+      "category": "school",
+      "difficulty": 1,
+      "language": "id-ID",
+      "targetKeys": ["q"]
+    },
+    {
+      "id": "school-023",
+      "text": "matematika mengajarkan cara berpikir logis dan teliti dalam memecahkan masalah",
+      "category": "school",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "technology-020",
+      "text": "kecerdasan buatan kini membantu dokter mendiagnosis penyakit lebih cepat",
+      "category": "technology",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": ["z"]
+    },
+    {
+      "id": "technology-021",
+      "text": "aplikasi pengolah kata memudahkan kita menulis dan mengatur dokumen",
+      "category": "technology",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "science-016",
+      "text": "oksigen yang kita hirup dihasilkan tumbuhan melalui proses fotosintesis",
+      "category": "science",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["x"]
+    },
+    {
+      "id": "science-017",
+      "text": "gaya gravitasi membuat semua benda jatuh ke arah pusat bumi",
+      "category": "science",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "environment-015",
+      "text": "daur ulang sampah plastik mengurangi pencemaran laut dan daratan",
+      "category": "environment",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "environment-016",
+      "text": "menanam satu pohon berarti menyediakan rumah bagi ratusan makhluk hidup",
+      "category": "environment",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "sport-013",
+      "text": "latihan rutin pagi hari meningkatkan stamina dan kekuatan otot",
+      "category": "sport",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "sport-014",
+      "text": "strategi tim yang solid lebih penting daripada bakat individu di lapangan",
+      "category": "sport",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "culture-013",
+      "text": "batik indonesia diakui dunia sebagai warisan budaya yang tak ternilai",
+      "category": "culture",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": ["x"]
+    },
+    {
+      "id": "culture-014",
+      "text": "gamelan menghasilkan irama yang menenangkan hati para pendengarnya",
+      "category": "culture",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "aspiration-013",
+      "text": "konsistensi kecil setiap hari melahirkan hasil besar di masa depan",
+      "category": "aspiration",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "aspiration-014",
+      "text": "bermimpi setinggi langit tetapi melangkah selangkah demi selangkah",
+      "category": "aspiration",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    }
+  ]
 }
