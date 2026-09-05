@@ -33,7 +33,7 @@ interface ContentFile {
 
 const raw = contentJson as ContentFile
 
-const CATEGORIES: ContentCategory[] = [
+export const CATEGORIES: ContentCategory[] = [
   "school",
   "technology",
   "science",
@@ -69,10 +69,16 @@ export function getContentById(id: string): TypingContent | undefined {
   return TYPING_CONTENT.find((item) => item.id === id)
 }
 
-export function getRandomContent(excludeId?: string, difficulty?: number): TypingContent {
+export function getRandomContent(
+  excludeId?: string,
+  difficulty?: number,
+  category?: ContentCategory,
+): TypingContent {
   let pool = TYPING_CONTENT
   if (excludeId) pool = pool.filter((item) => item.id !== excludeId)
   if (difficulty) pool = pool.filter((item) => item.difficulty === difficulty)
+  if (category) pool = pool.filter((item) => item.category === category)
+  if (pool.length === 0) pool = TYPING_CONTENT
   const index = Math.floor(Math.random() * pool.length)
   const item = pool[index]
   if (!item) throw new Error("Tidak ada konten mengetik tersedia")

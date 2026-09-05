@@ -142,6 +142,33 @@ function SessionHistory() {
   const trpc = useTRPC()
   const { data, isLoading } = useQuery(trpc.typing.getHistory.queryOptions({ limit: 15 }))
 
+  const downloadCsv = () => {
+    if (!data || data.length === 0) return
+    const header = ["tanggal", "mode", "wpm", "akurasi", "skor", "error", "kombo", "verifikasi"]
+    const rows = data.map((session) => [
+      new Date(session.createdAt).toISOString(),
+      session.gameMode,
+      String(session.wpm),
+      String(session.accuracy),
+      String(session.score),
+      String(session.errorCount),
+      String(session.maxCombo),
+      session.isVerified ? "ya" : "tidak",
+    ])
+    const csv = [header, ...rows]
+      .map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(","))
+      .join("\n")
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.href = url
+    link.download = `valotype-riwayat-${new Date().toISOString().slice(0, 10)}.csv`
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <section className="mt-4 border-2 border-foreground bg-surface p-4 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -149,9 +176,20 @@ function SessionHistory() {
           <h2 className="font-display text-base font-bold">🕘 Riwayat Sesi</h2>
           <p className="font-mono text-xs text-muted">15 sesi terakhir tersimpan di akunmu</p>
         </div>
-        <span className="border-2 border-foreground bg-accent px-2.5 py-1 font-display text-xs font-bold tracking-widest uppercase shadow-sm">
-          {data ? `${data.length} sesi` : "…"}
-        </span>
+        <div className="flex items-center gap-2">
+          {data && data.length > 0 && (
+            <button
+              type="button"
+              onClick={downloadCsv}
+              className="border-2 border-foreground bg-surface px-3 py-1.5 font-mono text-xs font-bold tracking-widest uppercase shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+            >
+              ⬇️ Unduh CSV
+            </button>
+          )}
+          <span className="border-2 border-foreground bg-accent px-2.5 py-1 font-display text-xs font-bold tracking-widest uppercase shadow-sm">
+            {data ? `${data.length} sesi` : "…"}
+          </span>
+        </div>
       </div>
 
       {isLoading && (

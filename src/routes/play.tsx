@@ -1,16 +1,36 @@
 import { useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { Sidebar } from "@/components/layout/sidebar"
 import { RankBadge } from "@/components/shared/rank-badge"
 import { streakMilestoneMessage } from "@/components/shared/streak-display"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { GuestPrompt } from "@/features/auth/components/guest-prompt"
 import { useAuth } from "@/features/auth/hooks/use-auth"
 import { useProfileView } from "@/features/profile/use-profile-view"
 import { formatRankLabel } from "@/features/progress/rank-calculator"
 import { usePageTitle } from "@/hooks/use-page-title"
+import { CATEGORIES, type ContentCategory } from "@/lib/content"
 import { useTRPC } from "@/lib/trpc"
 import { cn } from "@/lib/utils"
+
+const CATEGORY_LABELS: Record<ContentCategory, { label: string; icon: string }> = {
+  school: { label: "Sekolah", icon: "📚" },
+  technology: { label: "Teknologi", icon: "🤖" },
+  science: { label: "Sains", icon: "🔬" },
+  sport: { label: "Olahraga", icon: "🏅" },
+  culture: { label: "Budaya", icon: "🎨" },
+  environment: { label: "Lingkungan", icon: "🌱" },
+  aspiration: { label: "Aspirasi", icon: "🌟" },
+}
+
+const DIFF_LABELS = ["1", "2", "3", "4", "5"]
 
 const GAMES = [
   {
@@ -80,6 +100,7 @@ const GAMES = [
 
 export default function PlayRoute() {
   usePageTitle("Main · Arena")
+  const navigate = useNavigate()
   const view = useProfileView()
   const last = view.lastSession
   const hasPlayed = view.totalSessions > 0
@@ -87,6 +108,20 @@ export default function PlayRoute() {
   const trpc = useTRPC()
   const dailyQuery = useQuery(trpc.dailyChallenge.getCurrent.queryOptions({ date: undefined }))
   const daily = dailyQuery.data
+
+  // Dialog "Atur Latihan" — filter kategori & kesulitan latihan bebas
+  const [customOpen, setCustomOpen] = useState(false)
+  const [customCat, setCustomCat] = useState<ContentCategory | "">("")
+  const [customDiff, setCustomDiff] = useState<number | "">("")
+
+  const startCustom = () => {
+    const params = new URLSearchParams()
+    if (customCat) params.set("cat", customCat)
+    if (customDiff) params.set("diff", String(customDiff))
+    const query = params.toString()
+    navigate(`/play/game${query ? `?${query}` : ""}`)
+    setCustomOpen(false)
+  }
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:py-8">
@@ -107,6 +142,9 @@ export default function PlayRoute() {
             </section>
           )}
 
+          {/* Goal harian — motivasi sesi per hari */}
+          <DailyGoal recentSessions={view.recentSessions} />
+
           {/* Hero CTA (DESAIN.md §14: satu tombol PLAY selalu terlihat) */}
           <section className="flex flex-col gap-4 border-2 border-foreground bg-surface p-5 shadow-lg sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div>
@@ -124,13 +162,133 @@ export default function PlayRoute() {
                   : "Progres tersimpan otomatis di perangkat ini (guest mode)"}
               </p>
             </div>
-            <Link
-              to="/play/game"
-              className="inline-flex shrink-0 items-center justify-center border-2 border-foreground bg-primary px-6 py-3 font-display text-base font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[2px] active:translate-y-[2px] active:shadow-active"
-            >
-              ▶ Mulai Main
-            </Link>
+            <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+              <Link
+                to="/play/game"
+                className="inline-flex items-center justify-center border-2 border-foreground bg-primary px-6 py-3 font-display text-base font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[2px] active:translate-y-[2px] active:shadow-active"
+              >
+                ▶ Mulai Main
+              </Link>
+              <button
+                type="button"
+                onClick={() => setCustomOpen(true)}
+                className="inline-flex items-center justify-center gap-2 border-2 border-foreground bg-surface px-5 py-3 font-display text-sm font-bold tracking-widest uppercase shadow transition-all hover:shadow-hover active:translate-x-[2px] active:translate-y-[2px] active:shadow-active"
+              >
+                ⚙️ Atur Latihan
+              </button>
+            </div>
           </section>
+
+          {/* Dialog pilih kategori & kesulitan */}
+          <Dialog open={customOpen} onOpenChange={setCustomOpen}>
+            <DialogContent className="rounded-none border-2 border-foreground shadow-lg">
+              <DialogHeader>
+                <DialogTitle className="font-display text-xl font-bold">
+                  ⚙️ Atur Latihan Bebas
+                </DialogTitle>
+                <DialogDescription className="font-mono text-sm">
+                  Pilih topik & tingkat kesulitan — kosongkan untuk acak/otomatis.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div>
+                <p className="mb-2 font-display text-sm font-bold tracking-widest uppercase">
+                  Topik
+                </p>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                  <button
+                    type="button"
+                    aria-pressed={customCat === ""}
+                    onClick={() => setCustomCat("")}
+                    className={cn(
+                      "border-2 border-foreground px-2 py-2 font-display text-xs font-bold uppercase transition-colors",
+                      customCat === ""
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-surface hover:bg-background",
+                    )}
+                  >
+                    🎲 Acak
+                  </button>
+                  {CATEGORIES.map((category) => {
+                    const meta = CATEGORY_LABELS[category]
+                    return (
+                      <button
+                        key={category}
+                        type="button"
+                        aria-pressed={customCat === category}
+                        onClick={() => setCustomCat(category)}
+                        className={cn(
+                          "border-2 border-foreground px-2 py-2 font-display text-xs font-bold uppercase transition-colors",
+                          customCat === category
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-surface hover:bg-background",
+                        )}
+                      >
+                        {meta.icon} {meta.label}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <p className="mb-2 font-display text-sm font-bold tracking-widest uppercase">
+                  Kesulitan
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    aria-pressed={customDiff === ""}
+                    onClick={() => setCustomDiff("")}
+                    className={cn(
+                      "border-2 border-foreground px-3 py-1.5 font-display text-xs font-bold uppercase transition-colors",
+                      customDiff === ""
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-surface hover:bg-background",
+                    )}
+                  >
+                    🪄 Otomatis
+                  </button>
+                  {DIFF_LABELS.map((level) => {
+                    const value = Number(level)
+                    return (
+                      <button
+                        key={level}
+                        type="button"
+                        aria-pressed={customDiff === value}
+                        onClick={() => setCustomDiff(value)}
+                        className={cn(
+                          "border-2 border-foreground px-3 py-1.5 font-display text-xs font-bold uppercase transition-colors",
+                          customDiff === value
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-surface hover:bg-background",
+                        )}
+                      >
+                        Lv.{level}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <div className="mt-5 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setCustomOpen(false)}
+                  className="border-2 border-foreground bg-surface px-4 py-2 font-display text-xs font-bold tracking-widest uppercase shadow-sm transition-all hover:shadow-hover"
+                >
+                  Batal
+                </button>
+                <button
+                  type="button"
+                  onClick={startCustom}
+                  className="border-2 border-foreground bg-primary px-5 py-2 font-display text-xs font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+                >
+                  ▶ Mulai Latihan
+                </button>
+              </div>
+            </DialogContent>
+          </Dialog>
 
           {/* Statistik ringkas (mobile; sidebar menyajikan versi desktop) */}
           <section className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:hidden">
@@ -400,6 +558,62 @@ function GameCard({
         {cta} {ready ? "→" : "🔒"}
       </span>
     </div>
+  )
+}
+
+/** Goal harian: 3 sesi per hari menjaga skill tetap tajam (prd.md §18). */
+const DAILY_GOAL_TARGET = 3
+
+function DailyGoal({ recentSessions }: { recentSessions: ReadonlyArray<{ timestamp: number }> }) {
+  const todayCount = recentSessions.filter((session) => {
+    const date = new Date(session.timestamp)
+    const now = new Date()
+    return (
+      date.getFullYear() === now.getFullYear() &&
+      date.getMonth() === now.getMonth() &&
+      date.getDate() === now.getDate()
+    )
+  }).length
+  const done = todayCount >= DAILY_GOAL_TARGET
+  const percent = Math.min(100, Math.round((todayCount / DAILY_GOAL_TARGET) * 100))
+
+  return (
+    <section
+      className={cn(
+        "flex flex-col gap-2 border-2 border-foreground p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:gap-4",
+        done ? "bg-success/10" : "bg-surface",
+      )}
+    >
+      <div className="min-w-0">
+        <p className="font-display text-sm font-bold">🎯 Goal Harian {done ? "— tercapai!" : ""}</p>
+        <p className="font-mono text-xs text-muted">
+          {done
+            ? "Luar biasa! Selesaikan satu lagi untuk streak yang aman."
+            : `${todayCount} dari ${DAILY_GOAL_TARGET} sesi hari ini — konsisten itu kuncinya.`}
+        </p>
+      </div>
+      <div className="flex shrink-0 items-center gap-3">
+        <div
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={DAILY_GOAL_TARGET}
+          aria-valuenow={todayCount}
+          aria-label="Progres goal harian"
+          className="h-4 w-32 border-2 border-foreground bg-background"
+        >
+          <div
+            className={cn(
+              "h-full transition-[width] duration-500",
+              done ? "bg-success" : "bg-primary",
+            )}
+            style={{ width: `${percent}%` }}
+          />
+        </div>
+        <span className="font-mono text-sm font-bold tabular-nums">
+          {todayCount}/{DAILY_GOAL_TARGET}
+        </span>
+      </div>
+    </section>
   )
 }
 
