@@ -31,6 +31,7 @@ const MODE_ACCENT: Record<GameMode, string> = {
   endurance: "bg-success",
   daily: "bg-accent",
   cascade: "bg-foreground",
+  iron: "bg-teal",
 }
 
 const primaryButtonClass =

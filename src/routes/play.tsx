@@ -96,6 +96,15 @@ const GAMES = [
     ready: true,
     tone: { strip: "bg-violet", box: "bg-violet", text: "text-white" },
   },
+  {
+    to: "/play/iron",
+    icon: "🥊",
+    title: "Iron Fist",
+    desc: "Satu kesalahan = selesai. Latihan akurasi sempurna tanpa ampun.",
+    cta: "Main",
+    ready: true,
+    tone: { strip: "bg-teal", box: "bg-teal", text: "text-white" },
+  },
 ]
 
 export default function PlayRoute() {

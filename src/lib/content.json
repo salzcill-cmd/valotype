@@ -953,6 +953,118 @@
       "difficulty": 2,
       "language": "id-ID",
       "targetKeys": []
+    },
+    {
+      "id": "school-024",
+      "text": "menulis esai melatih kemampuan menyusun ide secara runtut dan jelas",
+      "category": "school",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "school-025",
+      "text": "belajar kelompok membuat soal yang sulit terasa lebih mudah dipecahkan",
+      "category": "school",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": ["q"]
+    },
+    {
+      "id": "technology-022",
+      "text": "komputer kuantum berpotensi memecahkan masalah dalam hitungan detik",
+      "category": "technology",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["q", "z"]
+    },
+    {
+      "id": "technology-023",
+      "text": "jejak digital tidak pernah benar-benar hilang dari dunia maya",
+      "category": "technology",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "science-018",
+      "text": "molekul air tersusun dari dua atom hidrogen dan satu atom oksigen",
+      "category": "science",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["x"]
+    },
+    {
+      "id": "science-019",
+      "text": "meteor yang terbakar di atmosfer tampak seperti bintang jatuh",
+      "category": "science",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "environment-017",
+      "text": "hemat listrik di rumah berarti ikut menjaga kelestarian bumi",
+      "category": "environment",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "environment-018",
+      "text": "terumbu karang menjadi tempat berlindung ribuan spesies ikan",
+      "category": "environment",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": ["z"]
+    },
+    {
+      "id": "sport-015",
+      "text": "pemanasan sebelum bertanding mencegah cedera otot yang serius",
+      "category": "sport",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "sport-016",
+      "text": "juara sejati tahu kapan harus berlatih keras dan kapan harus beristirahat",
+      "category": "sport",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "culture-015",
+      "text": "tari tradisional menyimpan cerita rakyat dari setiap daerah",
+      "category": "culture",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "culture-016",
+      "text": "rendang dinobatkan sebagai makanan terlezat di dunia oleh pembaca",
+      "category": "culture",
+      "difficulty": 3,
+      "language": "id-ID",
+      "targetKeys": ["x"]
+    },
+    {
+      "id": "aspiration-015",
+      "text": "setiap ahli pernah menjadi pemula yang tidak pernah menyerah",
+      "category": "aspiration",
+      "difficulty": 2,
+      "language": "id-ID",
+      "targetKeys": []
+    },
+    {
+      "id": "aspiration-016",
+      "text": "keberanian memulai lebih berharga daripada kesempurnaan yang tertunda",
+      "category": "aspiration",
+      "difficulty": 4,
+      "language": "id-ID",
+      "targetKeys": ["z"]
     }
   ]
 }

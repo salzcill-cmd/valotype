@@ -53,6 +53,7 @@ function replayPath(gameMode: string): string {
     daily: "/play/daily",
     endurance: "/play/endurance",
     cascade: "/play/cascade",
+    iron: "/play/iron",
   }
   return paths[gameMode] ?? "/play/game"
 }

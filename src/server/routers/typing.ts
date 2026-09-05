@@ -14,7 +14,7 @@ import { dailyChallengeCompletions, type Profile, profiles, typingSessions } fro
 import { protectedProcedure, publicProcedure, router } from "../trpc/init.ts"
 import { DAILY_BONUS_XP, todayKey } from "./daily-challenge.ts"
 
-const GAME_MODES = ["free", "blitz", "fortress", "daily", "endurance", "cascade"] as const
+const GAME_MODES = ["free", "blitz", "fortress", "daily", "endurance", "cascade", "iron"] as const
 
 /** Skor mini-game mengikuti spesifikasinya masing-masing (prd.md §15). */
 function gameScore(input: {

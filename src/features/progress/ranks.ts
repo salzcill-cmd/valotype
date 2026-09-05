@@ -1,5 +1,5 @@
 /** Jenis mode permainan (prd.md §15 + TODO 5). */
-export type GameMode = "free" | "blitz" | "fortress" | "daily" | "endurance" | "cascade"
+export type GameMode = "free" | "blitz" | "fortress" | "daily" | "endurance" | "cascade" | "iron"
 
 /** Rank mengetik (prd.md §16). */
 export type RankId = "iron" | "bronze" | "silver" | "gold" | "platinum" | "diamond" | "valor"

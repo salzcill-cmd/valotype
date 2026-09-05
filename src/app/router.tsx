@@ -6,6 +6,7 @@ import { BlindModeGame } from "@/features/games/blind-mode/component"
 import { ComboCascadeGame } from "@/features/games/combo-cascade/component"
 import { EnduranceRunGame } from "@/features/games/endurance-run/component"
 import { FocusPracticeGame } from "@/features/games/focus-practice/component"
+import { IronFistGame } from "@/features/games/iron-fist/component"
 import { SpeedBlitzGame } from "@/features/games/speed-blitz/component"
 import AchievementsRoute from "@/routes/achievements"
 import ChallengeRoute from "@/routes/challenge"
@@ -46,6 +47,8 @@ export const router = createBrowserRouter([
       { path: "/play/game", element: <PlayGameRoute /> },
       { path: "/play/focus", element: <FocusPracticeGame /> },
       { path: "/play/blind", element: <BlindModeGame /> },
+      { path: "/play/iron", element: <IronFistGame /> },
+      { path: "/play/iron", element: <IronFistGame /> },
       { path: "/play/blitz", element: <SpeedBlitzGame /> },
       { path: "/play/fortress", element: <AccuracyFortressGame /> },
       { path: "/play/daily", element: <PlayDailyRoute /> },

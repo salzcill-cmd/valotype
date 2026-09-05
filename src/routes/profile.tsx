@@ -135,6 +135,7 @@ const MODE_META: Record<string, { icon: string; label: string }> = {
   daily: { icon: "🌅", label: "Tantangan Harian" },
   endurance: { icon: "🏃", label: "Endurance Run" },
   cascade: { icon: "🔗", label: "Combo Cascade" },
+  iron: { icon: "🥊", label: "Iron Fist" },
 }
 
 /** Riwayat sesi tersimpan di akun (server) — prd.md §44. */
