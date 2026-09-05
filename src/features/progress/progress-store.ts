@@ -84,6 +84,39 @@ const initialState: GuestProgress = {
   recentSessions: [],
 }
 
+/**
+ * Validasi & perbaiki progres tersimpan (localStorage). Data lama/korup
+ * dari versi sebelumnya di-reset per-bidang ke bawaan — mencegah render
+ * crash (mis. recentSessions bukan array / field hilang).
+ */
+function sanitizeGuestProgress(value: unknown): GuestProgress {
+  const fallback = (n: unknown, default_: number): number =>
+    typeof n === "number" && Number.isFinite(n) ? Math.max(0, n) : default_
+  const p = (value && typeof value === "object" ? value : {}) as Partial<GuestProgress>
+  const sessions = Array.isArray(p.recentSessions)
+    ? p.recentSessions
+        .filter(
+          (session): session is RecentSession =>
+            !!session &&
+            typeof session === "object" &&
+            typeof (session as RecentSession).timestamp === "number",
+        )
+        .slice(0, MAX_RECENT_SESSIONS)
+    : []
+  return {
+    totalXp: fallback(p.totalXp, 0),
+    bestWpm: fallback(p.bestWpm, 0),
+    bestAccuracy: fallback(p.bestAccuracy, 0),
+    bestScore: fallback(p.bestScore, 0),
+    totalSessions: fallback(p.totalSessions, 0),
+    totalTypedChars: fallback(p.totalTypedChars, 0),
+    currentStreak: fallback(p.currentStreak, 0),
+    longestStreak: fallback(p.longestStreak, 0),
+    lastActiveDate: typeof p.lastActiveDate === "string" ? p.lastActiveDate : "",
+    recentSessions: sessions,
+  }
+}
+
 interface ProgressState extends GuestProgress {
   resetProgress: () => void
   recordSession: (input: RecordSessionInput) => SessionOutcome
@@ -228,6 +261,8 @@ export const useProgressStore = create<ProgressState>()(
     {
       name: STORAGE_KEY,
       storage: createJSONStorage(() => localStorage),
+      // Sanitasi state tersimpan setiap kali dimuat dari localStorage.
+      merge: (persisted, current) => ({ ...current, ...sanitizeGuestProgress(persisted) }),
     },
   ),
 )

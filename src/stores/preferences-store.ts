@@ -88,6 +88,24 @@ export const usePreferencesStore = create<PreferencesState>()(
     }),
     {
       name: "valotype-preferences",
+      // Sanitasi state tersimpan: data lama/korup dari versi sebelumnya
+      // di-reset ke bawaan alih-alih membuat render crash (validasi tipe).
+      merge: (persisted, current) => {
+        if (!persisted || typeof persisted !== "object") return current
+        const p = persisted as Partial<PreferencesState>
+        const theme: Theme = p.theme === "light" || p.theme === "dark" ? p.theme : "system"
+        const accentTheme: AccentTheme = ACCENT_THEMES.includes(p.accentTheme as AccentTheme)
+          ? (p.accentTheme as AccentTheme)
+          : FREE_ACCENT_THEME
+        return {
+          ...current,
+          theme,
+          accentTheme,
+          soundEnabled: p.soundEnabled !== false,
+          reducedMotion: p.reducedMotion === true,
+          language: typeof p.language === "string" ? p.language : "id",
+        }
+      },
       onRehydrateStorage: () => (state) => {
         // Terapkan preferensi setelah state dimuat dari localStorage
         if (!state) return
