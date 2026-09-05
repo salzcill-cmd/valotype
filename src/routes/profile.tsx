@@ -78,6 +78,7 @@ function AuthedProfile() {
     <main className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:py-8">
       <IdentityHeader
         avatarLetter={user.username.slice(0, 1).toUpperCase() || "V"}
+        avatarUrl={user.avatarUrl}
         name={user.username}
         title={profile?.title ?? "Pemula"}
         email={user.email}
@@ -233,6 +234,7 @@ function SessionHistory() {
 
 function IdentityHeader({
   avatarLetter,
+  avatarUrl,
   name,
   title,
   email,
@@ -240,6 +242,7 @@ function IdentityHeader({
   rank,
 }: {
   avatarLetter: string
+  avatarUrl?: string | null
   name: string
   title: string
   email: string
@@ -256,7 +259,7 @@ function IdentityHeader({
         aria-hidden="true"
         className="relative flex h-20 w-20 shrink-0 items-center justify-center border-2 border-foreground bg-primary font-display text-4xl font-bold text-primary-foreground shadow-sm transition-transform duration-300 hover:rotate-3 hover:scale-105"
       >
-        {avatarLetter}
+        {avatarUrl ? avatarUrl : avatarLetter}
       </div>
       <div className="relative min-w-0 flex-1">
         <h1 className="truncate font-display text-3xl font-bold">{name}</h1>

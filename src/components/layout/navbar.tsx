@@ -76,7 +76,7 @@ export function Navbar() {
                 aria-hidden="true"
                 className="flex h-5 w-5 items-center justify-center bg-primary font-mono text-xs font-bold text-primary-foreground"
               >
-                {user.username.slice(0, 1).toUpperCase()}
+                {user.avatarUrl ? user.avatarUrl : user.username.slice(0, 1).toUpperCase()}
               </span>
               <span className="hidden max-w-24 truncate sm:inline">{user.username}</span>
             </Link>

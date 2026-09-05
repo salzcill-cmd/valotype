@@ -10,6 +10,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { useAuth } from "@/features/auth/hooks/use-auth"
+import {
+  AvatarPicker,
+  ChangePasswordForm,
+  UsernameForm,
+} from "@/features/settings/components/account-forms"
 import { ThemeSelector } from "@/features/settings/components/theme-selector"
 import { usePageTitle } from "@/hooks/use-page-title"
 import { cn } from "@/lib/utils"
@@ -192,6 +197,25 @@ export default function SettingsRoute() {
         </div>
       </section>
 
+      {/* Keamanan — ganti password */}
+      <section className={cn(sectionClass, "mt-4")}>
+        <div className="flex items-center gap-2">
+          <span
+            aria-hidden="true"
+            className="h-4 w-1.5 border-2 border-foreground bg-primary shadow-sm"
+          />
+          <h2 className="font-display text-base font-bold">Keamanan</h2>
+        </div>
+        <p className="mt-0.5 font-mono text-xs text-muted">Ganti kata sandi akunmu kapan pun.</p>
+        {isAuthLoading ? (
+          <p className="mt-2 font-mono text-sm text-muted">Memuat…</p>
+        ) : isAuthed && user ? (
+          <ChangePasswordForm />
+        ) : (
+          <p className="mt-2 font-mono text-sm text-muted">Masuk dulu untuk mengganti password.</p>
+        )}
+      </section>
+
       {/* Reset tampilan — solusi cepat tampilan "berubah sendiri" (preferensi lama tersimpan) */}
       <section className={cn(sectionClass, "mt-4")}>
         <div className="flex items-center gap-2">
@@ -230,14 +254,12 @@ export default function SettingsRoute() {
           <>
             <dl className="mt-3 flex flex-col gap-2 font-mono text-sm">
               <div className="flex justify-between gap-4 border-b border-foreground/15 pb-2">
-                <dt className="font-bold text-muted uppercase">Username</dt>
-                <dd className="truncate font-bold">{user.username}</dd>
-              </div>
-              <div className="flex justify-between gap-4 border-b border-foreground/15 pb-2">
                 <dt className="font-bold text-muted uppercase">Email</dt>
                 <dd className="truncate">{user.email}</dd>
               </div>
             </dl>
+            <UsernameForm />
+            <AvatarPicker />
             <div className="mt-4 flex flex-wrap gap-2">
               <Button
                 variant="outline"

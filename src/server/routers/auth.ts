@@ -217,6 +217,37 @@ export const authRouter = router({
     }
   }),
 
+  /** Ganti password (FR-AUTH-006): verifikasi password lama, hash baru. */
+  changePassword: protectedProcedure
+    .input(
+      z.object({
+        currentPassword: z.string().min(1, "Password lama wajib diisi").max(72),
+        newPassword: z.string().min(8, "Password minimal 8 karakter").max(72),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const [user] = await db
+        .select({ id: users.id, passwordHash: users.passwordHash })
+        .from(users)
+        .where(eq(users.id, ctx.user.id))
+        .limit(1)
+      if (!user) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Akun tidak ditemukan." })
+      }
+
+      const valid = await verifyPassword(input.currentPassword, user.passwordHash)
+      if (!valid) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Password lama salah." })
+      }
+
+      const passwordHash = await hashPassword(input.newPassword)
+      await db
+        .update(users)
+        .set({ passwordHash, updatedAt: new Date() })
+        .where(eq(users.id, ctx.user.id))
+      return { success: true }
+    }),
+
   /** User saat ini (dari cookie), null jika tamu / sesi tidak valid. */
   me: publicProcedure.query(async ({ ctx }) => {
     if (!ctx.user) return { user: null, profile: null }
