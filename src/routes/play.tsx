@@ -67,6 +67,15 @@ const GAMES = [
     ready: true,
     tone: { strip: "bg-foreground", box: "bg-foreground", text: "text-background" },
   },
+  {
+    to: "/play/blind",
+    icon: "🎭",
+    title: "Kata Tersembunyi",
+    desc: "Teks tak terlihat — ketik dari hafalan, latih keyboard tanpa menatap.",
+    cta: "Main",
+    ready: true,
+    tone: { strip: "bg-violet", box: "bg-violet", text: "text-white" },
+  },
 ]
 
 export default function PlayRoute() {

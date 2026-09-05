@@ -56,6 +56,8 @@ export interface GameScreenProps {
   scoreFn?: ScoreFn
   /** Mode Endurance Run: dinding kecepatan yang mengejar pemain (TODO 5.4). */
   pace?: PaceConfig
+  /** Mode Kata Tersembunyi: teks di depan disembunyikan (latihan hafalan). */
+  blind?: boolean
 }
 
 /**
@@ -73,6 +75,7 @@ export function GameScreen({
   maxErrors,
   scoreFn,
   pace,
+  blind = false,
 }: GameScreenProps) {
   usePageTitle(`${icon} ${title}`)
   const finishSession = useFinishSession(mode)
@@ -279,12 +282,22 @@ export function GameScreen({
           </p>
         )}
 
+        {blind && (
+          <p
+            role="status"
+            className="border-2 border-foreground bg-violet px-3 py-2 text-center font-display text-xs font-bold tracking-widest text-white uppercase shadow-sm"
+          >
+            🎭 Kata Tersembunyi — teks di depan tak terlihat. Ketik dari hafalan!
+          </p>
+        )}
+
         <TypingArea
           text={game.content.text}
           charStatuses={charStatuses}
           currentIndex={position}
           onKeyDown={game.handleKeyDown}
           innerRef={typingRef}
+          blind={blind}
         />
         <p className="text-center font-mono text-xs text-muted sm:hidden">
           Mode mengetik penuh butuh keyboard fisik — gunakan laptop atau PC

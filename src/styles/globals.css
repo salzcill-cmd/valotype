@@ -21,6 +21,7 @@
   --color-primary-dark: #b71c1c;
   --color-primary-light: #ff5252;
   --color-secondary: #1a73e8;
+  --color-violet: #8b5cf6;
   --color-accent: #ffd600;
   --color-success: #00c853;
   --color-danger: #d62828;
@@ -55,6 +56,7 @@
   --primary-foreground: #ffffff;
   --secondary: var(--color-secondary);
   --secondary-foreground: #ffffff;
+  --violet: var(--color-violet);
   --muted: var(--color-muted);
   --muted-foreground: var(--color-muted);
   --accent: var(--color-accent);
@@ -138,6 +140,7 @@
   --primary-foreground: #1a1a1a;
   --secondary: var(--color-secondary);
   --secondary-foreground: #ffffff;
+  --violet: var(--color-violet);
   --muted: var(--color-muted-dark);
   --muted-foreground: var(--color-muted-dark);
   --accent: var(--color-accent);
@@ -466,6 +469,7 @@ body::after {
   --color-success: var(--success);
   --color-danger: var(--danger);
   --color-warning: var(--warning);
+  --color-violet: var(--violet);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);

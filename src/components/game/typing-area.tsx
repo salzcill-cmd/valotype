@@ -9,6 +9,8 @@ interface TypingAreaProps {
   currentIndex: number
   onKeyDown: (event: KeyboardEvent<HTMLDivElement>) => void
   innerRef?: RefObject<HTMLDivElement | null>
+  /** Mode Kata Tersembunyi: karakter yang belum diketik disembunyikan. */
+  blind?: boolean
 }
 
 function charClassName(status: CharVisualStatus, isCurrent: boolean): string {
@@ -48,6 +50,7 @@ export function TypingArea({
   currentIndex,
   onKeyDown,
   innerRef,
+  blind = false,
 }: TypingAreaProps) {
   const focusSelf = () => innerRef?.current?.focus()
 
@@ -74,10 +77,13 @@ export function TypingArea({
       {text.split("").map((char, index) => {
         const status = charStatuses[index] ?? "pending"
         const isCurrent = index === currentIndex && status !== "error"
+        // Blind: teks di depan disembunyikan (layout tetap) — latihan hafalan
+        const isHidden = blind && index > currentIndex && !isCurrent
         return (
           <span
             // biome-ignore lint/suspicious/noArrayIndexKey: daftar karakter statis, index = posisi unik
             key={index}
+            className={cn(charClassName(status, isCurrent), isHidden && "invisible")}
             ref={
               isCurrent
                 ? (el) => {
@@ -85,7 +91,6 @@ export function TypingArea({
                   }
                 : undefined
             }
-            className={charClassName(status, isCurrent)}
             aria-hidden="true"
           >
             {char}

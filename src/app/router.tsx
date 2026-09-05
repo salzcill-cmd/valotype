@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router"
 
 import { AppLayout, FocusLayout } from "@/app/layout"
 import { AccuracyFortressGame } from "@/features/games/accuracy-fortress/component"
+import { BlindModeGame } from "@/features/games/blind-mode/component"
 import { ComboCascadeGame } from "@/features/games/combo-cascade/component"
 import { EnduranceRunGame } from "@/features/games/endurance-run/component"
 import { FocusPracticeGame } from "@/features/games/focus-practice/component"
@@ -44,6 +45,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "/play/game", element: <PlayGameRoute /> },
       { path: "/play/focus", element: <FocusPracticeGame /> },
+      { path: "/play/blind", element: <BlindModeGame /> },
       { path: "/play/blitz", element: <SpeedBlitzGame /> },
       { path: "/play/fortress", element: <AccuracyFortressGame /> },
       { path: "/play/daily", element: <PlayDailyRoute /> },
