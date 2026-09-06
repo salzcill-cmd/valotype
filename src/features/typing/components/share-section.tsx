@@ -95,8 +95,9 @@ export function ShareSection({
             onWhatsApp={handleWhatsApp}
           />
           <p className="max-w-xs text-center font-mono text-xs text-muted sm:text-left">
-            Kartu PNG siap diunggah ke Instagram/WhatsApp Status. Salin tautan tantangan agar
-            temanmu bisa main teks yang sama — tanpa perlu daftar.
+            PNG resolusi penuh siap diunggah ke Instagram/WhatsApp Status (1080×1080 atau
+            1080×1920). Salin tautan tantangan supaya temanmu bisa main teks yang sama — tanpa perlu
+            daftar.
           </p>
         </div>
       </div>

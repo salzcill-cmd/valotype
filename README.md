@@ -22,7 +22,7 @@
 
 - **6 mode arena** — Latihan Bebas, Tantangan Harian 🌅, Speed Blitz ⚡, Accuracy Fortress 🎯, Endurance Run 🏃, Combo Cascade 🔥 — masing-masing dengan warna identitas & HUD khas
 - **Progres & rank** — XP, level, rank dari Iron → Radiant, streak harian 🔥, peta aktivitas 7 hari di profil
-- **Hasil instan** — laporan WPM/akurasi/kombo, analisis kelemahan jari, kartu hasil yang bisa **diunduh sebagai PNG** (format Square & Story)
+- **Hasil instan** — laporan WPM/akurasi/kombo, analisis kelemahan jari, kartu hasil yang bisa **diunduh sebagai PNG resolusi penuh** (Square 1080×1080 / Story 1080×1920)
 - **Sosial & kompetisi** — leaderboard global/mingguan, tantangan teman (kirim skormu, mereka balas), perayaan rekor baru ✨
 - **Lencana (30+)** — koleksi dari semua mode, bar progres, rarity visual
 - **Akun** — daftar/masuk (bcrypt + sesi), progres tersimpan lintas perangkat, mode tamu tanpa daftar
@@ -36,9 +36,9 @@
 | --- | --- |
 | ![Landing](docs/screenshots/landing.png) | ![Arena](docs/screenshots/arena.png) |
 
-| Game | Leaderboard |
-| --- | --- |
-| ![Game](docs/screenshots/game.png) | ![Leaderboard](docs/screenshots/leaderboard.png) |
+| Game | Leaderboard | Share PNG |
+| --- | --- | --- |
+| ![Game](docs/screenshots/game.png) | ![Leaderboard](docs/screenshots/leaderboard.png) | ![Share PNG](docs/screenshots/share.png) |
 
 | Mobile |
 | --- |

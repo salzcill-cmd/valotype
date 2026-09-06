@@ -14,12 +14,13 @@ export interface ShareCardData {
 }
 
 const COLOR = {
-  cream: "#F5F0E8",
+  cream: "#F6F1E7",
   surface: "#FFFFFF",
   primary: "#E63946",
   accent: "#FFD600",
-  black: "#1A1A1A",
-  muted: "#6B6B6B",
+  black: "#171717",
+  muted: "#5C5C5C",
+  glow: "rgba(230 57 70 / 0.45)",
 }
 
 const JETBRAINS = '"JetBrains Mono Variable", monospace'
@@ -63,6 +64,21 @@ function centeredText(
   ctx.restore()
 }
 
+/** Garis horizontal tebal di bawah separator visual. */
+function rule(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  thickness: number,
+  color: string,
+): void {
+  ctx.save()
+  ctx.fillStyle = color
+  ctx.fillRect(x, y, w, thickness)
+  ctx.restore()
+}
+
 /** Kotak bergaya neo-brutalist: isi + border tebal hitam. */
 function box(
   ctx: CanvasRenderingContext2D,
@@ -77,6 +93,18 @@ function box(
   ctx.strokeStyle = COLOR.black
   ctx.lineWidth = Math.max(6, Math.round(w * 0.012))
   ctx.strokeRect(x, y, w, h)
+}
+
+/** Pelangi redimistri halus di belakang sederetan teks/siluet (maks 1 layer). */
+function softGlow(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number): void {
+  ctx.save()
+  ctx.globalCompositeOperation = "source-over"
+  const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r)
+  grad.addColorStop(0, COLOR.glow)
+  grad.addColorStop(1, "rgba(230 57 70 / 0)")
+  ctx.fillStyle = grad
+  ctx.fillRect(cx - r, cy - r, r * 2, r * 2)
+  ctx.restore()
 }
 
 /** Gambar kartu hasil ke canvas (resolusi penuh siap unduh PNG). */
@@ -98,6 +126,15 @@ export function drawShareCard(
   // Latar krem
   box(ctx, 0, 0, W, H, COLOR.cream)
 
+  // Soft glow merah halus di kanan atas (brand glow)
+  // Di story: glow lebih besar-benar supaya tidak tumpang tindih angka WPM
+  softGlow(
+    ctx,
+    W * (isStory ? 0.84 : 0.82),
+    H * (isStory ? 0.22 : 0.18),
+    Math.round(W * (isStory ? 0.42 : 0.32)),
+  )
+
   // Strip atas merah (logo V + username)
   const headerH = Math.round(H * 0.085)
   ctx.fillStyle = COLOR.primary
@@ -107,29 +144,39 @@ export function drawShareCard(
 
   ctx.save()
   ctx.textBaseline = "middle"
-  ctx.textAlign = "left"
   ctx.fillStyle = COLOR.surface
-  ctx.font = `700 ${Math.round(headerH * 0.5)}px "Space Grotesk Variable", sans-serif`
+  ctx.font = `700 ${Math.round(headerH * 0.5)}px ${GROTESK}`
+  ctx.textAlign = "left"
   ctx.fillText("V", pad, headerH / 2)
   ctx.textAlign = "right"
-  ctx.font = `700 ${Math.round(headerH * 0.3)}px "Space Grotesk Variable", sans-serif`
+  ctx.font = `700 ${Math.round(headerH * 0.3)}px ${GROTESK}`
   ctx.fillText(data.username ? `@${data.username}` : "ValoType", W - pad, headerH / 2)
   ctx.restore()
 
   // Angka WPM besar + label
-  const numberY = isStory ? H * 0.33 : H * 0.37
-  const numberPx = isStory ? W * 0.5 : W * 0.4
+  const numberY = isStory ? H * 0.33 : H * 0.36
+  const numberPx = Math.round(isStory ? W * 0.5 : W * 0.4)
   ctx.save()
   ctx.fillStyle = COLOR.black
   centeredText(ctx, String(data.wpm), numberY, 0, W, 0.92, numberPx, 800, JETBRAINS)
   ctx.fillStyle = COLOR.primary
-  centeredText(ctx, "WPM", numberY + numberPx * 0.7, 0, W, 0.92, Math.round(W * 0.08), 700, GROTESK)
+  centeredText(
+    ctx,
+    "WPM",
+    numberY + numberPx * 0.78,
+    0,
+    W,
+    0.92,
+    Math.round(W * 0.08),
+    700,
+    GROTESK,
+  )
   if (data.rankName) {
     ctx.fillStyle = COLOR.muted
     centeredText(
       ctx,
       data.rankName,
-      numberY + numberPx * 0.7 + W * 0.09,
+      numberY + numberPx * 0.78 + W * 0.1,
       0,
       W,
       0.92,
@@ -140,18 +187,48 @@ export function drawShareCard(
   }
   ctx.restore()
 
+  // Separator halus setelah angka besar
+  rule(
+    ctx,
+    pad,
+    numberY +
+      numberPx * 0.78 +
+      (data.rankName ? W * 0.1 + Math.round(W * 0.06) : 0) +
+      Math.round(W * 0.02),
+    W - pad * 2,
+    Math.max(4, Math.round(W * 0.006)),
+    COLOR.black,
+  )
+
   // Kartu kuning statistik
   const cardX = pad
   const cardW = W - pad * 2
-  const cardH = isStory ? Math.round(H * 0.16) : Math.round(H * 0.22)
-  const cardY = isStory ? H * 0.56 : H * 0.63
+  const cardH = isStory ? Math.round(H * 0.17) : Math.round(H * 0.22)
+  const cardY = isStory ? H * 0.58 : H * 0.66
   ctx.save()
   ctx.shadowColor = COLOR.black
-  ctx.shadowOffsetX = Math.round(W * 0.02)
-  ctx.shadowOffsetY = Math.round(W * 0.02)
+  ctx.shadowOffsetX = Math.round(W * 0.022)
+  ctx.shadowOffsetY = Math.round(W * 0.022)
   ctx.shadowBlur = 0
   box(ctx, cardX, cardY, cardW, cardH, COLOR.accent)
   ctx.restore()
+
+  // Vinil anti-mainstream: label statis di dalam kotak kuning
+  if (!isStory) {
+    const cornerInset = Math.round(W * 0.06)
+    ctx.save()
+    ctx.fillStyle = COLOR.black
+    ctx.globalAlpha = 0.18
+    ctx.beginPath()
+    const notch = Math.round(W * 0.02)
+    ctx.moveTo(cardX + cornerInset, cardY + cardH - notch)
+    ctx.lineTo(cardX + cardW - notch, cardY + cardH - notch)
+    ctx.lineTo(cardX + cardW - notch, cardY + cardH)
+    ctx.lineTo(cardX + cornerInset, cardY + cardH)
+    ctx.closePath()
+    ctx.fill()
+    ctx.restore()
+  }
 
   const rows: [string, string][] = [
     ["Akurasi", `${data.accuracy}%`],
@@ -159,20 +236,20 @@ export function drawShareCard(
     ["Kombo Max", `x${data.maxCombo}`],
   ]
   const labelPx = Math.round(W * 0.042)
-  const valuePx = Math.round(W * 0.075)
+  const valuePx = Math.round(W * 0.078)
 
   if (isStory) {
     rows.forEach(([label, value], index) => {
-      const rowY = cardY + cardH * (0.36 + index * 0.28)
+      const rowY = cardY + cardH * (0.34 + index * 0.3)
       ctx.save()
       ctx.fillStyle = COLOR.black
       ctx.textAlign = "left"
       ctx.textBaseline = "middle"
       ctx.font = `700 ${labelPx}px ${GROTESK}`
-      ctx.fillText(label.toUpperCase(), cardX + cardW * 0.08, rowY)
+      ctx.fillText(label.toUpperCase(), cardX + cardW * 0.09, rowY)
       ctx.textAlign = "right"
       ctx.font = `800 ${valuePx}px ${JETBRAINS}`
-      ctx.fillText(value, cardX + cardW * 0.92, rowY)
+      ctx.fillText(value, cardX + cardW * 0.91, rowY)
       ctx.restore()
     })
   } else {
@@ -182,10 +259,11 @@ export function drawShareCard(
       ctx.save()
       ctx.fillStyle = COLOR.black
       centeredText(ctx, value, cardY + cardH * 0.42, segX, colW, 0.9, valuePx, 800, JETBRAINS)
+      ctx.fillStyle = COLOR.muted
       centeredText(
         ctx,
         label.toUpperCase(),
-        cardY + cardH * 0.8,
+        cardY + cardH * 0.82,
         segX,
         colW,
         0.9,
@@ -197,13 +275,13 @@ export function drawShareCard(
     })
   }
 
-  // Footer: tagline + URL tantangan
+  // Footer: ajakan + URL tantangan
   ctx.save()
   ctx.fillStyle = COLOR.black
   centeredText(
     ctx,
-    "Bisa ngalahin? 🔥",
-    isStory ? H * 0.85 : H * 0.92,
+    isStory ? "Coba teks ini! 🔥" : "Bisa ngalahin? 🔥",
+    isStory ? H * 0.855 : H * 0.92,
     0,
     W,
     0.95,
@@ -213,17 +291,11 @@ export function drawShareCard(
   )
   ctx.fillStyle = COLOR.muted
   const footerText = data.challengeUrl ?? "ValoType — game yang kebetulan membuatmu jago mengetik"
-  centeredText(
-    ctx,
-    footerText,
-    isStory ? H * 0.92 : H * 0.965,
-    0,
-    W,
-    0.95,
-    Math.round(W * 0.036),
-    700,
-    JETBRAINS,
-  )
+  if (isStory) {
+    centeredText(ctx, footerText, H * 0.925, 0, W, 0.96, Math.round(W * 0.044), 700, GROTESK)
+  } else {
+    centeredText(ctx, footerText, H * 0.965, 0, W, 0.95, Math.round(W * 0.04), 700, GROTESK)
+  }
   ctx.restore()
 }
 
@@ -259,8 +331,13 @@ export function ShareCard({
     <canvas
       ref={ref}
       aria-label={`Kartu hasil: ${data.wpm} WPM, akurasi ${data.accuracy}%`}
-      className="border-2 border-foreground bg-[#F5F0E8] shadow-lg"
-      style={{ width: previewWidth, aspectRatio: `${width} / ${height}`, height: "auto" }}
+      className="border-2 border-foreground bg-[var(--cream)] shadow-xl ring-1 ring-black/10"
+      style={{
+        width: previewWidth,
+        aspectRatio: `${width} / ${height}`,
+        height: "auto",
+        imageRendering: "crisp-edges",
+      }}
     />
   )
 }
