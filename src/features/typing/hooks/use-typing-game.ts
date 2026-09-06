@@ -2,6 +2,7 @@ import { type KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState }
 
 import type { TypingContent } from "@/lib/content"
 import { incrementCombo, resetCombo } from "../engine/combo"
+import type { KeyEventLike } from "../engine/input-handler"
 import { parseKeyEvent, shouldPreventDefault } from "../engine/input-handler"
 import { calculateScore } from "../engine/scoring"
 import type { CharVisualStatus, GameStatus, ScoreFn, TypingGameResult } from "../engine/types"
@@ -218,10 +219,13 @@ export function useTypingGame(initialContent: TypingContent, options: TypingGame
   }, [setStatusAll, startSegment])
 
   const handleKeyDown = useCallback(
-    (event: KeyboardEvent<HTMLDivElement>) => {
+    (event: KeyboardEvent<HTMLDivElement> | KeyEventLike) => {
       const parsed = parseKeyEvent(event)
       if (parsed.kind === "ignored") return
-      if (shouldPreventDefault(parsed)) event.preventDefault()
+      if (shouldPreventDefault(parsed)) {
+        // preventDefault hanya tersedia di KeyboardEvent asli (bukan sintetik).
+        if ("preventDefault" in event) (event as KeyboardEvent).preventDefault()
+      }
       if (parsed.kind === "escape") {
         // Esc ditangani GameScreen lewat listener native window (bukan sintetik
         // React). Handle di sini membuat efek pause/resume terpasang di tengah

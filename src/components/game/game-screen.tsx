@@ -5,6 +5,7 @@ import { ComboCounter } from "@/components/game/combo-counter"
 import { ProgressBar } from "@/components/game/progress-bar"
 import { ScoreDisplay } from "@/components/game/score-display"
 import { TypingArea } from "@/components/game/typing-area"
+import { VirtualKeyboard } from "@/components/game/virtual-keyboard"
 import { Button } from "@/components/ui/button"
 import type { GameMode } from "@/features/progress/ranks"
 import {
@@ -300,9 +301,13 @@ export function GameScreen({
           innerRef={typingRef}
           blind={blind}
         />
-        <p className="text-center font-mono text-xs text-muted sm:hidden">
-          Mode mengetik penuh butuh keyboard fisik — gunakan laptop atau PC
-        </p>
+        {/* Virtual keyboard muncul di mobile — aktif 후부터 bermain, tapi tetap tampil supaya user bisa start */}
+        <div className="sm:hidden">
+          <VirtualKeyboard
+            onKeyDown={game.handleKeyDown}
+            disabled={status === "completed" || status === "paused"}
+          />
+        </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
           <ScoreDisplay wpm={game.wpm} accuracy={game.accuracy} />
