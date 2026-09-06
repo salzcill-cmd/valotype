@@ -5,7 +5,7 @@ import { ComboCounter } from "@/components/game/combo-counter"
 import { ProgressBar } from "@/components/game/progress-bar"
 import { ScoreDisplay } from "@/components/game/score-display"
 import { TypingArea } from "@/components/game/typing-area"
-import { VirtualKeyboard } from "@/components/game/virtual-keyboard"
+import { TypingInput } from "@/components/game/typing-input"
 import { Button } from "@/components/ui/button"
 import type { GameMode } from "@/features/progress/ranks"
 import {
@@ -83,6 +83,7 @@ export function GameScreen({
   const finishSession = useFinishSession(mode)
   const [initialContent] = useState<TypingContent>(() => content ?? getRandomContent())
   const typingRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const game = useTypingGame(initialContent, {
     timeLimitMs,
@@ -301,11 +302,12 @@ export function GameScreen({
           innerRef={typingRef}
           blind={blind}
         />
-        {/* Virtual keyboard muncul di mobile — aktif 후부터 bermain, tapi tetap tampil supaya user bisa start */}
+        {/* Input teks untuk mobile — user ngetik di kotak seperti form */}
         <div className="sm:hidden">
-          <VirtualKeyboard
+          <TypingInput
             onKeyDown={game.handleKeyDown}
             disabled={status === "completed" || status === "paused"}
+            innerRef={inputRef}
           />
         </div>
 
