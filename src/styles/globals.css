@@ -671,7 +671,6 @@ html.reduce-motion *::after {
   /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk preferensi reduce motion */
   animation-duration: 0.01ms !important;
   /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk preferensi reduce motion */
-  /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk preferensi reduce motion */
   animation-iteration-count: 1 !important;
   transition-duration: 0.01ms !important;
 }
