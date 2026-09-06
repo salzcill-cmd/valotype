@@ -238,8 +238,8 @@ export default function PlayResultRoute() {
               <p className="font-display text-xl font-bold">Lv.{outcome.newLevel}</p>
             )}
           </div>
-        </div>
-        <div className="border-2 border-foreground bg-primary px-4 py-2 text-center shadow-sm">
+        </div>{" "}
+        <div className="border-2 border-foreground bg-primary px-5 py-3 text-center shadow-sm">
           <p className="font-mono text-xs font-bold tracking-widest text-primary-foreground uppercase">
             XP Didapat
           </p>
@@ -359,9 +359,9 @@ export default function PlayResultRoute() {
 
 function MiniStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="border-2 border-foreground bg-surface px-2 py-2 text-center shadow-sm">
-      <p className="truncate font-mono text-lg font-bold tabular-nums">{value}</p>
-      <p className="truncate font-mono text-[0.625rem] font-bold tracking-widest text-muted uppercase">
+    <div className="border-2 border-foreground bg-surface px-3 py-3 text-center shadow-sm">
+      <p className="truncate font-mono text-xl font-bold tabular-nums">{value}</p>
+      <p className="truncate font-mono text-xs font-bold tracking-widest text-muted uppercase">
         {label}
       </p>
     </div>

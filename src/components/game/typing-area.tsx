@@ -62,7 +62,7 @@ export function TypingArea({
       aria-label="Area mengetik — ketik teks di bawah ini"
       aria-multiline="true"
       tabIndex={0}
-      className="max-h-[40dvh] cursor-text overflow-y-auto px-1 py-2 font-mono text-lg leading-loose whitespace-pre-wrap outline-none select-none sm:text-xl"
+      className="max-h-[42dvh] cursor-text overflow-y-auto px-2 py-3 font-mono text-base leading-loose whitespace-pre-wrap outline-none select-none sm:text-lg"
       onKeyDown={onKeyDown}
       onMouseDown={(event) => {
         event.preventDefault()

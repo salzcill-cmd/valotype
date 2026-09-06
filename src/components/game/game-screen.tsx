@@ -184,11 +184,11 @@ export function GameScreen({
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-4 px-4 py-6 sm:px-6">
-      {/* Header (DESAIN.md §15) */}
-      <header className="flex items-center justify-between gap-3">
+      {/* Header (DESAIN.md §15) */}{" "}
+      <header className="flex items-center justify-between gap-2">
         <Link
           to="/play"
-          className="border-2 border-foreground bg-surface px-3 py-2 text-sm font-bold shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+          className="border-2 border-foreground bg-surface px-4 py-2.5 text-sm font-bold shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
         >
           ← Dashboard
         </Link>
@@ -199,13 +199,17 @@ export function GameScreen({
         {timeLimitMs ? (
           <BlitzTimer remainingMs={Math.max(0, timeLimitMs - elapsedMs)} />
         ) : maxErrors ? (
-          <FortressHearts remaining={Math.max(0, maxErrors - errorCount)} max={maxErrors} />
+          <FortressHearts
+            remaining={Math.max(0, maxErrors - errorCount)}
+            max={maxErrors}
+            className="-ml-1"
+          />
         ) : pace ? (
           <PaceChip level={paceLevel_ + 1} minWpm={requiredWpm} leadChars={leadChars} />
         ) : (
           <span
             className={cn(
-              "hidden border-2 border-foreground px-3 py-2 font-mono text-sm font-bold shadow-sm sm:block",
+              "hidden border-2 border-foreground px-4 py-2.5 font-mono text-sm font-bold shadow-sm sm:block",
               MODE_ACCENT[mode],
               mode === "free" ? "text-primary-foreground" : "",
             )}
@@ -214,12 +218,10 @@ export function GameScreen({
           </span>
         )}
       </header>
-
       {/* Live region untuk screen reader (prd.md §28) */}
       <div className="sr-only" role="status" aria-live="polite">
         {hintText} {status === "playing" ? `Karakter ${position} dari ${totalChars}` : ""}
       </div>
-
       {/* Kartu mengetik */}
       <section
         className={cn(
@@ -240,14 +242,14 @@ export function GameScreen({
         <div className="flex items-start justify-between gap-3">
           <p
             className={cn(
-              "flex min-w-0 flex-1 items-center gap-2 font-mono text-xs font-bold tracking-widest uppercase",
+              "flex min-w-0 flex-1 items-center gap-2 font-mono text-sm font-bold tracking-widest uppercase",
               "text-muted",
             )}
           >
             <span
               aria-hidden="true"
               className={cn(
-                "inline-block h-2.5 w-2.5 shrink-0 border-2 border-foreground",
+                "inline-block h-3 w-3 shrink-0 border-2 border-foreground",
                 MODE_ACCENT[mode],
               )}
             />
@@ -264,11 +266,9 @@ export function GameScreen({
               type="button"
               onClick={() => game.pause()}
               aria-label="Jeda permainan (Esc)"
-              className="flex shrink-0 cursor-pointer items-center gap-1.5 border-2 border-foreground bg-surface px-2.5 py-1.5 font-mono text-xs font-bold shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+              className="flex shrink-0 cursor-pointer items-center gap-2 border-2 border-foreground bg-surface px-4 py-2.5 font-mono text-sm font-bold shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
             >
-              <span aria-hidden="true" className="tracking-tighter">
-                ❚❚
-              </span>
+              <span aria-hidden="true">❚❚</span>
               <span className="hidden sm:inline">Jeda</span>
             </button>
           )}
@@ -388,10 +388,21 @@ function BlitzTimer({ remainingMs }: { remainingMs: number }) {
 }
 
 /** Benteng Accuracy Fortress: 5 hati, satu hilang per error (prd.md §15). */
-function FortressHearts({ remaining, max }: { remaining: number; max: number }) {
+function FortressHearts({
+  remaining,
+  max,
+  className,
+}: {
+  remaining: number
+  max: number
+  className?: string
+}) {
   return (
     <div
-      className="flex items-center gap-1 border-2 border-foreground bg-surface px-2 py-1.5 shadow-sm"
+      className={cn(
+        "flex items-center gap-1 border-2 border-foreground bg-surface px-2.5 py-2 shadow-sm",
+        className,
+      )}
       role="img"
       aria-label={`Nyawa benteng ${remaining} dari ${max}`}
     >

@@ -549,9 +549,7 @@ body::after {
 
   /* Heights (DESAIN.md §18) → utilities h-navbar / h-tabbar */
   --height-navbar: 64px;
-  --height-tabbar: 56px;
-
-  /* --- Mobile comfort: tap target & safe area --- */
+  --height-tabbar: 56px; /* --- Mobile comfort: tap target & safe area --- */
   --target-min: 44px;
   --target-min-sm: 40px;
   --spacing-tap-safe: 0.75rem;
@@ -622,44 +620,60 @@ body::after {
   h4,
   h5,
   h6 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    line-height: 1.2;
+    scroll-margin-top: calc(var(--height-navbar) + var(--spacing-tap-safe-top));
   }
 
-  /* Bold, visible focus ring (DESAIN.md §29 / prd.md §28) */
-  :focus-visible {
-    outline: 3px solid var(--ring);
-    outline-offset: 2px;
-  }
-
-  /* Reduced motion (DESAIN.md §19 / prd.md §27) */
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk reduced motion */
-      animation-duration: 0.01ms !important;
-      /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk reduced motion */
-      animation-iteration-count: 1 !important;
-      /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk reduced motion */
-      transition-duration: 0.01ms !important;
-      /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk reduced motion */
-      scroll-behavior: auto !important;
+  /* kenyamanan HP: konten halaman utama tidak terlalu dekat ke tepi kiri/kanan */
+  @media (max-width: 480px) {
+    main {
+      padding-inline: 1rem;
     }
   }
+}
 
-  /* Preferensi manual "kurangi gerakan" dari Settings (TODO 4.5) */
-  html.reduce-motion *,
-  html.reduce-motion *::before,
-  html.reduce-motion *::after {
-    /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk preferensi reduce motion */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Bold, visible focus ring (DESAIN.md §29 / prd.md §28) */
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Reduced motion (DESAIN.md §19 / prd.md §27) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk reduced motion */
     animation-duration: 0.01ms !important;
-    /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk preferensi reduce motion */
+    /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk reduced motion */
     animation-iteration-count: 1 !important;
-    /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk preferensi reduce motion */
+    /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk reduced motion */
     transition-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk reduced motion */
+    scroll-behavior: auto !important;
   }
+}
+
+/* Preferensi manual "kurangi gerakan" dari Settings (TODO 4.5) */
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk preferensi reduce motion */
+  animation-duration: 0.01ms !important;
+  /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk preferensi reduce motion */
+  /* biome-ignore lint/complexity/noImportantStyles: override semua animasi untuk preferensi reduce motion */
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
 }
 
 /* --- Typing effects & feedback (DESAIN.md §15/§20) --- */
@@ -921,5 +935,13 @@ body::after {
   100% {
     opacity: 0;
     transform: translateY(-46px) scale(1.15) rotate(10deg);
+  }
+}
+
+/* kenyamanan HP: menjaga konten tetap di dalam layar saat keyboard muncul */
+@media (max-width: 480px) {
+  html,
+  body {
+    overscroll-behavior: contain;
   }
 }

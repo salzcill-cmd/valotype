@@ -188,9 +188,9 @@ export default function PlayRoute() {
             </div>
           </section>
 
-          {/* Dialog pilih kategori & kesulitan */}
+          {/* Dialog pilih kategori & kesulitan — ukuran lebih nyaman di HP */}
           <Dialog open={customOpen} onOpenChange={setCustomOpen}>
-            <DialogContent className="rounded-none border-2 border-foreground shadow-lg">
+            <DialogContent className="rounded-none border-2 border-foreground shadow-lg px-2 py-2">
               <DialogHeader>
                 <DialogTitle className="font-display text-xl font-bold">
                   ⚙️ Atur Latihan Bebas
@@ -204,13 +204,13 @@ export default function PlayRoute() {
                 <p className="mb-2 font-display text-sm font-bold tracking-widest uppercase">
                   Topik
                 </p>
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   <button
                     type="button"
                     aria-pressed={customCat === ""}
                     onClick={() => setCustomCat("")}
                     className={cn(
-                      "border-2 border-foreground px-2 py-2 font-display text-xs font-bold uppercase transition-colors",
+                      "border-2 border-foreground px-3 py-3 font-display text-sm font-bold uppercase transition-colors",
                       customCat === ""
                         ? "bg-primary text-primary-foreground"
                         : "bg-surface hover:bg-background",
@@ -227,7 +227,7 @@ export default function PlayRoute() {
                         aria-pressed={customCat === category}
                         onClick={() => setCustomCat(category)}
                         className={cn(
-                          "border-2 border-foreground px-2 py-2 font-display text-xs font-bold uppercase transition-colors",
+                          "border-2 border-foreground px-3 py-3 font-display text-sm font-bold uppercase transition-colors",
                           customCat === category
                             ? "bg-primary text-primary-foreground"
                             : "bg-surface hover:bg-background",
@@ -244,13 +244,13 @@ export default function PlayRoute() {
                 <p className="mb-2 font-display text-sm font-bold tracking-widest uppercase">
                   Kesulitan
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3">
                   <button
                     type="button"
                     aria-pressed={customDiff === ""}
                     onClick={() => setCustomDiff("")}
                     className={cn(
-                      "border-2 border-foreground px-3 py-1.5 font-display text-xs font-bold uppercase transition-colors",
+                      "border-2 border-foreground px-4 py-3 font-display text-sm font-bold uppercase transition-colors",
                       customDiff === ""
                         ? "bg-primary text-primary-foreground"
                         : "bg-surface hover:bg-background",
@@ -267,7 +267,7 @@ export default function PlayRoute() {
                         aria-pressed={customDiff === value}
                         onClick={() => setCustomDiff(value)}
                         className={cn(
-                          "border-2 border-foreground px-3 py-1.5 font-display text-xs font-bold uppercase transition-colors",
+                          "border-2 border-foreground px-4 py-3 font-display text-sm font-bold uppercase transition-colors",
                           customDiff === value
                             ? "bg-primary text-primary-foreground"
                             : "bg-surface hover:bg-background",
@@ -280,18 +280,18 @@ export default function PlayRoute() {
                 </div>
               </div>
 
-              <div className="mt-5 flex justify-end gap-2">
+              <div className="mt-5 flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setCustomOpen(false)}
-                  className="border-2 border-foreground bg-surface px-4 py-2 font-display text-xs font-bold tracking-widest uppercase shadow-sm transition-all hover:shadow-hover"
+                  className="border-2 border-foreground bg-surface px-5 py-3 font-display text-sm font-bold tracking-widest uppercase shadow-sm transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
                 >
                   Batal
                 </button>
                 <button
                   type="button"
                   onClick={startCustom}
-                  className="border-2 border-foreground bg-primary px-5 py-2 font-display text-xs font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+                  className="border-2 border-foreground bg-primary px-6 py-3 font-display text-sm font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
                 >
                   ▶ Mulai Latihan
                 </button>
@@ -350,9 +350,9 @@ export default function PlayRoute() {
               />
               <h2 className="font-display text-xl font-bold">Pilih Arena</h2>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {GAMES.map((game) => (
-                <Link key={game.title} to={game.to} className="group block">
+                <Link key={game.title} to={game.to} className="group block -mx-2 sm:-mx-0">
                   <GameCard
                     icon={game.icon}
                     title={game.title}
@@ -382,7 +382,7 @@ export default function PlayRoute() {
           {/* Sesi terakhir — resume cepat ke mode yang sama (kemudahan) */}
           <section className="border-2 border-foreground bg-surface p-4 shadow-sm">
             {last ? (
-              <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div className="flex min-w-0 items-center gap-3">
                   <span
                     aria-hidden="true"
@@ -408,7 +408,7 @@ export default function PlayRoute() {
                   {view.bestWpm === last.wpm && <RankBadge rank={view.rank} size="sm" />}
                   <Link
                     to={modeMeta(last.gameMode).to}
-                    className="inline-flex items-center gap-1 border-2 border-foreground bg-primary px-4 py-2.5 font-display text-sm font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
+                    className="inline-flex items-center gap-1 border-2 border-foreground bg-primary px-5 py-3 font-display text-sm font-bold tracking-widest text-primary-foreground uppercase shadow transition-all hover:shadow-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-active"
                   >
                     ↻ Main Lagi
                   </Link>
@@ -530,7 +530,7 @@ function GameCard({
   return (
     <div
       className={cn(
-        "card-hover relative flex h-full flex-col gap-2 overflow-hidden border-2 border-foreground bg-surface p-4 shadow",
+        "card-hover relative flex h-full flex-col gap-3 overflow-hidden border-2 border-foreground bg-surface p-4 shadow",
         ready ? "group-hover:shadow-lg" : "opacity-60",
       )}
     >
@@ -541,11 +541,11 @@ function GameCard({
           "absolute inset-x-0 top-0 h-1 origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100",
           tone.strip,
         )}
-      />
+      />{" "}
       <span
         aria-hidden="true"
         className={cn(
-          "flex h-11 w-11 items-center justify-center border-2 border-foreground text-2xl shadow-sm transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:rotate-3",
+          "flex h-12 w-12 items-center justify-center border-2 border-foreground text-2xl shadow-sm transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:rotate-3",
           tone.box,
           tone.text,
         )}
