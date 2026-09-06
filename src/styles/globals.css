@@ -127,6 +127,12 @@
   --sidebar-width: 240px;
   --navbar-height: 64px;
   --tabbar-height: 56px;
+
+  /* --- Mobile comfort: tap target & safe area --- */
+  --target-min: 44px;
+  --target-min-sm: 40px;
+  --spacing-tap-safe: 0.75rem;
+  --spacing-tap-safe-top: 0.625rem;
 }
 
 /* --- Dark mode (DESAIN.md §21) --- */
@@ -544,10 +550,22 @@ body::after {
   /* Heights (DESAIN.md §18) → utilities h-navbar / h-tabbar */
   --height-navbar: 64px;
   --height-tabbar: 56px;
+
+  /* --- Mobile comfort: tap target & safe area --- */
+  --target-min: 44px;
+  --target-min-sm: 40px;
+  --spacing-tap-safe: 0.75rem;
+  --spacing-tap-safe-top: 0.625rem;
 }
 
 /* --- Base styles --- */
 @layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
   * {
     border-color: var(--border-color);
     @apply border-border outline-ring/50;
@@ -564,10 +582,38 @@ body::after {
     font-size: 1rem;
     line-height: 1.5;
     min-height: 100dvh;
+    overflow-x: hidden;
     transition:
       background-color var(--transition-base),
       color var(--transition-base);
     @apply bg-background text-foreground;
+  }
+
+  p,
+  ul,
+  ol,
+  dl,
+  blockquote,
+  pre,
+  table,
+  figure {
+    -webkit-hyphens: none;
+    hyphens: none;
+  }
+
+  button,
+  a,
+  input,
+  textarea,
+  select {
+    touch-action: manipulation;
+  }
+
+  [contenteditable],
+  input,
+  textarea {
+    -webkit-user-select: text;
+    user-select: text;
   }
 
   h1,
@@ -616,7 +662,7 @@ body::after {
   }
 }
 
-/* --- Typing effects & feedback (DESAIN.md §19/§20) --- */
+/* --- Typing effects & feedback (DESAIN.md §15/§20) --- */
 @layer utilities {
   /* Kursor: garis vertikal merah berkedip di karakter aktif (DESAIN.md §15) */
   .typing-caret {
