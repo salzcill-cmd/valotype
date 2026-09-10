@@ -331,7 +331,7 @@ export function ShareCard({
     <canvas
       ref={ref}
       aria-label={`Kartu hasil: ${data.wpm} WPM, akurasi ${data.accuracy}%`}
-      className="border-2 border-foreground bg-[var(--cream)] shadow-xl ring-1 ring-black/10"
+      className="border-2 border-foreground bg-[#F6F1E7] shadow-xl ring-1 ring-black/10"
       style={{
         width: previewWidth,
         aspectRatio: `${width} / ${height}`,
